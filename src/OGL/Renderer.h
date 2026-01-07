@@ -33,6 +33,8 @@ namespace OGL
         void setCullFace(GLenum mode);
         void setPolygonMode(GLenum face, GLenum mode);
 
+        void getRenderDimensions(int& width, int& height) const override;
+
         void drawArrays(PrimitiveType mode, int first, int count) override;
         void drawElements(PrimitiveType mode, int count, unsigned int indexType, const void* indices) override;
 
@@ -47,5 +49,7 @@ namespace OGL
         bool m_depthTestEnabled;
         bool m_blendingEnabled;
         bool m_cullingEnabled;
+        int m_viewportWidth;
+        int m_viewportHeight;
     };
 }

@@ -5,7 +5,12 @@ namespace VK
 {
 
 ShaderManager::ShaderManager()
+    : m_hasPendingUpdates(false)
 {
+    // Initialize matrices to identity
+    m_pushConstants.model = glm::mat4(1.0f);
+    m_pushConstants.view = glm::mat4(1.0f);
+    m_pushConstants.projection = glm::mat4(1.0f);
 }
 
 ShaderManager::~ShaderManager()
@@ -48,8 +53,22 @@ void ShaderManager::unuse()
 
 void ShaderManager::setMat4(const std::string& name, const glm::mat4& value)
 {
-    // In real Vulkan: update push constants or uniform buffer
-    LOG_DEBUG("[Vulkan] Set mat4 uniform: {} (stub)", name);
+    if (name == "model")
+    {
+        m_pushConstants.model = value;
+        m_hasPendingUpdates = true;
+    }
+    else if (name == "view")
+    {
+        m_pushConstants.view = value;
+        m_hasPendingUpdates = true;
+    }
+    else if (name == "projection")
+    {
+        m_pushConstants.projection = value;
+        m_hasPendingUpdates = true;
+    }
+    LOG_DEBUG("[Vulkan] Set mat4 uniform: {}", name);
 }
 
 void ShaderManager::setVec3(const std::string& name, const glm::vec3& value)

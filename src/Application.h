@@ -8,6 +8,7 @@
 #include "Camera.h"
 #include <memory>
 #include <string>
+#include <glm/glm.hpp>
 
 class Application
 {
@@ -20,6 +21,8 @@ public:
     void shutdown();
 
     const std::string& getPluginPath() const { return m_pluginPath; }
+    void setClearColor(float r, float g, float b, float a = 1.0f);
+    void setClearColor(const glm::vec4& color);
 
 protected:
     virtual void onInit() {}
@@ -50,4 +53,5 @@ private:
     std::unique_ptr<PluginLoader> m_pluginLoader;
     IRenderPlugin* m_plugin;
     bool m_initialized;
+    glm::vec4 m_clearColor;
 };

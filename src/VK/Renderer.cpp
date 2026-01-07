@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "IndexBuffer.h"
+#include "ShaderManager.h"
 #include "../Logger.h"
 #include <stdexcept>
 #include <set>
@@ -18,7 +19,7 @@ struct Vertex {
 
 Renderer::Renderer()
     : m_window(nullptr)
-    , m_clearColor(0.2f, 0.3f, 0.3f, 1.0f)
+    , m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
     , m_instance(VK_NULL_HANDLE)
     , m_surface(VK_NULL_HANDLE)
     , m_physicalDevice(VK_NULL_HANDLE)
@@ -33,10 +34,12 @@ Renderer::Renderer()
     , m_vertexBuffer(VK_NULL_HANDLE)
     , m_vertexBufferMemory(VK_NULL_HANDLE)
     , m_boundVertexArray(nullptr)
+    , m_shaderManager(nullptr)
     , m_currentFrame(0)
     , m_imageIndex(0)
     , m_framebufferResized(false)
 {
+    // Clear color should be set by Application class via setClearColor()
 }
 
 Renderer::~Renderer()
@@ -449,24 +452,14 @@ void Renderer::createGraphicsPipeline()
     inputAssembly.topology = VK_PRIMITIVE_TOPOLOGY_TRIANGLE_LIST;
     inputAssembly.primitiveRestartEnable = VK_FALSE;
 
-    VkViewport viewport{};
-    viewport.x = 0.0f;
-    viewport.y = 0.0f;
-    viewport.width = (float)m_swapChainExtent.width;
-    viewport.height = (float)m_swapChainExtent.height;
-    viewport.minDepth = 0.0f;
-    viewport.maxDepth = 1.0f;
-
-    VkRect2D scissor{};
-    scissor.offset = {0, 0};
-    scissor.extent = m_swapChainExtent;
-
+    // Use dynamic viewport and scissor to support window resizing
+    // This allows us to update viewport without recreating the pipeline
     VkPipelineViewportStateCreateInfo viewportState{};
     viewportState.sType = VK_STRUCTURE_TYPE_PIPELINE_VIEWPORT_STATE_CREATE_INFO;
     viewportState.viewportCount = 1;
-    viewportState.pViewports = &viewport;
+    viewportState.pViewports = nullptr;  // Will be set dynamically
     viewportState.scissorCount = 1;
-    viewportState.pScissors = &scissor;
+    viewportState.pScissors = nullptr;   // Will be set dynamically
 
     VkPipelineRasterizationStateCreateInfo rasterizer{};
     rasterizer.sType = VK_STRUCTURE_TYPE_PIPELINE_RASTERIZATION_STATE_CREATE_INFO;
@@ -475,7 +468,8 @@ void Renderer::createGraphicsPipeline()
     rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
     rasterizer.lineWidth = 1.0f;
     rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
-    rasterizer.frontFace = VK_FRONT_FACE_CLOCKWISE;
+    // Use counter-clockwise to match OpenGL convention (after Y-axis flip)
+    rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
     rasterizer.depthBiasEnable = VK_FALSE;
 
     VkPipelineMultisampleStateCreateInfo multisampling{};
@@ -494,13 +488,32 @@ void Renderer::createGraphicsPipeline()
     colorBlending.attachmentCount = 1;
     colorBlending.pAttachments = &colorBlendAttachment;
 
+    // Set up push constants for transformation matrices
+    VkPushConstantRange pushConstantRange{};
+    pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+    pushConstantRange.offset = 0;
+    pushConstantRange.size = sizeof(glm::mat4) * 3; // model, view, projection
+
     VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
     pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    pipelineLayoutInfo.pushConstantRangeCount = 1;
+    pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
 
     if (vkCreatePipelineLayout(m_device, &pipelineLayoutInfo, nullptr, &m_pipelineLayout) != VK_SUCCESS)
     {
         throw std::runtime_error("Failed to create pipeline layout");
     }
+
+    // Enable dynamic viewport and scissor to support window resizing
+    VkDynamicState dynamicStates[] = {
+        VK_DYNAMIC_STATE_VIEWPORT,
+        VK_DYNAMIC_STATE_SCISSOR
+    };
+
+    VkPipelineDynamicStateCreateInfo dynamicState{};
+    dynamicState.sType = VK_STRUCTURE_TYPE_PIPELINE_DYNAMIC_STATE_CREATE_INFO;
+    dynamicState.dynamicStateCount = 2;
+    dynamicState.pDynamicStates = dynamicStates;
 
     VkGraphicsPipelineCreateInfo pipelineInfo{};
     pipelineInfo.sType = VK_STRUCTURE_TYPE_GRAPHICS_PIPELINE_CREATE_INFO;
@@ -512,6 +525,7 @@ void Renderer::createGraphicsPipeline()
     pipelineInfo.pRasterizationState = &rasterizer;
     pipelineInfo.pMultisampleState = &multisampling;
     pipelineInfo.pColorBlendState = &colorBlending;
+    pipelineInfo.pDynamicState = &dynamicState;  // Add dynamic state
     pipelineInfo.layout = m_pipelineLayout;
     pipelineInfo.renderPass = m_renderPass;
     pipelineInfo.subpass = 0;
@@ -704,6 +718,15 @@ void Renderer::cleanupSwapChain()
 
 void Renderer::recreateSwapChain()
 {
+    // Handle window minimization - wait until window is restored
+    int width = 0, height = 0;
+    glfwGetFramebufferSize(m_window, &width, &height);
+    while (width == 0 || height == 0)
+    {
+        glfwGetFramebufferSize(m_window, &width, &height);
+        glfwWaitEvents();
+    }
+
     vkDeviceWaitIdle(m_device);
 
     cleanupSwapChain();
@@ -815,9 +838,11 @@ SwapChainSupportDetails Renderer::querySwapChainSupport(VkPhysicalDevice device)
 
 VkSurfaceFormatKHR Renderer::chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats)
 {
+    // Use UNORM (linear) format to match OpenGL's color space behavior
+    // SRGB format would apply gamma correction, making colors appear different
     for (const auto& availableFormat : availableFormats)
     {
-        if (availableFormat.format == VK_FORMAT_B8G8R8A8_SRGB &&
+        if (availableFormat.format == VK_FORMAT_B8G8R8A8_UNORM &&
             availableFormat.colorSpace == VK_COLOR_SPACE_SRGB_NONLINEAR_KHR)
         {
             return availableFormat;
@@ -958,6 +983,36 @@ void Renderer::beginFrame()
 
     vkCmdBindPipeline(m_commandBuffers[m_currentFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, m_graphicsPipeline);
 
+    // Set dynamic viewport with Y-axis flip to match OpenGL convention
+    VkViewport viewport{};
+    viewport.x = 0.0f;
+    viewport.y = (float)m_swapChainExtent.height;
+    viewport.width = (float)m_swapChainExtent.width;
+    viewport.height = -(float)m_swapChainExtent.height;
+    viewport.minDepth = 0.0f;
+    viewport.maxDepth = 1.0f;
+    vkCmdSetViewport(m_commandBuffers[m_currentFrame], 0, 1, &viewport);
+
+    // Set dynamic scissor
+    VkRect2D scissor{};
+    scissor.offset = {0, 0};
+    scissor.extent = m_swapChainExtent;
+    vkCmdSetScissor(m_commandBuffers[m_currentFrame], 0, 1, &scissor);
+
+    // Push constants for transformation matrices
+    if (m_shaderManager)
+    {
+        const PushConstantData& pushConstants = m_shaderManager->getPushConstantData();
+        vkCmdPushConstants(
+            m_commandBuffers[m_currentFrame],
+            m_pipelineLayout,
+            VK_SHADER_STAGE_VERTEX_BIT,
+            0,
+            sizeof(PushConstantData),
+            &pushConstants
+        );
+    }
+
     VkBuffer vertexBuffers[] = {m_vertexBuffer};
     VkDeviceSize offsets[] = {0};
     vkCmdBindVertexBuffers(m_commandBuffers[m_currentFrame], 0, 1, vertexBuffers, offsets);
@@ -1035,6 +1090,12 @@ void Renderer::clear()
 void Renderer::setViewport(int x, int y, int width, int height)
 {
     m_framebufferResized = true;
+}
+
+void Renderer::getRenderDimensions(int& width, int& height) const
+{
+    width = static_cast<int>(m_swapChainExtent.width);
+    height = static_cast<int>(m_swapChainExtent.height);
 }
 
 void Renderer::enableDepthTest(bool enable)

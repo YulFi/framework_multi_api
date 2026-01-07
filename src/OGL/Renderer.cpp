@@ -9,11 +9,14 @@ namespace OGL
 {
 
 Renderer::Renderer()
-    : m_clearColor(0.2f, 0.3f, 0.3f, 1.0f)
+    : m_clearColor(0.0f, 0.0f, 0.0f, 1.0f)
     , m_depthTestEnabled(false)
     , m_blendingEnabled(false)
     , m_cullingEnabled(false)
+    , m_viewportWidth(800)
+    , m_viewportHeight(600)
 {
+    // Clear color should be set by Application class via setClearColor()
 }
 
 Renderer::~Renderer()
@@ -23,7 +26,6 @@ Renderer::~Renderer()
 
 void Renderer::initialize()
 {
-    glClearColor(m_clearColor.r, m_clearColor.g, m_clearColor.b, m_clearColor.a);
     enableDepthTest(true);
     LOG_INFO("OpenGL Renderer initialized");
 }
@@ -70,7 +72,15 @@ void Renderer::clear(GLbitfield mask)
 
 void Renderer::setViewport(int x, int y, int width, int height)
 {
+    m_viewportWidth = width;
+    m_viewportHeight = height;
     glViewport(x, y, width, height);
+}
+
+void Renderer::getRenderDimensions(int& width, int& height) const
+{
+    width = m_viewportWidth;
+    height = m_viewportHeight;
 }
 
 void Renderer::enableDepthTest(bool enable)

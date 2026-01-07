@@ -10,6 +10,7 @@ Application::Application(int width, int height, const std::string& title, const 
     , m_lastFrame(0.0f)
     , m_pluginPath(pluginPath)
     , m_initialized(false)
+    , m_clearColor(0.1f, 0.1f, 0.15f, 1.0f)
 {
     RenderAPIType apiType = detectAPIType(pluginPath);
     m_window = std::make_unique<WindowManager>(width, height, title, apiType);
@@ -72,6 +73,21 @@ bool Application::initialize()
 
     // Pass window handle to renderer (Vulkan needs it, OpenGL ignores it)
     m_renderer->initialize(m_window->getWindow());
+
+    // Set the clear color from Application to ensure consistency across all renderers
+    m_renderer->setClearColor(m_clearColor);
+
+    // For Vulkan, connect the shader manager to the renderer for push constants
+    if (detectAPIType(m_pluginPath) == RenderAPIType::Vulkan)
+    {
+        // Cast to VK::Renderer and set the shader manager
+        auto* vkRenderer = dynamic_cast<VK::Renderer*>(m_renderer.get());
+        auto* vkShaderManager = dynamic_cast<VK::ShaderManager*>(m_shaderManager.get());
+        if (vkRenderer && vkShaderManager)
+        {
+            vkRenderer->setShaderManager(vkShaderManager);
+        }
+    }
 
     m_window->setFramebufferSizeCallback([this](int width, int height) {
         onFramebufferResize(width, height);
@@ -181,4 +197,18 @@ void Application::updateDeltaTime()
     float currentFrame = static_cast<float>(glfwGetTime());
     m_deltaTime = currentFrame - m_lastFrame;
     m_lastFrame = currentFrame;
+}
+
+void Application::setClearColor(float r, float g, float b, float a)
+{
+    m_clearColor = glm::vec4(r, g, b, a);
+    if (m_renderer)
+    {
+        m_renderer->setClearColor(r, g, b, a);
+    }
+}
+
+void Application::setClearColor(const glm::vec4& color)
+{
+    setClearColor(color.r, color.g, color.b, color.a);
 }

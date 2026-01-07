@@ -40,7 +40,10 @@ void MyApp::onInit()
 
     m_VAO->unbind();
 
-    m_renderer->setClearColor(0.1f, 0.1f, 0.15f, 1.0f);
+    // Set clear color via Application (this ensures consistency across all render APIs)
+    // The Application class will forward this to the renderer plugin
+    setClearColor(1.0f, 0.1f, 0.15f, 1.0f);
+
     m_renderer->enableDepthTest(true);
 
     m_camera->setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
@@ -70,7 +73,12 @@ void MyApp::onRender()
 {
     m_shaderManager->use("basic");
 
-    glm::mat4 projection = m_camera->getProjectionMatrix(m_window->getAspectRatio());
+    // Get actual render dimensions from the renderer (may differ from window size)
+    int renderWidth, renderHeight;
+    m_renderer->getRenderDimensions(renderWidth, renderHeight);
+    float aspectRatio = static_cast<float>(renderWidth) / static_cast<float>(renderHeight);
+
+    glm::mat4 projection = m_camera->getProjectionMatrix(aspectRatio);
     glm::mat4 view = m_camera->getViewMatrix();
     glm::mat4 model = glm::mat4(1.0f);
 

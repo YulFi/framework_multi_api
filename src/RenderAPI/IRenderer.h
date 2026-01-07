@@ -33,6 +33,9 @@ public:
     virtual void enableBlending(bool enable) = 0;
     virtual void enableCulling(bool enable) = 0;
 
+    // Get the actual render surface dimensions (may differ from window size)
+    virtual void getRenderDimensions(int& width, int& height) const = 0;
+
     virtual void drawArrays(PrimitiveType mode, int first, int count) = 0;
     virtual void drawElements(PrimitiveType mode, int count, unsigned int indexType, const void* indices) = 0;
 

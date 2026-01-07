@@ -51,6 +51,8 @@ namespace VK
         void enableBlending(bool enable) override;
         void enableCulling(bool enable) override;
 
+        void getRenderDimensions(int& width, int& height) const override;
+
         void drawArrays(PrimitiveType mode, int first, int count) override;
         void drawElements(PrimitiveType mode, int count, unsigned int indexType, const void* indices) override;
 
@@ -64,6 +66,7 @@ namespace VK
         // Vulkan-specific methods
         void setActiveVertexArray(VertexArray* vao);
         VertexArray* getActiveVertexArray() const { return m_boundVertexArray; }
+        void setShaderManager(class ShaderManager* shaderManager) { m_shaderManager = shaderManager; }
 
     private:
         void createInstance();
@@ -128,6 +131,9 @@ namespace VK
 
         // Currently bound vertex array (for user-created vertex data)
         VertexArray* m_boundVertexArray;
+
+        // Shader manager for accessing push constants
+        class ShaderManager* m_shaderManager;
 
         uint32_t m_currentFrame;
         uint32_t m_imageIndex;
