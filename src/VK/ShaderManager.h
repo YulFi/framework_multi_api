@@ -64,5 +64,6 @@ namespace VK
         std::string m_currentShader;
         PushConstantData m_pushConstants;
         bool m_hasPendingUpdates;
+        std::string m_shaderBasePath;
     };
 } // namespace VK

@@ -9,6 +9,7 @@ namespace OGL
 
 ShaderManager::ShaderManager()
     : m_currentProgram(0)
+    , m_shaderBasePath("shaders/opengl/")
 {
 }
 
@@ -57,8 +58,12 @@ bool ShaderManager::loadShader(const std::string& name, const std::string& verte
 
 bool ShaderManager::loadShaderFromFile(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
 {
-    std::string vertexSource = readFile(vertexPath);
-    std::string fragmentSource = readFile(fragmentPath);
+    // Prepend base path
+    std::string fullVertexPath = m_shaderBasePath + vertexPath;
+    std::string fullFragmentPath = m_shaderBasePath + fragmentPath;
+
+    std::string vertexSource = readFile(fullVertexPath);
+    std::string fragmentSource = readFile(fullFragmentPath);
 
     if (vertexSource.empty())
     {

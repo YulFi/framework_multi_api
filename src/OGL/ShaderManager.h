@@ -43,5 +43,6 @@ namespace OGL
 
         std::unordered_map<std::string, GLuint> m_shaders;
         GLuint m_currentProgram;
+        std::string m_shaderBasePath;
     };
 } // namespace OGL

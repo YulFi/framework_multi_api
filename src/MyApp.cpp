@@ -13,7 +13,7 @@ void MyApp::onInit()
 {
     LOG_INFO("MyApp initialized");
 
-    if (!m_shaderManager->loadShaderFromFile("basic", "shaders/basic.vert", "shaders/basic.frag"))
+    if (!m_shaderManager->loadShaderFromFile("basic", "basic.vert", "basic.frag"))
     {
         LOG_ERROR("Failed to load shaders!");
         return;

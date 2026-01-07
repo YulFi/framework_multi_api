@@ -8,6 +8,7 @@ namespace VK
 ShaderManager::ShaderManager()
     : m_device(VK_NULL_HANDLE)
     , m_hasPendingUpdates(false)
+    , m_shaderBasePath("shaders/vulkan/")
 {
     // Initialize matrices to identity
     m_pushConstants.model = glm::mat4(1.0f);
@@ -38,9 +39,12 @@ bool ShaderManager::loadShaderFromFile(const std::string& name, const std::strin
         return false;
     }
 
-    // Read SPIR-V files directly
-    std::vector<char> vertShaderCode = readFile(vertexPath + ".spv");
-    std::vector<char> fragShaderCode = readFile(fragmentPath + ".spv");
+    // Prepend base path and read SPIR-V files directly
+    std::string fullVertexPath = m_shaderBasePath + vertexPath + ".spv";
+    std::string fullFragmentPath = m_shaderBasePath + fragmentPath + ".spv";
+
+    std::vector<char> vertShaderCode = readFile(fullVertexPath);
+    std::vector<char> fragShaderCode = readFile(fullFragmentPath);
 
     if (vertShaderCode.empty() || fragShaderCode.empty())
     {
