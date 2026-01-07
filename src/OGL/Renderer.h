@@ -34,6 +34,7 @@ namespace OGL
         void setPolygonMode(GLenum face, GLenum mode);
 
         void getRenderDimensions(int& width, int& height) const override;
+        void onShaderLoaded(const std::string& shaderName) override {} // OpenGL doesn't need pipeline creation
 
         void drawArrays(PrimitiveType mode, int first, int count) override;
         void drawElements(PrimitiveType mode, int count, unsigned int indexType, const void* indices) override;

@@ -41,6 +41,8 @@ protected:
     std::unique_ptr<Camera> m_camera;
     std::unique_ptr<IRenderer> m_renderer;
 
+    void onShaderLoaded(const std::string& shaderName);
+
     float m_deltaTime;
     float m_lastFrame;
 

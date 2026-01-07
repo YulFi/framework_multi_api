@@ -29,7 +29,6 @@ Renderer::Renderer()
     , m_swapChain(VK_NULL_HANDLE)
     , m_renderPass(VK_NULL_HANDLE)
     , m_pipelineLayout(VK_NULL_HANDLE)
-    , m_graphicsPipeline(VK_NULL_HANDLE)
     , m_commandPool(VK_NULL_HANDLE)
     , m_vertexBuffer(VK_NULL_HANDLE)
     , m_vertexBufferMemory(VK_NULL_HANDLE)
@@ -38,6 +37,7 @@ Renderer::Renderer()
     , m_currentFrame(0)
     , m_imageIndex(0)
     , m_framebufferResized(false)
+    , m_frameBegun(false)
 {
     // Clear color should be set by Application class via setClearColor()
 }
@@ -66,12 +66,18 @@ void Renderer::initialize(GLFWwindow* window)
     createSwapChain();
     createImageViews();
     createRenderPass();
-    createGraphicsPipeline();
+    // Pipeline creation removed - will be created dynamically when shaders are loaded
     createFramebuffers();
     createCommandPool();
     initializeVertexBuffer();
     createCommandBuffers();
     createSyncObjects();
+
+    // Initialize shader manager with device
+    if (m_shaderManager)
+    {
+        m_shaderManager->initialize(m_device);
+    }
 
     LOG_INFO("[Vulkan] Renderer initialized successfully");
 }
@@ -400,14 +406,13 @@ void Renderer::createRenderPass()
     LOG_INFO("[Vulkan] Render pass created");
 }
 
-void Renderer::createGraphicsPipeline()
+VkPipeline Renderer::createPipelineForShader(VkShaderModule vertShaderModule, VkShaderModule fragShaderModule)
 {
-    // Load compiled SPIR-V shaders from files
-    auto vertShaderCode = readShaderFile("shaders/triangle.vert.spv");
-    auto fragShaderCode = readShaderFile("shaders/triangle.frag.spv");
-
-    VkShaderModule vertShaderModule = createShaderModule(vertShaderCode);
-    VkShaderModule fragShaderModule = createShaderModule(fragShaderCode);
+    if (vertShaderModule == VK_NULL_HANDLE || fragShaderModule == VK_NULL_HANDLE)
+    {
+        LOG_ERROR("[Vulkan] Invalid shader modules for pipeline creation");
+        return VK_NULL_HANDLE;
+    }
 
     VkPipelineShaderStageCreateInfo vertShaderStageInfo{};
     vertShaderStageInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_SHADER_STAGE_CREATE_INFO;
@@ -530,15 +535,16 @@ void Renderer::createGraphicsPipeline()
     pipelineInfo.renderPass = m_renderPass;
     pipelineInfo.subpass = 0;
 
-    if (vkCreateGraphicsPipelines(m_device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &m_graphicsPipeline) != VK_SUCCESS)
+    VkPipeline pipeline;
+    if (vkCreateGraphicsPipelines(m_device, VK_NULL_HANDLE, 1, &pipelineInfo, nullptr, &pipeline) != VK_SUCCESS)
     {
-        throw std::runtime_error("Failed to create graphics pipeline");
+        LOG_ERROR("[Vulkan] Failed to create graphics pipeline");
+        return VK_NULL_HANDLE;
     }
 
-    vkDestroyShaderModule(m_device, fragShaderModule, nullptr);
-    vkDestroyShaderModule(m_device, vertShaderModule, nullptr);
-
+    // Don't destroy shader modules - they're owned by the shader manager
     LOG_INFO("[Vulkan] Graphics pipeline created");
+    return pipeline;
 }
 
 void Renderer::createFramebuffers()
@@ -697,11 +703,7 @@ void Renderer::cleanupSwapChain()
         m_swapChain = VK_NULL_HANDLE;
     }
 
-    if (m_graphicsPipeline != VK_NULL_HANDLE)
-    {
-        vkDestroyPipeline(m_device, m_graphicsPipeline, nullptr);
-        m_graphicsPipeline = VK_NULL_HANDLE;
-    }
+    // Pipelines are managed by shader manager - no need to destroy here
 
     if (m_pipelineLayout != VK_NULL_HANDLE)
     {
@@ -729,13 +731,29 @@ void Renderer::recreateSwapChain()
 
     vkDeviceWaitIdle(m_device);
 
+    // Destroy all pipelines before recreating swap chain
+    if (m_shaderManager)
+    {
+        m_shaderManager->destroyAllPipelines();
+    }
+
     cleanupSwapChain();
 
     createSwapChain();
     createImageViews();
     createRenderPass();
-    createGraphicsPipeline();
     createFramebuffers();
+
+    // Recreate pipelines for all loaded shaders
+    if (m_shaderManager)
+    {
+        std::vector<std::string> shaderNames = m_shaderManager->getAllShaderNames();
+        for (const auto& name : shaderNames)
+        {
+            onShaderLoaded(name);
+        }
+        LOG_INFO("[Vulkan] Recreated {} pipelines after swap chain recreation", shaderNames.size());
+    }
 }
 
 bool Renderer::isDeviceSuitable(VkPhysicalDevice device)
@@ -941,6 +959,19 @@ uint32_t Renderer::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags pro
 
 void Renderer::beginFrame()
 {
+    // Check if we have a valid pipeline before starting frame
+    VkPipeline currentPipeline = VK_NULL_HANDLE;
+    if (m_shaderManager)
+    {
+        currentPipeline = m_shaderManager->getCurrentPipeline();
+    }
+
+    if (currentPipeline == VK_NULL_HANDLE)
+    {
+        LOG_WARNING("[Vulkan] No pipeline bound - skipping frame");
+        return;
+    }
+
     vkWaitForFences(m_device, 1, &m_inFlightFences[m_currentFrame], VK_TRUE, UINT64_MAX);
 
     VkResult result = vkAcquireNextImageKHR(m_device, m_swapChain, UINT64_MAX,
@@ -981,7 +1012,8 @@ void Renderer::beginFrame()
 
     vkCmdBeginRenderPass(m_commandBuffers[m_currentFrame], &renderPassInfo, VK_SUBPASS_CONTENTS_INLINE);
 
-    vkCmdBindPipeline(m_commandBuffers[m_currentFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, m_graphicsPipeline);
+    // Bind the pipeline (we already checked it's valid)
+    vkCmdBindPipeline(m_commandBuffers[m_currentFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, currentPipeline);
 
     // Set dynamic viewport with Y-axis flip to match OpenGL convention
     VkViewport viewport{};
@@ -1016,10 +1048,19 @@ void Renderer::beginFrame()
     VkBuffer vertexBuffers[] = {m_vertexBuffer};
     VkDeviceSize offsets[] = {0};
     vkCmdBindVertexBuffers(m_commandBuffers[m_currentFrame], 0, 1, vertexBuffers, offsets);
+
+    // Mark that the frame was successfully begun
+    m_frameBegun = true;
 }
 
 void Renderer::endFrame()
 {
+    // Only end frame if it was successfully begun
+    if (!m_frameBegun)
+    {
+        return;
+    }
+
     vkCmdEndRenderPass(m_commandBuffers[m_currentFrame]);
 
     if (vkEndCommandBuffer(m_commandBuffers[m_currentFrame]) != VK_SUCCESS)
@@ -1070,6 +1111,9 @@ void Renderer::endFrame()
     }
 
     m_currentFrame = (m_currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
+
+    // Reset frame begun flag
+    m_frameBegun = false;
 }
 
 void Renderer::setClearColor(float r, float g, float b, float a)
@@ -1112,6 +1156,12 @@ void Renderer::enableCulling(bool enable)
 
 void Renderer::drawArrays(PrimitiveType mode, int first, int count)
 {
+    // Skip if frame wasn't begun (e.g., no pipeline available)
+    if (!m_frameBegun)
+    {
+        return;
+    }
+
     // Vulkan doesn't need the primitive type in draw call - it's specified in pipeline
 
     // Use the bound vertex array's vertex buffer if available
@@ -1128,6 +1178,12 @@ void Renderer::drawArrays(PrimitiveType mode, int first, int count)
 
 void Renderer::drawElements(PrimitiveType mode, int count, unsigned int indexType, const void* indices)
 {
+    // Skip if frame wasn't begun (e.g., no pipeline available)
+    if (!m_frameBegun)
+    {
+        return;
+    }
+
     // Vulkan doesn't need the primitive type in draw call - it's specified in pipeline
     vkCmdDraw(m_commandBuffers[m_currentFrame], count, 1, 0, 0);
     endFrame();
@@ -1151,6 +1207,34 @@ std::unique_ptr<IIndexBuffer> Renderer::createIndexBuffer()
 void Renderer::setActiveVertexArray(VertexArray* vao)
 {
     m_boundVertexArray = vao;
+}
+
+void Renderer::onShaderLoaded(const std::string& shaderName)
+{
+    if (!m_shaderManager)
+    {
+        LOG_ERROR("[Vulkan] Shader manager not set");
+        return;
+    }
+
+    ShaderProgram* program = m_shaderManager->getShaderProgram(shaderName);
+    if (!program || !program->isValid)
+    {
+        LOG_ERROR("[Vulkan] Invalid shader program: {}", shaderName);
+        return;
+    }
+
+    // Create pipeline for this shader
+    VkPipeline pipeline = createPipelineForShader(program->vertexModule, program->fragmentModule);
+    if (pipeline != VK_NULL_HANDLE)
+    {
+        program->pipeline = pipeline;
+        LOG_INFO("[Vulkan] Pipeline created for shader: {}", shaderName);
+    }
+    else
+    {
+        LOG_ERROR("[Vulkan] Failed to create pipeline for shader: {}", shaderName);
+    }
 }
 
 } // namespace VK

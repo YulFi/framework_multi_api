@@ -3,7 +3,7 @@ REM Compile Vulkan shaders to SPIR-V
 
 echo Compiling Vulkan shaders...
 
-set VULKAN_SDK=D:\sdk\vulkan1.4.304.0
+set VULKAN_SDK=D:\dev\libs\vulkan
 set GLSLC=%VULKAN_SDK%\Bin\glslangValidator.exe
 
 echo.

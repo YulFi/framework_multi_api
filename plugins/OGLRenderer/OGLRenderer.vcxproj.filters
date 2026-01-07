@@ -35,6 +35,12 @@
     <ClCompile Include="..\..\src\OGL\VertexBuffer.cpp">
       <Filter>Source Files\OGL</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\OGL\IndexBuffer.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\Logger.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="..\..\src\RenderAPI\IRenderPlugin.h">
@@ -57,6 +63,24 @@
     </ClInclude>
     <ClInclude Include="..\..\src\OGL\VertexBuffer.h">
       <Filter>Header Files\OGL</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\RenderAPI\IIndexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\OGL\IndexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\RenderAPI\IPrimitiveType.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\RenderAPI\IVertexArray.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\RenderAPI\IVertexBuffer.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Logger.h">
+      <Filter>Header Files</Filter>
     </ClInclude>
   </ItemGroup>
 </Project>

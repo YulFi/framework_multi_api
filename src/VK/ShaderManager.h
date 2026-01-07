@@ -3,7 +3,9 @@
 #include "../RenderAPI/IShaderManager.h"
 #include <string>
 #include <unordered_map>
+#include <vector>
 #include <glm/glm.hpp>
+#include <vulkan/vulkan.h>
 
 namespace VK
 {
@@ -14,11 +16,22 @@ namespace VK
         glm::mat4 projection;
     };
 
+    struct ShaderProgram
+    {
+        VkShaderModule vertexModule;
+        VkShaderModule fragmentModule;
+        VkPipeline pipeline;
+        bool isValid;
+    };
+
     class ShaderManager : public IShaderManager
     {
     public:
         ShaderManager();
         ~ShaderManager() override;
+
+        // Initialize with Vulkan device
+        void initialize(VkDevice device);
 
         bool loadShaderFromFile(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath) override;
         void use(const std::string& name) override;
@@ -35,8 +48,19 @@ namespace VK
         bool hasPendingUpdates() const { return m_hasPendingUpdates; }
         void clearPendingUpdates() { m_hasPendingUpdates = false; }
 
+        // Vulkan-specific: Pipeline management
+        VkPipeline getCurrentPipeline() const;
+        ShaderProgram* getShaderProgram(const std::string& name);
+        void createPipelineForShader(const std::string& name, VkRenderPass renderPass, VkPipelineLayout pipelineLayout, VkExtent2D extent);
+        void destroyAllPipelines();
+        std::vector<std::string> getAllShaderNames() const;
+
     private:
-        std::unordered_map<std::string, bool> m_shaders;
+        VkShaderModule createShaderModule(const std::vector<char>& code);
+        std::vector<char> readFile(const std::string& filename);
+
+        VkDevice m_device;
+        std::unordered_map<std::string, ShaderProgram> m_shaders;
         std::string m_currentShader;
         PushConstantData m_pushConstants;
         bool m_hasPendingUpdates;

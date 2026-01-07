@@ -77,18 +77,6 @@ bool Application::initialize()
     // Set the clear color from Application to ensure consistency across all renderers
     m_renderer->setClearColor(m_clearColor);
 
-    // For Vulkan, connect the shader manager to the renderer for push constants
-    if (detectAPIType(m_pluginPath) == RenderAPIType::Vulkan)
-    {
-        // Cast to VK::Renderer and set the shader manager
-        auto* vkRenderer = dynamic_cast<VK::Renderer*>(m_renderer.get());
-        auto* vkShaderManager = dynamic_cast<VK::ShaderManager*>(m_shaderManager.get());
-        if (vkRenderer && vkShaderManager)
-        {
-            vkRenderer->setShaderManager(vkShaderManager);
-        }
-    }
-
     m_window->setFramebufferSizeCallback([this](int width, int height) {
         onFramebufferResize(width, height);
     });
@@ -211,4 +199,13 @@ void Application::setClearColor(float r, float g, float b, float a)
 void Application::setClearColor(const glm::vec4& color)
 {
     setClearColor(color.r, color.g, color.b, color.a);
+}
+
+void Application::onShaderLoaded(const std::string& shaderName)
+{
+    // Notify renderer that a shader was loaded (Vulkan uses this to create pipelines)
+    if (m_renderer)
+    {
+        m_renderer->onShaderLoaded(shaderName);
+    }
 }

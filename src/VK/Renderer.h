@@ -52,6 +52,7 @@ namespace VK
         void enableCulling(bool enable) override;
 
         void getRenderDimensions(int& width, int& height) const override;
+        void onShaderLoaded(const std::string& shaderName) override;
 
         void drawArrays(PrimitiveType mode, int first, int count) override;
         void drawElements(PrimitiveType mode, int count, unsigned int indexType, const void* indices) override;
@@ -67,6 +68,9 @@ namespace VK
         void setActiveVertexArray(VertexArray* vao);
         VertexArray* getActiveVertexArray() const { return m_boundVertexArray; }
         void setShaderManager(class ShaderManager* shaderManager) { m_shaderManager = shaderManager; }
+
+        // Pipeline management
+        VkPipeline createPipelineForShader(VkShaderModule vertModule, VkShaderModule fragModule);
 
     private:
         void createInstance();
@@ -117,7 +121,7 @@ namespace VK
 
         VkRenderPass m_renderPass;
         VkPipelineLayout m_pipelineLayout;
-        VkPipeline m_graphicsPipeline;
+        // m_graphicsPipeline removed - pipelines are now managed by shader manager
 
         VkCommandPool m_commandPool;
         std::vector<VkCommandBuffer> m_commandBuffers;
@@ -138,6 +142,7 @@ namespace VK
         uint32_t m_currentFrame;
         uint32_t m_imageIndex;
         bool m_framebufferResized;
+        bool m_frameBegun;
 
         const int MAX_FRAMES_IN_FLIGHT = 2;
         const std::vector<const char*> m_deviceExtensions = {

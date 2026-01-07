@@ -19,6 +19,9 @@ void MyApp::onInit()
         return;
     }
 
+    // Notify renderer that shader was loaded (Vulkan needs this to create pipeline)
+    onShaderLoaded("basic");
+
     float vertices[] = {
         // Positions          // Colors
         -0.5f, -0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  // Bottom left - Red
@@ -42,7 +45,7 @@ void MyApp::onInit()
 
     // Set clear color via Application (this ensures consistency across all render APIs)
     // The Application class will forward this to the renderer plugin
-    setClearColor(1.0f, 0.1f, 0.15f, 1.0f);
+    setClearColor(0.1f, 0.1f, 0.15f, 1.0f);
 
     m_renderer->enableDepthTest(true);
 

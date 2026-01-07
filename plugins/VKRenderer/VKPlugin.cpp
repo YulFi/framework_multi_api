@@ -7,6 +7,8 @@
 class VKPlugin : public IRenderPlugin
 {
 public:
+    VKPlugin() : m_renderer(nullptr), m_shaderManager(nullptr) {}
+
     const char* getName() const override
     {
         return "Vulkan Renderer";
@@ -19,13 +21,35 @@ public:
 
     std::unique_ptr<IRenderer> createRenderer() override
     {
-        return std::make_unique<VK::Renderer>();
+        auto renderer = std::make_unique<VK::Renderer>();
+        m_renderer = renderer.get();
+
+        // Connect shader manager to renderer if it was already created
+        if (m_shaderManager && m_renderer)
+        {
+            m_renderer->setShaderManager(m_shaderManager);
+        }
+
+        return renderer;
     }
 
     std::unique_ptr<IShaderManager> createShaderManager() override
     {
-        return std::make_unique<VK::ShaderManager>();
+        auto shaderManager = std::make_unique<VK::ShaderManager>();
+        m_shaderManager = shaderManager.get();
+
+        // Connect shader manager to renderer if it was already created
+        if (m_shaderManager && m_renderer)
+        {
+            m_renderer->setShaderManager(m_shaderManager);
+        }
+
+        return shaderManager;
     }
+
+private:
+    VK::Renderer* m_renderer;
+    VK::ShaderManager* m_shaderManager;
 };
 
 extern "C" {

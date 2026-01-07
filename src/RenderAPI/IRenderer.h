@@ -4,6 +4,7 @@
 #include <glm/glm.hpp>
 #include <memory>
 #include <cstddef>
+#include <string>
 
 struct GLFWwindow;
 class IVertexBuffer;
@@ -35,6 +36,9 @@ public:
 
     // Get the actual render surface dimensions (may differ from window size)
     virtual void getRenderDimensions(int& width, int& height) const = 0;
+
+    // Notify renderer that a shader was loaded (for pipeline creation in Vulkan)
+    virtual void onShaderLoaded(const std::string& shaderName) {}
 
     virtual void drawArrays(PrimitiveType mode, int first, int count) = 0;
     virtual void drawElements(PrimitiveType mode, int count, unsigned int indexType, const void* indices) = 0;
