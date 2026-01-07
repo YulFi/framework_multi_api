@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="Source Files">
+      <UniqueIdentifier>{4FC737F1-C7A5-4376-A066-2A32D752A2FF}</UniqueIdentifier>
+      <Extensions>cpp;c;cc;cxx;c++;cppm;ixx;def;odl;idl;hpj;bat;asm;asmx</Extensions>
+    </Filter>
+    <Filter Include="Header Files">
+      <UniqueIdentifier>{93995380-89BD-4b04-88EB-625FBE52EBFB}</UniqueIdentifier>
+      <Extensions>h;hh;hpp;hxx;h++;hm;inl;inc;ipp;xsd</Extensions>
+    </Filter>
+    <Filter Include="Source Files\VK">
+      <UniqueIdentifier>{3C4D5E6F-7A8B-9C0D-1E2F-3A4B5C6D7E8F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\RenderAPI">
+      <UniqueIdentifier>{1A2B3C4D-5E6F-7A8B-9C0D-1E2F3A4B5C6D}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Header Files\VK">
+      <UniqueIdentifier>{4D5E6F7A-8B9C-0D1E-2F3A-4B5C6D7E8F9A}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="VKPlugin.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VK\Renderer.cpp">
+      <Filter>Source Files\VK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VK\ShaderManager.cpp">
+      <Filter>Source Files\VK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VK\VertexBuffer.cpp">
+      <Filter>Source Files\VK</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\src\VK\VertexArray.cpp">
+      <Filter>Source Files\VK</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\RenderAPI\IRenderPlugin.h">
+      <Filter>Header Files\RenderAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\RenderAPI\IRenderer.h">
+      <Filter>Header Files\RenderAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\RenderAPI\IShaderManager.h">
+      <Filter>Header Files\RenderAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\RenderAPI\IVertexBuffer.h">
+      <Filter>Header Files\RenderAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\RenderAPI\IVertexArray.h">
+      <Filter>Header Files\RenderAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\RenderAPI\IPrimitiveType.h">
+      <Filter>Header Files\RenderAPI</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\VK\Renderer.h">
+      <Filter>Header Files\VK</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\VK\ShaderManager.h">
+      <Filter>Header Files\VK</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\VK\VertexBuffer.h">
+      <Filter>Header Files\VK</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\VK\VertexArray.h">
+      <Filter>Header Files\VK</Filter>
+    </ClInclude>
+  </ItemGroup>
+</Project>

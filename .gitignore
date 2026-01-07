@@ -1,0 +1,6 @@
+/.claude
+/.vs
+/bin
+/build
+/obj
+/vcpkg_installed

@@ -1,0 +1,141 @@
+#pragma once
+
+#include "../RenderAPI/IRenderer.h"
+#include "../RenderAPI/IVertexBuffer.h"
+#include "../RenderAPI/IVertexArray.h"
+#include "../RenderAPI/IIndexBuffer.h"
+#include "VertexBuffer.h"
+#include "VertexArray.h"
+#include <glm/glm.hpp>
+#include <vulkan/vulkan.h>
+#include <GLFW/glfw3.h>
+#include <vector>
+#include <string>
+
+namespace VK
+{
+    struct QueueFamilyIndices
+    {
+        uint32_t graphicsFamily = UINT32_MAX;
+        uint32_t presentFamily = UINT32_MAX;
+
+        bool isComplete() const
+        {
+            return graphicsFamily != UINT32_MAX && presentFamily != UINT32_MAX;
+        }
+    };
+
+    struct SwapChainSupportDetails
+    {
+        VkSurfaceCapabilitiesKHR capabilities;
+        std::vector<VkSurfaceFormatKHR> formats;
+        std::vector<VkPresentModeKHR> presentModes;
+    };
+
+    class Renderer : public IRenderer
+    {
+    public:
+        Renderer();
+        ~Renderer() override;
+
+        void initialize() override;
+        void initialize(GLFWwindow* window) override;
+        void shutdown() override;
+
+        void setClearColor(float r, float g, float b, float a = 1.0f) override;
+        void setClearColor(const glm::vec4& color) override;
+        void clear() override;
+
+        void setViewport(int x, int y, int width, int height) override;
+        void enableDepthTest(bool enable) override;
+        void enableBlending(bool enable) override;
+        void enableCulling(bool enable) override;
+
+        void drawArrays(PrimitiveType mode, int first, int count) override;
+        void drawElements(PrimitiveType mode, int count, unsigned int indexType, const void* indices) override;
+
+        void beginFrame();
+        void endFrame();
+
+        std::unique_ptr<IVertexBuffer> createVertexBuffer() override;
+        std::unique_ptr<IVertexArray> createVertexArray() override;
+        std::unique_ptr<IIndexBuffer> createIndexBuffer() override;
+
+        // Vulkan-specific methods
+        void setActiveVertexArray(VertexArray* vao);
+        VertexArray* getActiveVertexArray() const { return m_boundVertexArray; }
+
+    private:
+        void createInstance();
+        void createSurface();
+        void pickPhysicalDevice();
+        void createLogicalDevice();
+        void createSwapChain();
+        void createImageViews();
+        void createRenderPass();
+        void createGraphicsPipeline();
+        void createFramebuffers();
+        void createCommandPool();
+        void createCommandBuffers();
+        void createSyncObjects();
+        void initializeVertexBuffer();
+
+        void recreateSwapChain();
+        void cleanupSwapChain();
+
+        bool isDeviceSuitable(VkPhysicalDevice device);
+        QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
+        bool checkDeviceExtensionSupport(VkPhysicalDevice device);
+        SwapChainSupportDetails querySwapChainSupport(VkPhysicalDevice device);
+        VkSurfaceFormatKHR chooseSwapSurfaceFormat(const std::vector<VkSurfaceFormatKHR>& availableFormats);
+        VkPresentModeKHR chooseSwapPresentMode(const std::vector<VkPresentModeKHR>& availablePresentModes);
+        VkExtent2D chooseSwapExtent(const VkSurfaceCapabilitiesKHR& capabilities);
+        VkShaderModule createShaderModule(const std::vector<char>& code);
+        std::vector<char> readShaderFile(const std::string& filename);
+        uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+
+        GLFWwindow* m_window;
+        glm::vec4 m_clearColor;
+
+        VkInstance m_instance;
+        VkSurfaceKHR m_surface;
+        VkPhysicalDevice m_physicalDevice;
+        VkDevice m_device;
+
+        VkQueue m_graphicsQueue;
+        VkQueue m_presentQueue;
+
+        VkSwapchainKHR m_swapChain;
+        std::vector<VkImage> m_swapChainImages;
+        VkFormat m_swapChainImageFormat;
+        VkExtent2D m_swapChainExtent;
+        std::vector<VkImageView> m_swapChainImageViews;
+        std::vector<VkFramebuffer> m_swapChainFramebuffers;
+
+        VkRenderPass m_renderPass;
+        VkPipelineLayout m_pipelineLayout;
+        VkPipeline m_graphicsPipeline;
+
+        VkCommandPool m_commandPool;
+        std::vector<VkCommandBuffer> m_commandBuffers;
+
+        std::vector<VkSemaphore> m_imageAvailableSemaphores;
+        std::vector<VkSemaphore> m_renderFinishedSemaphores;
+        std::vector<VkFence> m_inFlightFences;
+
+        VkBuffer m_vertexBuffer;
+        VkDeviceMemory m_vertexBufferMemory;
+
+        // Currently bound vertex array (for user-created vertex data)
+        VertexArray* m_boundVertexArray;
+
+        uint32_t m_currentFrame;
+        uint32_t m_imageIndex;
+        bool m_framebufferResized;
+
+        const int MAX_FRAMES_IN_FLIGHT = 2;
+        const std::vector<const char*> m_deviceExtensions = {
+            VK_KHR_SWAPCHAIN_EXTENSION_NAME
+        };
+    };
+} // namespace VK
