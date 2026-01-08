@@ -7,11 +7,13 @@
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "ValidationLayers.h"
+#include "MemoryAllocator.h"
 #include <glm/glm.hpp>
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
 #include <vector>
 #include <string>
+#include <memory>
 
 namespace VK
 {
@@ -31,6 +33,23 @@ namespace VK
         VkSurfaceCapabilitiesKHR capabilities;
         std::vector<VkSurfaceFormatKHR> formats;
         std::vector<VkPresentModeKHR> presentModes;
+    };
+
+    // Deferred deletion for Vulkan resources
+    struct DeferredDeletion
+    {
+        enum class Type { Sampler, ImageView, Image, DeviceMemory, Buffer };
+        Type type;
+        uint64_t handle;
+        uint32_t frameIndex; // Frame when it was queued for deletion
+    };
+
+    // Command buffer pool for transfer operations
+    struct TransferCommandBuffer
+    {
+        VkCommandBuffer commandBuffer;
+        VkFence fence;
+        bool inUse;
     };
 
     class Renderer : public IRenderer
@@ -95,6 +114,15 @@ namespace VK
         VkPhysicalDevice getPhysicalDevice() const { return m_physicalDevice; }
         VkQueue getGraphicsQueue() const { return m_graphicsQueue; }
         VkCommandPool getCommandPool() const { return m_commandPool; }
+        uint32_t getCurrentFrameIndex() const { return m_currentFrame; }
+        MemoryAllocator* getMemoryAllocator() { return m_memoryAllocator.get(); }
+
+        // Deferred deletion system
+        void deferDeleteSampler(VkSampler sampler);
+        void deferDeleteImageView(VkImageView imageView);
+        void deferDeleteImage(VkImage image);
+        void deferDeleteDeviceMemory(VkDeviceMemory memory);
+        void deferDeleteBuffer(VkBuffer buffer);
 
     private:
         void createInstance();
@@ -117,6 +145,15 @@ namespace VK
         void recreateSwapChain();
         void cleanupSwapChain();
 
+        // Deferred deletion helpers
+        void processDeferredDeletions();
+
+        // Transfer command buffer pool
+        void createTransferCommandPool();
+        void cleanupTransferCommandPool();
+        TransferCommandBuffer* acquireTransferCommandBuffer();
+        void releaseTransferCommandBuffer(TransferCommandBuffer* cmdBuf);
+
         bool isDeviceSuitable(VkPhysicalDevice device);
         QueueFamilyIndices findQueueFamilies(VkPhysicalDevice device);
         bool checkDeviceExtensionSupport(VkPhysicalDevice device);
@@ -137,6 +174,9 @@ namespace VK
         VkPhysicalDevice m_physicalDevice;
         VkDevice m_device;
 
+        // Memory allocator for efficient memory management
+        std::unique_ptr<MemoryAllocator> m_memoryAllocator;
+
         VkQueue m_graphicsQueue;
         VkQueue m_presentQueue;
 
@@ -155,6 +195,11 @@ namespace VK
 
         VkCommandPool m_commandPool;
         std::vector<VkCommandBuffer> m_commandBuffers;
+
+        // Transfer command pool (for texture uploads, etc.)
+        VkCommandPool m_transferCommandPool;
+        std::vector<TransferCommandBuffer> m_transferCommandBuffers;
+        static constexpr uint32_t TRANSFER_COMMAND_BUFFER_POOL_SIZE = 4;
 
         // Synchronization objects
         // Semaphores: One per swapchain image (to avoid reuse while in flight)
@@ -183,6 +228,9 @@ namespace VK
         bool m_framebufferResized;
         bool m_frameBegun;
         bool m_cullingEnabled;
+
+        // Deferred deletion queue
+        std::vector<DeferredDeletion> m_deferredDeletions;
 
         const int MAX_FRAMES_IN_FLIGHT = 2;
         const std::vector<const char*> m_deviceExtensions = {

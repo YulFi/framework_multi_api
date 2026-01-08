@@ -96,6 +96,7 @@
     <ClCompile Include="..\..\src\VK\VertexArray.cpp" />
     <ClCompile Include="..\..\src\VK\IndexBuffer.cpp" />
     <ClCompile Include="..\..\src\VK\Texture.cpp" />
+    <ClCompile Include="..\..\src\VK\MemoryAllocator.cpp" />
     <ClCompile Include="..\..\src\VK\ValidationLayers.cpp" />
     <ClCompile Include="..\..\src\TextureUtils.cpp" />
     <ClCompile Include="..\..\src\Logger.cpp" />
@@ -117,6 +118,7 @@
     <ClInclude Include="..\..\src\VK\VertexArray.h" />
     <ClInclude Include="..\..\src\VK\IndexBuffer.h" />
     <ClInclude Include="..\..\src\VK\Texture.h" />
+    <ClInclude Include="..\..\src\VK\MemoryAllocator.h" />
     <ClInclude Include="..\..\src\VK\ValidationLayers.h" />
     <ClInclude Include="..\..\src\TextureUtils.h" />
     <ClInclude Include="..\..\src\Logger.h" />

@@ -240,9 +240,11 @@ void Texture::setFilter(TextureFilter minFilter, TextureFilter magFilter)
     // Recreate sampler with new filter settings
     if (m_sampler != VK_NULL_HANDLE)
     {
-        // Wait for any pending operations to complete before destroying the sampler
-        vkDeviceWaitIdle(m_device);
-        vkDestroySampler(m_device, m_sampler, nullptr);
+        // Queue old sampler for deferred deletion instead of immediate destruction
+        if (m_renderer)
+        {
+            m_renderer->deferDeleteSampler(m_sampler);
+        }
         m_sampler = VK_NULL_HANDLE;
     }
     createSampler();
@@ -276,9 +278,11 @@ void Texture::setWrap(TextureWrap wrapS, TextureWrap wrapT)
     // Recreate sampler with new wrap settings
     if (m_sampler != VK_NULL_HANDLE)
     {
-        // Wait for any pending operations to complete before destroying the sampler
-        vkDeviceWaitIdle(m_device);
-        vkDestroySampler(m_device, m_sampler, nullptr);
+        // Queue old sampler for deferred deletion instead of immediate destruction
+        if (m_renderer)
+        {
+            m_renderer->deferDeleteSampler(m_sampler);
+        }
         m_sampler = VK_NULL_HANDLE;
     }
     createSampler();

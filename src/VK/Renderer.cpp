@@ -35,6 +35,7 @@ Renderer::Renderer()
     , m_pipelineLayout(VK_NULL_HANDLE)
     , m_descriptorPool(VK_NULL_HANDLE)
     , m_commandPool(VK_NULL_HANDLE)
+    , m_transferCommandPool(VK_NULL_HANDLE)
     , m_vertexBuffer(VK_NULL_HANDLE)
     , m_vertexBufferMemory(VK_NULL_HANDLE)
     , m_boundVertexArray(nullptr)
@@ -80,6 +81,7 @@ void Renderer::initialize(GLFWwindow* window)
     // Pipeline creation removed - will be created dynamically when shaders are loaded
     createFramebuffers();
     createCommandPool();
+    createTransferCommandPool();
     initializeVertexBuffer();
     createCommandBuffers();
     createSyncObjects();
@@ -143,15 +145,39 @@ void Renderer::shutdown()
         }
         m_inFlightFences.clear();
 
+        cleanupTransferCommandPool();
+
         if (m_commandPool != VK_NULL_HANDLE)
         {
             vkDestroyCommandPool(m_device, m_commandPool, nullptr);
             m_commandPool = VK_NULL_HANDLE;
         }
 
+        // Destroy descriptor resources (not destroyed in cleanupSwapChain)
+        if (m_descriptorPool != VK_NULL_HANDLE)
+        {
+            vkDestroyDescriptorPool(m_device, m_descriptorPool, nullptr);
+            m_descriptorPool = VK_NULL_HANDLE;
+        }
+
+        if (m_pipelineLayout != VK_NULL_HANDLE)
+        {
+            vkDestroyPipelineLayout(m_device, m_pipelineLayout, nullptr);
+            m_pipelineLayout = VK_NULL_HANDLE;
+        }
+
+        if (m_descriptorSetLayout != VK_NULL_HANDLE)
+        {
+            vkDestroyDescriptorSetLayout(m_device, m_descriptorSetLayout, nullptr);
+            m_descriptorSetLayout = VK_NULL_HANDLE;
+        }
+
         // Clear vectors to prevent double-cleanup
         m_commandBuffers.clear();
         m_swapChainImages.clear();
+
+        // Cleanup memory allocator
+        m_memoryAllocator.reset();
 
         vkDestroyDevice(m_device, nullptr);
         m_device = VK_NULL_HANDLE;
@@ -315,6 +341,9 @@ void Renderer::createLogicalDevice()
 
     vkGetDeviceQueue(m_device, indices.graphicsFamily, 0, &m_graphicsQueue);
     vkGetDeviceQueue(m_device, indices.presentFamily, 0, &m_presentQueue);
+
+    // Initialize memory allocator
+    m_memoryAllocator = std::make_unique<MemoryAllocator>(m_device, m_physicalDevice);
 
     LOG_INFO("[Vulkan] Logical device created");
 }
@@ -701,6 +730,118 @@ void Renderer::createCommandPool()
     LOG_INFO("[Vulkan] Command pool created");
 }
 
+void Renderer::createTransferCommandPool()
+{
+    QueueFamilyIndices queueFamilyIndices = findQueueFamilies(m_physicalDevice);
+
+    // Create command pool for transfer operations
+    VkCommandPoolCreateInfo poolInfo{};
+    poolInfo.sType = VK_STRUCTURE_TYPE_COMMAND_POOL_CREATE_INFO;
+    poolInfo.flags = VK_COMMAND_POOL_CREATE_RESET_COMMAND_BUFFER_BIT;
+    poolInfo.queueFamilyIndex = queueFamilyIndices.graphicsFamily;
+
+    if (vkCreateCommandPool(m_device, &poolInfo, nullptr, &m_transferCommandPool) != VK_SUCCESS)
+    {
+        throw std::runtime_error("Failed to create transfer command pool");
+    }
+
+    // Pre-allocate command buffers
+    m_transferCommandBuffers.resize(TRANSFER_COMMAND_BUFFER_POOL_SIZE);
+
+    VkCommandBufferAllocateInfo allocInfo{};
+    allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocInfo.commandPool = m_transferCommandPool;
+    allocInfo.commandBufferCount = 1;
+
+    // Create fences for synchronization
+    VkFenceCreateInfo fenceInfo{};
+    fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
+    fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT; // Start signaled so first use doesn't wait
+
+    for (uint32_t i = 0; i < TRANSFER_COMMAND_BUFFER_POOL_SIZE; ++i)
+    {
+        if (vkAllocateCommandBuffers(m_device, &allocInfo, &m_transferCommandBuffers[i].commandBuffer) != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to allocate transfer command buffer");
+        }
+
+        if (vkCreateFence(m_device, &fenceInfo, nullptr, &m_transferCommandBuffers[i].fence) != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to create transfer command buffer fence");
+        }
+
+        m_transferCommandBuffers[i].inUse = false;
+    }
+
+    LOG_INFO("[Vulkan] Transfer command pool created with {} buffers", TRANSFER_COMMAND_BUFFER_POOL_SIZE);
+}
+
+void Renderer::cleanupTransferCommandPool()
+{
+    if (m_device == VK_NULL_HANDLE)
+        return;
+
+    // Wait for all transfers to complete
+    for (auto& cmdBuf : m_transferCommandBuffers)
+    {
+        if (cmdBuf.fence != VK_NULL_HANDLE)
+        {
+            vkWaitForFences(m_device, 1, &cmdBuf.fence, VK_TRUE, UINT64_MAX);
+            vkDestroyFence(m_device, cmdBuf.fence, nullptr);
+            cmdBuf.fence = VK_NULL_HANDLE;
+        }
+    }
+
+    m_transferCommandBuffers.clear();
+
+    if (m_transferCommandPool != VK_NULL_HANDLE)
+    {
+        vkDestroyCommandPool(m_device, m_transferCommandPool, nullptr);
+        m_transferCommandPool = VK_NULL_HANDLE;
+    }
+
+    LOG_DEBUG("[Vulkan] Transfer command pool cleaned up");
+}
+
+TransferCommandBuffer* Renderer::acquireTransferCommandBuffer()
+{
+    // Try to find a free command buffer
+    for (auto& cmdBuf : m_transferCommandBuffers)
+    {
+        if (!cmdBuf.inUse)
+        {
+            // Wait for fence if it's still in flight from previous use
+            vkWaitForFences(m_device, 1, &cmdBuf.fence, VK_TRUE, UINT64_MAX);
+            vkResetFences(m_device, 1, &cmdBuf.fence);
+
+            cmdBuf.inUse = true;
+            return &cmdBuf;
+        }
+    }
+
+    // No free buffer, wait for the oldest one
+    // In a real implementation, you'd track age more carefully
+    for (auto& cmdBuf : m_transferCommandBuffers)
+    {
+        vkWaitForFences(m_device, 1, &cmdBuf.fence, VK_TRUE, UINT64_MAX);
+        vkResetFences(m_device, 1, &cmdBuf.fence);
+        cmdBuf.inUse = true;
+        return &cmdBuf;
+    }
+
+    // Should never reach here
+    throw std::runtime_error("Failed to acquire transfer command buffer");
+}
+
+void Renderer::releaseTransferCommandBuffer(TransferCommandBuffer* cmdBuf)
+{
+    if (cmdBuf)
+    {
+        cmdBuf->inUse = false;
+    }
+}
+
 void Renderer::initializeVertexBuffer()
 {
     Vertex vertices[] = {
@@ -833,23 +974,10 @@ void Renderer::cleanupSwapChain()
 
     // Pipelines are managed by shader manager - no need to destroy here
 
-    if (m_descriptorPool != VK_NULL_HANDLE)
-    {
-        vkDestroyDescriptorPool(m_device, m_descriptorPool, nullptr);
-        m_descriptorPool = VK_NULL_HANDLE;
-    }
-
-    if (m_pipelineLayout != VK_NULL_HANDLE)
-    {
-        vkDestroyPipelineLayout(m_device, m_pipelineLayout, nullptr);
-        m_pipelineLayout = VK_NULL_HANDLE;
-    }
-
-    if (m_descriptorSetLayout != VK_NULL_HANDLE)
-    {
-        vkDestroyDescriptorSetLayout(m_device, m_descriptorSetLayout, nullptr);
-        m_descriptorSetLayout = VK_NULL_HANDLE;
-    }
+    // NOTE: We do NOT destroy descriptor pool, pipeline layout, or descriptor set layout here
+    // These resources don't depend on swap chain extent/format and destroying them
+    // would invalidate all texture descriptor sets
+    // They are only destroyed during final shutdown
 
     if (m_renderPass != VK_NULL_HANDLE)
     {
@@ -882,9 +1010,8 @@ void Renderer::recreateSwapChain()
     createSwapChain();
     createImageViews();
     createRenderPass();
-    createDescriptorSetLayout();
-    createPipelineLayout();
-    createDescriptorPool();
+    // Don't recreate descriptor set layout, pipeline layout, or descriptor pool
+    // They are persistent and don't depend on swap chain
     createFramebuffers();
 
     // Reset image-in-flight tracking for new swapchain
@@ -1290,6 +1417,9 @@ void Renderer::endFrame()
 
     m_currentFrame = (m_currentFrame + 1) % MAX_FRAMES_IN_FLIGHT;
 
+    // Process deferred deletions for resources that are no longer in use
+    processDeferredDeletions();
+
     // Reset frame begun flag
     m_frameBegun = false;
 }
@@ -1460,37 +1590,167 @@ void Renderer::onShaderLoaded(const std::string& shaderName)
 
 VkCommandBuffer Renderer::beginSingleTimeCommands()
 {
-    VkCommandBufferAllocateInfo allocInfo{};
-    allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
-    allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
-    allocInfo.commandPool = m_commandPool;
-    allocInfo.commandBufferCount = 1;
+    // Acquire a command buffer from the pool
+    TransferCommandBuffer* transferCmd = acquireTransferCommandBuffer();
 
-    VkCommandBuffer commandBuffer;
-    vkAllocateCommandBuffers(m_device, &allocInfo, &commandBuffer);
+    // Reset and begin recording
+    vkResetCommandBuffer(transferCmd->commandBuffer, 0);
 
     VkCommandBufferBeginInfo beginInfo{};
     beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
     beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
 
-    vkBeginCommandBuffer(commandBuffer, &beginInfo);
+    vkBeginCommandBuffer(transferCmd->commandBuffer, &beginInfo);
 
-    return commandBuffer;
+    return transferCmd->commandBuffer;
 }
 
 void Renderer::endSingleTimeCommands(VkCommandBuffer commandBuffer)
 {
     vkEndCommandBuffer(commandBuffer);
 
+    // Find the corresponding transfer command buffer to get its fence
+    TransferCommandBuffer* transferCmd = nullptr;
+    for (auto& cmd : m_transferCommandBuffers)
+    {
+        if (cmd.commandBuffer == commandBuffer)
+        {
+            transferCmd = &cmd;
+            break;
+        }
+    }
+
+    if (!transferCmd)
+    {
+        LOG_ERROR("[Vulkan] Failed to find transfer command buffer for submission");
+        return;
+    }
+
     VkSubmitInfo submitInfo{};
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
     submitInfo.commandBufferCount = 1;
     submitInfo.pCommandBuffers = &commandBuffer;
 
-    vkQueueSubmit(m_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
-    vkQueueWaitIdle(m_graphicsQueue);
+    // Submit with fence for tracking completion
+    vkQueueSubmit(m_graphicsQueue, 1, &submitInfo, transferCmd->fence);
 
-    vkFreeCommandBuffers(m_device, m_commandPool, 1, &commandBuffer);
+    // Wait for completion (still synchronous, but uses per-buffer fence)
+    vkWaitForFences(m_device, 1, &transferCmd->fence, VK_TRUE, UINT64_MAX);
+
+    // Release back to pool
+    releaseTransferCommandBuffer(transferCmd);
+}
+
+void Renderer::deferDeleteSampler(VkSampler sampler)
+{
+    if (sampler == VK_NULL_HANDLE) return;
+
+    DeferredDeletion deletion;
+    deletion.type = DeferredDeletion::Type::Sampler;
+    deletion.handle = reinterpret_cast<uint64_t>(sampler);
+    deletion.frameIndex = m_currentFrame;
+    m_deferredDeletions.push_back(deletion);
+
+    LOG_DEBUG("[Vulkan] Sampler queued for deferred deletion");
+}
+
+void Renderer::deferDeleteImageView(VkImageView imageView)
+{
+    if (imageView == VK_NULL_HANDLE) return;
+
+    DeferredDeletion deletion;
+    deletion.type = DeferredDeletion::Type::ImageView;
+    deletion.handle = reinterpret_cast<uint64_t>(imageView);
+    deletion.frameIndex = m_currentFrame;
+    m_deferredDeletions.push_back(deletion);
+
+    LOG_DEBUG("[Vulkan] ImageView queued for deferred deletion");
+}
+
+void Renderer::deferDeleteImage(VkImage image)
+{
+    if (image == VK_NULL_HANDLE) return;
+
+    DeferredDeletion deletion;
+    deletion.type = DeferredDeletion::Type::Image;
+    deletion.handle = reinterpret_cast<uint64_t>(image);
+    deletion.frameIndex = m_currentFrame;
+    m_deferredDeletions.push_back(deletion);
+
+    LOG_DEBUG("[Vulkan] Image queued for deferred deletion");
+}
+
+void Renderer::deferDeleteDeviceMemory(VkDeviceMemory memory)
+{
+    if (memory == VK_NULL_HANDLE) return;
+
+    DeferredDeletion deletion;
+    deletion.type = DeferredDeletion::Type::DeviceMemory;
+    deletion.handle = reinterpret_cast<uint64_t>(memory);
+    deletion.frameIndex = m_currentFrame;
+    m_deferredDeletions.push_back(deletion);
+
+    LOG_DEBUG("[Vulkan] DeviceMemory queued for deferred deletion");
+}
+
+void Renderer::deferDeleteBuffer(VkBuffer buffer)
+{
+    if (buffer == VK_NULL_HANDLE) return;
+
+    DeferredDeletion deletion;
+    deletion.type = DeferredDeletion::Type::Buffer;
+    deletion.handle = reinterpret_cast<uint64_t>(buffer);
+    deletion.frameIndex = m_currentFrame;
+    m_deferredDeletions.push_back(deletion);
+
+    LOG_DEBUG("[Vulkan] Buffer queued for deferred deletion");
+}
+
+void Renderer::processDeferredDeletions()
+{
+    // Process deletions that are at least MAX_FRAMES_IN_FLIGHT frames old
+    // This ensures the resource is no longer in use by any in-flight frame
+
+    auto it = m_deferredDeletions.begin();
+    while (it != m_deferredDeletions.end())
+    {
+        // Calculate frame distance (handle wraparound)
+        uint32_t frameDistance = (m_currentFrame + MAX_FRAMES_IN_FLIGHT - it->frameIndex) % (MAX_FRAMES_IN_FLIGHT * 10);
+
+        if (frameDistance >= MAX_FRAMES_IN_FLIGHT)
+        {
+            // Safe to delete this resource
+            switch (it->type)
+            {
+                case DeferredDeletion::Type::Sampler:
+                    vkDestroySampler(m_device, reinterpret_cast<VkSampler>(it->handle), nullptr);
+                    LOG_DEBUG("[Vulkan] Deferred sampler destroyed");
+                    break;
+                case DeferredDeletion::Type::ImageView:
+                    vkDestroyImageView(m_device, reinterpret_cast<VkImageView>(it->handle), nullptr);
+                    LOG_DEBUG("[Vulkan] Deferred imageView destroyed");
+                    break;
+                case DeferredDeletion::Type::Image:
+                    vkDestroyImage(m_device, reinterpret_cast<VkImage>(it->handle), nullptr);
+                    LOG_DEBUG("[Vulkan] Deferred image destroyed");
+                    break;
+                case DeferredDeletion::Type::DeviceMemory:
+                    vkFreeMemory(m_device, reinterpret_cast<VkDeviceMemory>(it->handle), nullptr);
+                    LOG_DEBUG("[Vulkan] Deferred memory freed");
+                    break;
+                case DeferredDeletion::Type::Buffer:
+                    vkDestroyBuffer(m_device, reinterpret_cast<VkBuffer>(it->handle), nullptr);
+                    LOG_DEBUG("[Vulkan] Deferred buffer destroyed");
+                    break;
+            }
+
+            it = m_deferredDeletions.erase(it);
+        }
+        else
+        {
+            ++it;
+        }
+    }
 }
 
 } // namespace VK
