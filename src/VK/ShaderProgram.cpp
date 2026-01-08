@@ -127,9 +127,17 @@ void ShaderProgram::setBool(const std::string& name, bool value)
 
 void ShaderProgram::setInt(const std::string& name, int value)
 {
-    // Vulkan doesn't have traditional uniforms like OpenGL
-    // For now, we only support matrix uniforms via push constants
-    //LOG_WARNING("[Vulkan] setInt not implemented for shader '{}'", m_name);
+    // In Vulkan, texture samplers are bound via descriptor sets, not uniforms
+    // Silently ignore texture sampler settings for API compatibility
+    if (name == "textureSampler" || name.find("Sampler") != std::string::npos)
+    {
+        // This is expected - texture binding is handled through descriptor sets
+        //LOG_DEBUG("[Vulkan] Texture sampler '{}' binding handled via descriptor sets", name);
+        return;
+    }
+
+    // Other int uniforms would need push constants or descriptor sets
+    LOG_WARNING("[Vulkan] setInt('{}') not implemented for shader '{}' - use push constants", name, m_name);
 }
 
 void ShaderProgram::setFloat(const std::string& name, float value)

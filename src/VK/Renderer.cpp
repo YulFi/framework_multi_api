@@ -17,6 +17,7 @@ namespace VK
 struct Vertex {
     float pos[3];
     float color[3];
+    float texCoord[2];
 };
 
 Renderer::Renderer()
@@ -552,16 +553,24 @@ VkPipeline Renderer::createPipelineForShader(VkShaderModule vertShaderModule,
     bindingDescription.stride = sizeof(Vertex);
     bindingDescription.inputRate = VK_VERTEX_INPUT_RATE_VERTEX;
 
-    std::array<VkVertexInputAttributeDescription, 2> attributeDescriptions{};
+    std::array<VkVertexInputAttributeDescription, 3> attributeDescriptions{};
+    // Position attribute
     attributeDescriptions[0].binding = 0;
     attributeDescriptions[0].location = 0;
     attributeDescriptions[0].format = VK_FORMAT_R32G32B32_SFLOAT;
     attributeDescriptions[0].offset = offsetof(Vertex, pos);
 
+    // Color attribute
     attributeDescriptions[1].binding = 0;
     attributeDescriptions[1].location = 1;
     attributeDescriptions[1].format = VK_FORMAT_R32G32B32_SFLOAT;
     attributeDescriptions[1].offset = offsetof(Vertex, color);
+
+    // Texture coordinate attribute
+    attributeDescriptions[2].binding = 0;
+    attributeDescriptions[2].location = 2;
+    attributeDescriptions[2].format = VK_FORMAT_R32G32_SFLOAT;
+    attributeDescriptions[2].offset = offsetof(Vertex, texCoord);
 
     VkPipelineVertexInputStateCreateInfo vertexInputInfo{};
     vertexInputInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_VERTEX_INPUT_STATE_CREATE_INFO;
@@ -695,9 +704,9 @@ void Renderer::createCommandPool()
 void Renderer::initializeVertexBuffer()
 {
     Vertex vertices[] = {
-        {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}},
-        {{ 0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}},
-        {{ 0.0f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}}
+        {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},  // Bottom left
+        {{ 0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},  // Bottom right
+        {{ 0.0f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.5f, 1.0f}}   // Top
     };
 
     VkBufferCreateInfo bufferInfo{};
@@ -1176,7 +1185,7 @@ void Renderer::beginFrame()
             &descriptorSet,
             0, nullptr // dynamic offsets
         );
-        LOG_DEBUG("[Vulkan] Texture descriptor set bound");
+        //LOG_DEBUG("[Vulkan] Texture descriptor set bound");
     }
 
     // Set dynamic viewport with Y-axis flip to match OpenGL convention

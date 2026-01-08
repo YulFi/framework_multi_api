@@ -94,7 +94,7 @@ void Texture::bind(uint32_t slot)
     if (m_renderer)
     {
         m_renderer->setCurrentTexture(this);
-        LOG_DEBUG("[Vulkan] Texture set as current (slot: {})", slot);
+        //LOG_DEBUG("[Vulkan] Texture set as current (slot: {})", slot);
     }
 }
 
@@ -240,10 +240,32 @@ void Texture::setFilter(TextureFilter minFilter, TextureFilter magFilter)
     // Recreate sampler with new filter settings
     if (m_sampler != VK_NULL_HANDLE)
     {
+        // Wait for any pending operations to complete before destroying the sampler
+        vkDeviceWaitIdle(m_device);
         vkDestroySampler(m_device, m_sampler, nullptr);
         m_sampler = VK_NULL_HANDLE;
     }
     createSampler();
+
+    // Update descriptor set if it exists
+    if (m_descriptorSet != VK_NULL_HANDLE && m_renderer)
+    {
+        VkDescriptorImageInfo imageInfo{};
+        imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        imageInfo.imageView = m_imageView;
+        imageInfo.sampler = m_sampler;
+
+        VkWriteDescriptorSet descriptorWrite{};
+        descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        descriptorWrite.dstSet = m_descriptorSet;
+        descriptorWrite.dstBinding = 0;
+        descriptorWrite.dstArrayElement = 0;
+        descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+        descriptorWrite.descriptorCount = 1;
+        descriptorWrite.pImageInfo = &imageInfo;
+
+        vkUpdateDescriptorSets(m_device, 1, &descriptorWrite, 0, nullptr);
+    }
 }
 
 void Texture::setWrap(TextureWrap wrapS, TextureWrap wrapT)
@@ -254,10 +276,32 @@ void Texture::setWrap(TextureWrap wrapS, TextureWrap wrapT)
     // Recreate sampler with new wrap settings
     if (m_sampler != VK_NULL_HANDLE)
     {
+        // Wait for any pending operations to complete before destroying the sampler
+        vkDeviceWaitIdle(m_device);
         vkDestroySampler(m_device, m_sampler, nullptr);
         m_sampler = VK_NULL_HANDLE;
     }
     createSampler();
+
+    // Update descriptor set if it exists
+    if (m_descriptorSet != VK_NULL_HANDLE && m_renderer)
+    {
+        VkDescriptorImageInfo imageInfo{};
+        imageInfo.imageLayout = VK_IMAGE_LAYOUT_SHADER_READ_ONLY_OPTIMAL;
+        imageInfo.imageView = m_imageView;
+        imageInfo.sampler = m_sampler;
+
+        VkWriteDescriptorSet descriptorWrite{};
+        descriptorWrite.sType = VK_STRUCTURE_TYPE_WRITE_DESCRIPTOR_SET;
+        descriptorWrite.dstSet = m_descriptorSet;
+        descriptorWrite.dstBinding = 0;
+        descriptorWrite.dstArrayElement = 0;
+        descriptorWrite.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+        descriptorWrite.descriptorCount = 1;
+        descriptorWrite.pImageInfo = &imageInfo;
+
+        vkUpdateDescriptorSets(m_device, 1, &descriptorWrite, 0, nullptr);
+    }
 }
 
 void Texture::generateMipmaps()
@@ -499,6 +543,15 @@ void Texture::cleanup()
 {
     if (m_device != VK_NULL_HANDLE)
     {
+        // Wait for device to be idle before destroying resources
+        // This ensures no commands are still using this texture
+        vkDeviceWaitIdle(m_device);
+
+        // Note: Descriptor sets are owned by the descriptor pool and will be
+        // freed when the pool is destroyed. We just need to ensure the device
+        // is idle before destroying the resources they reference.
+        m_descriptorSet = VK_NULL_HANDLE;
+
         if (m_sampler != VK_NULL_HANDLE)
         {
             vkDestroySampler(m_device, m_sampler, nullptr);

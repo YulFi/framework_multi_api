@@ -1347,3 +1347,192 @@
 [21:07:04.367] [INFO ] Main loop ended
 [21:07:04.369] [INFO ] MyApp shutting down
 [21:07:04.423] [INFO ] Application shut down
+[21:07:36.382] [INFO ] ========================================
+[21:07:36.382] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[21:07:36.383] [INFO ] ========================================
+[21:07:36.408] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[21:07:36.408] [INFO ] Renderer plugin loaded successfully
+[21:07:36.598] [INFO ] MyApp initialized
+[21:07:36.599] [INFO ] Creating checkerboard texture...
+[21:07:36.601] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[21:07:36.601] [INFO ] Setting texture data...
+[21:07:36.602] [INFO ] Checkerboard texture created successfully
+[21:07:36.602] [INFO ] Triangle created and shaders loaded from files
+[21:07:36.602] [INFO ] Controls:
+[21:07:36.602] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:07:36.602] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:07:36.602] [INFO ]   - R: Reset camera
+[21:07:36.603] [INFO ]   - W/A/S/D: Pan camera
+[21:07:36.603] [INFO ] Application initialized successfully
+[21:07:36.603] [INFO ] Starting main loop...
+[21:07:51.204] [INFO ] Main loop ended
+[21:07:51.204] [INFO ] MyApp shutting down
+[21:07:51.219] [INFO ] Application shut down
+[00:18:53.335] [INFO ] ========================================
+[00:18:53.336] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[00:18:53.336] [INFO ] ========================================
+[00:18:53.372] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[00:18:53.373] [INFO ] Renderer plugin loaded successfully
+[00:18:53.936] [INFO ] MyApp initialized
+[00:18:53.963] [INFO ] Creating checkerboard texture...
+[00:18:53.964] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[00:18:53.964] [INFO ] Setting texture data...
+[00:18:53.973] [INFO ] Checkerboard texture created successfully
+[00:18:53.973] [INFO ] Triangle created and shaders loaded from files
+[00:18:53.973] [INFO ] Controls:
+[00:18:53.973] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[00:18:53.973] [INFO ]   - Mouse Wheel: Zoom in/out
+[00:18:53.974] [INFO ]   - R: Reset camera
+[00:18:53.974] [INFO ]   - W/A/S/D: Pan camera
+[00:18:53.974] [INFO ] Application initialized successfully
+[00:18:53.974] [INFO ] Starting main loop...
+[00:18:56.096] [INFO ] Main loop ended
+[00:18:56.105] [INFO ] MyApp shutting down
+[00:18:56.155] [INFO ] Application shut down
+[00:19:03.222] [INFO ] ========================================
+[00:19:03.223] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[00:19:03.223] [INFO ] ========================================
+[00:19:03.231] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[00:19:03.231] [INFO ] Renderer plugin loaded successfully
+[00:19:03.539] [INFO ] MyApp initialized
+[00:19:03.543] [INFO ] Creating checkerboard texture...
+[00:19:03.544] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[00:19:03.544] [INFO ] Setting texture data...
+[00:19:03.547] [INFO ] Checkerboard texture created successfully
+[00:19:03.547] [INFO ] Triangle created and shaders loaded from files
+[00:19:03.548] [INFO ] Controls:
+[00:19:03.548] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[00:19:03.548] [INFO ]   - Mouse Wheel: Zoom in/out
+[00:19:03.548] [INFO ]   - R: Reset camera
+[00:19:03.548] [INFO ]   - W/A/S/D: Pan camera
+[00:19:03.548] [INFO ] Application initialized successfully
+[00:19:03.548] [INFO ] Starting main loop...
+[00:19:03.835] [INFO ] Main loop ended
+[00:19:03.837] [INFO ] MyApp shutting down
+[00:19:03.884] [INFO ] Application shut down
+[00:21:15.765] [INFO ] ========================================
+[00:21:15.766] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[00:21:15.766] [INFO ] ========================================
+[00:21:15.798] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[00:21:15.798] [INFO ] Renderer plugin loaded successfully
+[00:21:16.105] [INFO ] MyApp initialized
+[00:21:16.108] [INFO ] Creating checkerboard texture...
+[00:21:16.110] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[00:21:16.110] [INFO ] Setting texture data...
+[00:21:16.112] [INFO ] Checkerboard texture created successfully
+[00:21:16.113] [INFO ] Triangle created and shaders loaded from files
+[00:21:16.113] [INFO ] Controls:
+[00:21:16.113] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[00:21:16.113] [INFO ]   - Mouse Wheel: Zoom in/out
+[00:21:16.113] [INFO ]   - R: Reset camera
+[00:21:16.113] [INFO ]   - W/A/S/D: Pan camera
+[00:21:16.113] [INFO ] Application initialized successfully
+[00:21:16.114] [INFO ] Starting main loop...
+[00:21:20.349] [INFO ] Main loop ended
+[00:21:20.350] [INFO ] MyApp shutting down
+[00:21:20.395] [INFO ] Application shut down
+[00:23:01.898] [INFO ] ========================================
+[00:23:01.899] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[00:23:01.899] [INFO ] ========================================
+[00:23:01.933] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[00:23:01.934] [INFO ] Renderer plugin loaded successfully
+[00:23:02.243] [INFO ] MyApp initialized
+[00:23:02.246] [INFO ] Creating checkerboard texture...
+[00:23:02.247] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[00:23:02.247] [INFO ] Setting texture data...
+[00:23:02.250] [INFO ] Checkerboard texture created successfully
+[00:23:02.250] [INFO ] Triangle created and shaders loaded from files
+[00:23:02.250] [INFO ] Controls:
+[00:23:02.250] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[00:23:02.251] [INFO ]   - Mouse Wheel: Zoom in/out
+[00:23:02.251] [INFO ]   - R: Reset camera
+[00:23:02.251] [INFO ]   - W/A/S/D: Pan camera
+[00:23:02.251] [INFO ] Application initialized successfully
+[00:23:02.251] [INFO ] Starting main loop...
+[00:23:03.097] [INFO ] Main loop ended
+[00:23:03.098] [INFO ] MyApp shutting down
+[00:23:03.139] [INFO ] Application shut down
+[00:23:08.120] [INFO ] ========================================
+[00:23:08.120] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[00:23:08.120] [INFO ] ========================================
+[00:23:08.128] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[00:23:08.128] [INFO ] Renderer plugin loaded successfully
+[00:23:08.415] [INFO ] MyApp initialized
+[00:23:08.418] [INFO ] Creating checkerboard texture...
+[00:23:08.419] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[00:23:08.419] [INFO ] Setting texture data...
+[00:23:08.422] [INFO ] Checkerboard texture created successfully
+[00:23:08.422] [INFO ] Triangle created and shaders loaded from files
+[00:23:08.423] [INFO ] Controls:
+[00:23:08.423] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[00:23:08.423] [INFO ]   - Mouse Wheel: Zoom in/out
+[00:23:08.423] [INFO ]   - R: Reset camera
+[00:23:08.423] [INFO ]   - W/A/S/D: Pan camera
+[00:23:08.423] [INFO ] Application initialized successfully
+[00:23:08.423] [INFO ] Starting main loop...
+[00:23:09.323] [INFO ] Main loop ended
+[00:23:09.323] [INFO ] MyApp shutting down
+[00:23:09.373] [INFO ] Application shut down
+[00:23:36.014] [INFO ] ========================================
+[00:23:36.014] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[00:23:36.015] [INFO ] ========================================
+[00:23:36.045] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[00:23:36.046] [INFO ] Renderer plugin loaded successfully
+[00:23:36.352] [INFO ] MyApp initialized
+[00:23:36.355] [INFO ] Creating checkerboard texture...
+[00:23:36.357] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[00:23:36.357] [INFO ] Setting texture data...
+[00:23:36.360] [INFO ] Checkerboard texture created successfully
+[00:23:36.360] [INFO ] Triangle created and shaders loaded from files
+[00:23:36.360] [INFO ] Controls:
+[00:23:36.360] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[00:23:36.360] [INFO ]   - Mouse Wheel: Zoom in/out
+[00:23:36.361] [INFO ]   - R: Reset camera
+[00:23:36.361] [INFO ]   - W/A/S/D: Pan camera
+[00:23:36.361] [INFO ] Application initialized successfully
+[00:23:36.361] [INFO ] Starting main loop...
+[00:23:42.876] [INFO ] Main loop ended
+[00:23:42.877] [INFO ] MyApp shutting down
+[00:23:42.916] [INFO ] Application shut down
+[00:24:04.550] [INFO ] ========================================
+[00:24:04.551] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[00:24:04.552] [INFO ] ========================================
+[00:24:04.584] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[00:24:04.584] [INFO ] Renderer plugin loaded successfully
+[00:24:04.907] [INFO ] MyApp initialized
+[00:24:04.911] [INFO ] Creating checkerboard texture...
+[00:24:04.912] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[00:24:04.912] [INFO ] Setting texture data...
+[00:24:04.917] [INFO ] Checkerboard texture created successfully
+[00:24:04.917] [INFO ] Triangle created and shaders loaded from files
+[00:24:04.917] [INFO ] Controls:
+[00:24:04.917] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[00:24:04.917] [INFO ]   - Mouse Wheel: Zoom in/out
+[00:24:04.918] [INFO ]   - R: Reset camera
+[00:24:04.918] [INFO ]   - W/A/S/D: Pan camera
+[00:24:04.918] [INFO ] Application initialized successfully
+[00:24:04.918] [INFO ] Starting main loop...
+[00:24:11.422] [INFO ] Main loop ended
+[00:24:11.423] [INFO ] MyApp shutting down
+[00:24:11.464] [INFO ] Application shut down
+[00:24:30.088] [INFO ] ========================================
+[00:24:30.088] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[00:24:30.088] [INFO ] ========================================
+[00:24:30.120] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[00:24:30.120] [INFO ] Renderer plugin loaded successfully
+[00:24:30.431] [INFO ] MyApp initialized
+[00:24:30.434] [INFO ] Creating checkerboard texture...
+[00:24:30.435] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[00:24:30.435] [INFO ] Setting texture data...
+[00:24:30.438] [INFO ] Checkerboard texture created successfully
+[00:24:30.438] [INFO ] Triangle created and shaders loaded from files
+[00:24:30.438] [INFO ] Controls:
+[00:24:30.439] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[00:24:30.439] [INFO ]   - Mouse Wheel: Zoom in/out
+[00:24:30.439] [INFO ]   - R: Reset camera
+[00:24:30.439] [INFO ]   - W/A/S/D: Pan camera
+[00:24:30.439] [INFO ] Application initialized successfully
+[00:24:30.439] [INFO ] Starting main loop...
+[00:24:39.889] [INFO ] Main loop ended
+[00:24:39.890] [INFO ] MyApp shutting down
+[00:24:39.932] [INFO ] Application shut down
