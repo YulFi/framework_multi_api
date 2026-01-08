@@ -136,6 +136,7 @@ namespace VK
         void createPipelineLayout();
         void createDescriptorPool();
         void createGraphicsPipeline();
+        void createDepthResources();
         void createFramebuffers();
         void createCommandPool();
         void createCommandBuffers();
@@ -164,6 +165,9 @@ namespace VK
         VkShaderModule createShaderModule(const std::vector<char>& code);
         std::vector<char> readShaderFile(const std::string& filename);
         uint32_t findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags properties);
+        VkFormat findSupportedFormat(const std::vector<VkFormat>& candidates, VkImageTiling tiling, VkFormatFeatureFlags features);
+        VkFormat findDepthFormat();
+        bool hasStencilComponent(VkFormat format);
 
         GLFWwindow* m_window;
         glm::vec4 m_clearColor;
@@ -186,6 +190,12 @@ namespace VK
         VkExtent2D m_swapChainExtent;
         std::vector<VkImageView> m_swapChainImageViews;
         std::vector<VkFramebuffer> m_swapChainFramebuffers;
+
+        // Depth buffer resources
+        VkImage m_depthImage;
+        VkDeviceMemory m_depthImageMemory;
+        VkImageView m_depthImageView;
+        VkFormat m_depthFormat;
 
         VkRenderPass m_renderPass;
         VkDescriptorSetLayout m_descriptorSetLayout;
@@ -228,6 +238,7 @@ namespace VK
         bool m_framebufferResized;
         bool m_frameBegun;
         bool m_cullingEnabled;
+        bool m_depthTestEnabled;
 
         // Deferred deletion queue
         std::vector<DeferredDeletion> m_deferredDeletions;
