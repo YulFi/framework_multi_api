@@ -14,9 +14,11 @@ add_library(${PROJECT_NAME} SHARED
     VKPlugin.cpp
     ../../src/VK/Renderer.cpp
     ../../src/VK/ShaderManager.cpp
+    ../../src/VK/ShaderProgram.cpp
     ../../src/VK/VertexBuffer.cpp
     ../../src/VK/VertexArray.cpp
     ../../src/VK/IndexBuffer.cpp
+    ../../src/VK/ValidationLayers.cpp
     ../../src/Logger.cpp
 )
 

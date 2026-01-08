@@ -53,7 +53,7 @@ private:
 
     std::string m_pluginPath;
     std::unique_ptr<PluginLoader> m_pluginLoader;
-    IRenderPlugin* m_plugin;
+    PluginPtr m_plugin;  // Smart pointer with custom deleter for proper cleanup
     bool m_initialized;
     glm::vec4 m_clearColor;
 };

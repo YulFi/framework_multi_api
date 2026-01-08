@@ -3,6 +3,7 @@
 
 MyApp::MyApp(const std::string& pluginPath)
     : Application(800, 600, "Professional 3D Renderer - Trackball Camera", pluginPath)
+    , m_basicShader(nullptr)
     , m_lastMouseX(0.0)
     , m_lastMouseY(0.0)
     , m_mousePressed(false)
@@ -13,7 +14,9 @@ void MyApp::onInit()
 {
     LOG_INFO("MyApp initialized");
 
-    if (!m_shaderManager->loadShaderFromFile("basic", "basic.vert", "basic.frag"))
+    // Create shader program using new API
+    m_basicShader = m_shaderManager->createShaderProgram("basic", "basic.vert", "basic.frag");
+    if (!m_basicShader || !m_basicShader->isValid())
     {
         LOG_ERROR("Failed to load shaders!");
         return;
@@ -74,7 +77,14 @@ void MyApp::onUpdate(float deltaTime)
 
 void MyApp::onRender()
 {
-    m_shaderManager->use("basic");
+    if (!m_basicShader)
+    {
+        LOG_ERROR("Shader not loaded!");
+        return;
+    }
+
+    // Bind shader using new API
+    m_basicShader->bind();
 
     // Get actual render dimensions from the renderer (may differ from window size)
     int renderWidth, renderHeight;
@@ -85,9 +95,10 @@ void MyApp::onRender()
     glm::mat4 view = m_camera->getViewMatrix();
     glm::mat4 model = glm::mat4(1.0f);
 
-    m_shaderManager->setMat4("projection", projection);
-    m_shaderManager->setMat4("view", view);
-    m_shaderManager->setMat4("model", model);
+    // Set uniforms directly on shader
+    m_basicShader->setMat4("projection", projection);
+    m_basicShader->setMat4("view", view);
+    m_basicShader->setMat4("model", model);
 
     m_VAO->bind();
     m_renderer->drawArrays(PrimitiveType::Triangles, 0, 3);
@@ -145,5 +156,6 @@ void MyApp::onShutdown()
 {
     m_VAO.reset();
     m_VBO.reset();
+    m_basicShader = nullptr;  // Shader is owned by ShaderManager, just clear the pointer
     LOG_INFO("MyApp shutting down");
 }

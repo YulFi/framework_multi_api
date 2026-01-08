@@ -91,6 +91,7 @@
     <ClCompile Include="OGLPlugin.cpp" />
     <ClCompile Include="..\..\src\OGL\Renderer.cpp" />
     <ClCompile Include="..\..\src\OGL\ShaderManager.cpp" />
+    <ClCompile Include="..\..\src\OGL\ShaderProgram.cpp" />
     <ClCompile Include="..\..\src\OGL\VertexArray.cpp" />
     <ClCompile Include="..\..\src\OGL\VertexBuffer.cpp" />
     <ClCompile Include="..\..\src\OGL\IndexBuffer.cpp" />
@@ -100,15 +101,18 @@
     <ClInclude Include="..\..\src\RenderAPI\IRenderPlugin.h" />
     <ClInclude Include="..\..\src\RenderAPI\IRenderer.h" />
     <ClInclude Include="..\..\src\RenderAPI\IShaderManager.h" />
+    <ClInclude Include="..\..\src\RenderAPI\IShaderProgram.h" />
     <ClInclude Include="..\..\src\RenderAPI\IIndexBuffer.h" />
     <ClInclude Include="..\..\src\RenderAPI\IVertexBuffer.h" />
     <ClInclude Include="..\..\src\RenderAPI\IVertexArray.h" />
     <ClInclude Include="..\..\src\RenderAPI\IPrimitiveType.h" />
     <ClInclude Include="..\..\src\OGL\Renderer.h" />
     <ClInclude Include="..\..\src\OGL\ShaderManager.h" />
+    <ClInclude Include="..\..\src\OGL\ShaderProgram.h" />
     <ClInclude Include="..\..\src\OGL\VertexArray.h" />
     <ClInclude Include="..\..\src\OGL\VertexBuffer.h" />
     <ClInclude Include="..\..\src\OGL\IndexBuffer.h" />
+    <ClInclude Include="..\..\src\OGL\GLResource.h" />
     <ClInclude Include="..\..\src\Logger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

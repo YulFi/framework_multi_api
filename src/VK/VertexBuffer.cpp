@@ -168,19 +168,29 @@ uint32_t VertexBuffer::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags
 
 void VertexBuffer::cleanup()
 {
-    if (m_buffer != VK_NULL_HANDLE)
+    if (m_buffer != VK_NULL_HANDLE || m_memory != VK_NULL_HANDLE)
     {
-        vkDestroyBuffer(m_device, m_buffer, nullptr);
-        m_buffer = VK_NULL_HANDLE;
-    }
+        // CRITICAL: Wait for device to finish using this buffer before destroying it
+        // This prevents validation errors about destroying in-use resources
+        if (m_device != VK_NULL_HANDLE)
+        {
+            vkDeviceWaitIdle(m_device);
+        }
 
-    if (m_memory != VK_NULL_HANDLE)
-    {
-        vkFreeMemory(m_device, m_memory, nullptr);
-        m_memory = VK_NULL_HANDLE;
-    }
+        if (m_buffer != VK_NULL_HANDLE)
+        {
+            vkDestroyBuffer(m_device, m_buffer, nullptr);
+            m_buffer = VK_NULL_HANDLE;
+        }
 
-    m_size = 0;
+        if (m_memory != VK_NULL_HANDLE)
+        {
+            vkFreeMemory(m_device, m_memory, nullptr);
+            m_memory = VK_NULL_HANDLE;
+        }
+
+        m_size = 0;
+    }
 }
 
 } // namespace VK

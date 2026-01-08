@@ -1,4 +1,5 @@
 #include "ShaderManager.h"
+#include "ShaderProgram.h"
 #include "../Logger.h"
 #include <glm/gtc/type_ptr.hpp>
 #include <fstream>
@@ -8,8 +9,7 @@ namespace OGL
 {
 
 ShaderManager::ShaderManager()
-    : m_currentProgram(0)
-    , m_shaderBasePath("shaders/opengl/")
+    : m_shaderBasePath("shaders/opengl/")
 {
 }
 
@@ -18,45 +18,10 @@ ShaderManager::~ShaderManager()
     cleanup();
 }
 
-bool ShaderManager::loadShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
-{
-    GLuint vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
-    if (vertexShader == 0)
-    {
-        LOG_ERROR("Failed to compile vertex shader for: '{}'", name);
-        return false;
-    }
-
-    GLuint fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
-    if (fragmentShader == 0)
-    {
-        LOG_ERROR("Failed to compile fragment shader for: '{}'", name);
-        glDeleteShader(vertexShader);
-        return false;
-    }
-
-    GLuint program = createProgram(vertexShader, fragmentShader);
-    glDeleteShader(vertexShader);
-    glDeleteShader(fragmentShader);
-
-    if (program == 0)
-    {
-        LOG_ERROR("Failed to link shader program for: '{}'", name);
-        return false;
-    }
-
-    if (m_shaders.find(name) != m_shaders.end())
-    {
-        LOG_WARNING("Replacing existing shader: '{}'", name);
-        glDeleteProgram(m_shaders[name]);
-    }
-
-    m_shaders[name] = program;
-    LOG_INFO("Shader '{}' loaded successfully (Program ID: {})", name, program);
-    return true;
-}
-
-bool ShaderManager::loadShaderFromFile(const std::string& name, const std::string& vertexPath, const std::string& fragmentPath)
+IShaderProgram* ShaderManager::createShaderProgram(
+    const std::string& name,
+    const std::string& vertexPath,
+    const std::string& fragmentPath)
 {
     // Prepend base path
     std::string fullVertexPath = m_shaderBasePath + vertexPath;
@@ -68,124 +33,108 @@ bool ShaderManager::loadShaderFromFile(const std::string& name, const std::strin
     if (vertexSource.empty())
     {
         LOG_ERROR("Failed to read vertex shader file: '{}'", vertexPath);
-        return false;
+        return nullptr;
     }
 
     if (fragmentSource.empty())
     {
         LOG_ERROR("Failed to read fragment shader file: '{}'", fragmentPath);
-        return false;
+        return nullptr;
     }
 
-    return loadShader(name, vertexSource, fragmentSource);
+    if (!loadShader(name, vertexSource, fragmentSource))
+    {
+        return nullptr;
+    }
+
+    return getShader(name);
 }
 
-void ShaderManager::use(const std::string& name)
+IShaderProgram* ShaderManager::getShader(const std::string& name)
 {
     auto it = m_shaders.find(name);
     if (it != m_shaders.end())
     {
-        m_currentProgram = it->second;
-        glUseProgram(m_currentProgram);
+        return it->second.get();
     }
-    else
-    {
-        LOG_ERROR("Shader '{}' not found", name);
-    }
-}
-
-void ShaderManager::unuse()
-{
-    m_currentProgram = 0;
-    glUseProgram(0);
-}
-
-GLuint ShaderManager::getProgram(const std::string& name) const
-{
-    auto it = m_shaders.find(name);
-    return (it != m_shaders.end()) ? it->second : 0;
-}
-
-void ShaderManager::setBool(const std::string& name, bool value)
-{
-    glUniform1i(glGetUniformLocation(m_currentProgram, name.c_str()), static_cast<int>(value));
-}
-
-void ShaderManager::setInt(const std::string& name, int value)
-{
-    glUniform1i(glGetUniformLocation(m_currentProgram, name.c_str()), value);
-}
-
-void ShaderManager::setFloat(const std::string& name, float value)
-{
-    glUniform1f(glGetUniformLocation(m_currentProgram, name.c_str()), value);
-}
-
-void ShaderManager::setVec2(const std::string& name, const glm::vec2& value)
-{
-    glUniform2fv(glGetUniformLocation(m_currentProgram, name.c_str()), 1, glm::value_ptr(value));
-}
-
-void ShaderManager::setVec3(const std::string& name, const glm::vec3& value)
-{
-    glUniform3fv(glGetUniformLocation(m_currentProgram, name.c_str()), 1, glm::value_ptr(value));
-}
-
-void ShaderManager::setVec4(const std::string& name, const glm::vec4& value)
-{
-    glUniform4fv(glGetUniformLocation(m_currentProgram, name.c_str()), 1, glm::value_ptr(value));
-}
-
-void ShaderManager::setMat3(const std::string& name, const glm::mat3& value)
-{
-    glUniformMatrix3fv(glGetUniformLocation(m_currentProgram, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
-}
-
-void ShaderManager::setMat4(const std::string& name, const glm::mat4& value)
-{
-    glUniformMatrix4fv(glGetUniformLocation(m_currentProgram, name.c_str()), 1, GL_FALSE, glm::value_ptr(value));
+    return nullptr;
 }
 
 void ShaderManager::cleanup()
 {
-    for (auto& pair : m_shaders)
-    {
-        glDeleteProgram(pair.second);
-    }
+    // Shader programs are automatically deleted by unique_ptr destructors
     m_shaders.clear();
-    m_currentProgram = 0;
 }
 
-GLuint ShaderManager::compileShader(GLenum type, const std::string& source)
+bool ShaderManager::loadShader(const std::string& name, const std::string& vertexSource, const std::string& fragmentSource)
 {
-    GLuint shader = glCreateShader(type);
+    GLShader vertexShader = compileShader(GL_VERTEX_SHADER, vertexSource);
+    if (!vertexShader.isValid())
+    {
+        LOG_ERROR("Failed to compile vertex shader for: '{}'", name);
+        return false;
+    }
+
+    GLShader fragmentShader = compileShader(GL_FRAGMENT_SHADER, fragmentSource);
+    if (!fragmentShader.isValid())
+    {
+        LOG_ERROR("Failed to compile fragment shader for: '{}'", name);
+        return false;
+    }
+
+    GLShaderProgram program = createProgram(vertexShader, fragmentShader);
+    // Shaders are automatically deleted when they go out of scope
+
+    if (!program.isValid())
+    {
+        LOG_ERROR("Failed to link shader program for: '{}'", name);
+        return false;
+    }
+
+    GLuint programId = program.get();
+
+    if (m_shaders.find(name) != m_shaders.end())
+    {
+        LOG_WARNING("Replacing existing shader: '{}'", name);
+        // Old shader program will be automatically deleted when unique_ptr is replaced
+    }
+
+    // Create ShaderProgram wrapper and store it
+    m_shaders[name] = std::make_unique<ShaderProgram>(name, std::move(program));
+    LOG_INFO("Shader '{}' loaded successfully (Program ID: {})", name, programId);
+    return true;
+}
+
+GLShader ShaderManager::compileShader(GLenum type, const std::string& source)
+{
+    GLuint shaderId = glCreateShader(type);
     const char* src = source.c_str();
-    glShaderSource(shader, 1, &src, nullptr);
-    glCompileShader(shader);
+    glShaderSource(shaderId, 1, &src, nullptr);
+    glCompileShader(shaderId);
 
-    if (!checkCompileErrors(shader, type == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT"))
+    if (!checkCompileErrors(shaderId, type == GL_VERTEX_SHADER ? "VERTEX" : "FRAGMENT"))
     {
-        glDeleteShader(shader);
-        return 0;
+        glDeleteShader(shaderId);
+        return GLShader(); // Return invalid shader
     }
 
-    return shader;
+    return GLShader(shaderId);
 }
 
-GLuint ShaderManager::createProgram(GLuint vertexShader, GLuint fragmentShader)
+GLShaderProgram ShaderManager::createProgram(const GLShader& vertexShader, const GLShader& fragmentShader)
 {
-    GLuint program = glCreateProgram();
-    glAttachShader(program, vertexShader);
-    glAttachShader(program, fragmentShader);
-    glLinkProgram(program);
+    GLuint programId = glCreateProgram();
+    glAttachShader(programId, vertexShader.get());
+    glAttachShader(programId, fragmentShader.get());
+    glLinkProgram(programId);
 
-    if (!checkLinkErrors(program))
+    if (!checkLinkErrors(programId))
     {
-        glDeleteProgram(program);
-        return 0;
+        glDeleteProgram(programId);
+        return GLShaderProgram(); // Return invalid program
     }
 
-    return program;
+    return GLShaderProgram(programId);
 }
 
 bool ShaderManager::checkCompileErrors(GLuint shader, const std::string& type)

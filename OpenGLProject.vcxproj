@@ -110,6 +110,7 @@
     <ClInclude Include="src\Logger.h" />
     <ClInclude Include="src\RenderAPI\IRenderer.h" />
     <ClInclude Include="src\RenderAPI\IShaderManager.h" />
+    <ClInclude Include="src\RenderAPI\IShaderProgram.h" />
     <ClInclude Include="src\RenderAPI\IRenderPlugin.h" />
     <ClInclude Include="src\RenderAPI\IIndexBuffer.h" />
     <ClInclude Include="src\RenderAPI\IVertexBuffer.h" />

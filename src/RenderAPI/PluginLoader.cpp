@@ -3,8 +3,7 @@
 
 PluginLoader::PluginLoader()
     : m_library(nullptr)
-    , m_plugin(nullptr)
-    , m_destroyFunc(nullptr)
+    , m_plugin(nullptr, PluginDeleter(nullptr))
 {
 }
 
@@ -30,8 +29,8 @@ bool PluginLoader::loadPlugin(const std::string& path)
         return false;
     }
 
-    CreatePluginFunc createFunc = (CreatePluginFunc)GetProcAddress(m_library, "CreatePlugin");
-    m_destroyFunc = (DestroyPluginFunc)GetProcAddress(m_library, "DestroyPlugin");
+    CreatePluginFunc createFunc = reinterpret_cast<CreatePluginFunc>(GetProcAddress(m_library, "CreatePlugin"));
+    DestroyPluginFunc destroyFunc = reinterpret_cast<DestroyPluginFunc>(GetProcAddress(m_library, "DestroyPlugin"));
 #else
     m_library = dlopen(path.c_str(), RTLD_LAZY);
     if (!m_library)
@@ -41,24 +40,27 @@ bool PluginLoader::loadPlugin(const std::string& path)
         return false;
     }
 
-    CreatePluginFunc createFunc = (CreatePluginFunc)dlsym(m_library, "CreatePlugin");
-    m_destroyFunc = (DestroyPluginFunc)dlsym(m_library, "DestroyPlugin");
+    CreatePluginFunc createFunc = reinterpret_cast<CreatePluginFunc>(dlsym(m_library, "CreatePlugin"));
+    DestroyPluginFunc destroyFunc = reinterpret_cast<DestroyPluginFunc>(dlsym(m_library, "DestroyPlugin"));
 #endif
 
-    if (!createFunc || !m_destroyFunc)
+    if (!createFunc || !destroyFunc)
     {
         LOG_ERROR("Failed to find plugin functions");
         unloadPlugin();
         return false;
     }
 
-    m_plugin = createFunc();
-    if (!m_plugin)
+    IRenderPlugin* pluginRaw = createFunc();
+    if (!pluginRaw)
     {
         LOG_ERROR("Failed to create plugin instance");
         unloadPlugin();
         return false;
     }
+
+    // Create smart pointer with custom deleter
+    m_plugin = PluginPtr(pluginRaw, PluginDeleter(destroyFunc));
 
     LOG_INFO("Loaded plugin: {} v{}", m_plugin->getName(), m_plugin->getVersion());
     return true;
@@ -66,12 +68,8 @@ bool PluginLoader::loadPlugin(const std::string& path)
 
 void PluginLoader::unloadPlugin()
 {
-    if (m_plugin && m_destroyFunc)
-    {
-        m_destroyFunc(m_plugin);
-        m_plugin = nullptr;
-        m_destroyFunc = nullptr;
-    }
+    // Smart pointer will automatically call the deleter
+    m_plugin.reset();
 
     if (m_library)
     {
@@ -82,4 +80,10 @@ void PluginLoader::unloadPlugin()
 #endif
         m_library = nullptr;
     }
+}
+
+PluginPtr PluginLoader::releasePlugin()
+{
+    // Transfer ownership to caller
+    return std::move(m_plugin);
 }

@@ -1,6 +1,7 @@
 #include "Renderer.h"
 #include "IndexBuffer.h"
 #include "ShaderManager.h"
+#include "ShaderProgram.h"
 #include "../Logger.h"
 #include <stdexcept>
 #include <set>
@@ -34,6 +35,7 @@ Renderer::Renderer()
     , m_vertexBufferMemory(VK_NULL_HANDLE)
     , m_boundVertexArray(nullptr)
     , m_shaderManager(nullptr)
+    , m_currentShader(nullptr)
     , m_currentFrame(0)
     , m_imageIndex(0)
     , m_framebufferResized(false)
@@ -73,10 +75,10 @@ void Renderer::initialize(GLFWwindow* window)
     createCommandBuffers();
     createSyncObjects();
 
-    // Initialize shader manager with device
+    // Initialize shader manager with device and renderer pointer
     if (m_shaderManager)
     {
-        m_shaderManager->initialize(m_device);
+        m_shaderManager->initialize(m_device, this);
     }
 
     LOG_INFO("[Vulkan] Renderer initialized successfully");
@@ -152,8 +154,10 @@ void Renderer::shutdown()
         m_surface = VK_NULL_HANDLE;
     }
 
+    // Cleanup validation layers before destroying instance
     if (m_instance != VK_NULL_HANDLE)
     {
+        m_validationLayers.cleanup(m_instance);
         vkDestroyInstance(m_instance, nullptr);
         m_instance = VK_NULL_HANDLE;
     }
@@ -163,6 +167,12 @@ void Renderer::shutdown()
 
 void Renderer::createInstance()
 {
+    // Check validation layer support
+    if (m_validationLayers.isEnabled() && !m_validationLayers.checkValidationLayerSupport())
+    {
+        LOG_WARNING("[Vulkan] Validation layers requested, but not available!");
+    }
+
     VkApplicationInfo appInfo{};
     appInfo.sType = VK_STRUCTURE_TYPE_APPLICATION_INFO;
     appInfo.pApplicationName = "Vulkan Renderer";
@@ -171,15 +181,38 @@ void Renderer::createInstance()
     appInfo.engineVersion = VK_MAKE_VERSION(1, 0, 0);
     appInfo.apiVersion = VK_API_VERSION_1_0;
 
+    // Get required extensions
     uint32_t glfwExtensionCount = 0;
     const char** glfwExtensions = glfwGetRequiredInstanceExtensions(&glfwExtensionCount);
+
+    std::vector<const char*> extensions(glfwExtensions, glfwExtensions + glfwExtensionCount);
+
+    // Add validation layer extensions
+    auto validationExtensions = m_validationLayers.getRequiredExtensions();
+    extensions.insert(extensions.end(), validationExtensions.begin(), validationExtensions.end());
 
     VkInstanceCreateInfo createInfo{};
     createInfo.sType = VK_STRUCTURE_TYPE_INSTANCE_CREATE_INFO;
     createInfo.pApplicationInfo = &appInfo;
-    createInfo.enabledExtensionCount = glfwExtensionCount;
-    createInfo.ppEnabledExtensionNames = glfwExtensions;
-    createInfo.enabledLayerCount = 0;
+    createInfo.enabledExtensionCount = static_cast<uint32_t>(extensions.size());
+    createInfo.ppEnabledExtensionNames = extensions.data();
+
+    // Setup validation layers
+    VkDebugUtilsMessengerCreateInfoEXT debugCreateInfo{};
+    if (m_validationLayers.isEnabled())
+    {
+        createInfo.enabledLayerCount = static_cast<uint32_t>(m_validationLayers.getRequiredLayers().size());
+        createInfo.ppEnabledLayerNames = m_validationLayers.getRequiredLayers().data();
+
+        // Setup debug messenger for instance creation/destruction
+        m_validationLayers.populateDebugMessengerCreateInfo(debugCreateInfo);
+        createInfo.pNext = (VkDebugUtilsMessengerCreateInfoEXT*)&debugCreateInfo;
+    }
+    else
+    {
+        createInfo.enabledLayerCount = 0;
+        createInfo.pNext = nullptr;
+    }
 
     if (vkCreateInstance(&createInfo, nullptr, &m_instance) != VK_SUCCESS)
     {
@@ -187,6 +220,12 @@ void Renderer::createInstance()
     }
 
     LOG_INFO("[Vulkan] Instance created");
+
+    // Setup debug messenger for runtime validation
+    if (m_validationLayers.isEnabled())
+    {
+        m_validationLayers.setupDebugMessenger(m_instance);
+    }
 }
 
 void Renderer::createSurface()
@@ -406,7 +445,11 @@ void Renderer::createRenderPass()
     LOG_INFO("[Vulkan] Render pass created");
 }
 
-VkPipeline Renderer::createPipelineForShader(VkShaderModule vertShaderModule, VkShaderModule fragShaderModule)
+VkPipeline Renderer::createPipelineForShader(VkShaderModule vertShaderModule,
+                                              VkShaderModule fragShaderModule,
+                                              VkRenderPass renderPass,
+                                              VkPipelineLayout pipelineLayout,
+                                              VkExtent2D extent)
 {
     if (vertShaderModule == VK_NULL_HANDLE || fragShaderModule == VK_NULL_HANDLE)
     {
@@ -493,22 +536,6 @@ VkPipeline Renderer::createPipelineForShader(VkShaderModule vertShaderModule, Vk
     colorBlending.attachmentCount = 1;
     colorBlending.pAttachments = &colorBlendAttachment;
 
-    // Set up push constants for transformation matrices
-    VkPushConstantRange pushConstantRange{};
-    pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
-    pushConstantRange.offset = 0;
-    pushConstantRange.size = sizeof(glm::mat4) * 3; // model, view, projection
-
-    VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
-    pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
-    pipelineLayoutInfo.pushConstantRangeCount = 1;
-    pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
-
-    if (vkCreatePipelineLayout(m_device, &pipelineLayoutInfo, nullptr, &m_pipelineLayout) != VK_SUCCESS)
-    {
-        throw std::runtime_error("Failed to create pipeline layout");
-    }
-
     // Enable dynamic viewport and scissor to support window resizing
     VkDynamicState dynamicStates[] = {
         VK_DYNAMIC_STATE_VIEWPORT,
@@ -531,8 +558,8 @@ VkPipeline Renderer::createPipelineForShader(VkShaderModule vertShaderModule, Vk
     pipelineInfo.pMultisampleState = &multisampling;
     pipelineInfo.pColorBlendState = &colorBlending;
     pipelineInfo.pDynamicState = &dynamicState;  // Add dynamic state
-    pipelineInfo.layout = m_pipelineLayout;
-    pipelineInfo.renderPass = m_renderPass;
+    pipelineInfo.layout = pipelineLayout;
+    pipelineInfo.renderPass = renderPass;
     pipelineInfo.subpass = 0;
 
     VkPipeline pipeline;
@@ -653,9 +680,17 @@ void Renderer::createCommandBuffers()
 
 void Renderer::createSyncObjects()
 {
-    m_imageAvailableSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
-    m_renderFinishedSemaphores.resize(MAX_FRAMES_IN_FLIGHT);
+    // Create semaphores: one per swapchain image (not per frame in flight)
+    // This avoids reusing a semaphore that's still in use by the presentation engine
+    size_t imageCount = m_swapChainImages.size();
+    m_imageAvailableSemaphores.resize(imageCount);
+    m_renderFinishedSemaphores.resize(imageCount);
+
+    // Create fences: one per frame in flight (to limit CPU-GPU parallelism)
     m_inFlightFences.resize(MAX_FRAMES_IN_FLIGHT);
+
+    // Initialize images in flight tracker (which fence is using which image)
+    m_imagesInFlight.resize(imageCount, VK_NULL_HANDLE);
 
     VkSemaphoreCreateInfo semaphoreInfo{};
     semaphoreInfo.sType = VK_STRUCTURE_TYPE_SEMAPHORE_CREATE_INFO;
@@ -664,17 +699,26 @@ void Renderer::createSyncObjects()
     fenceInfo.sType = VK_STRUCTURE_TYPE_FENCE_CREATE_INFO;
     fenceInfo.flags = VK_FENCE_CREATE_SIGNALED_BIT;
 
-    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+    // Create semaphores for each swapchain image
+    for (size_t i = 0; i < imageCount; i++)
     {
         if (vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, &m_imageAvailableSemaphores[i]) != VK_SUCCESS ||
-            vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, &m_renderFinishedSemaphores[i]) != VK_SUCCESS ||
-            vkCreateFence(m_device, &fenceInfo, nullptr, &m_inFlightFences[i]) != VK_SUCCESS)
+            vkCreateSemaphore(m_device, &semaphoreInfo, nullptr, &m_renderFinishedSemaphores[i]) != VK_SUCCESS)
         {
-            throw std::runtime_error("Failed to create synchronization objects");
+            throw std::runtime_error("Failed to create semaphores");
         }
     }
 
-    LOG_INFO("[Vulkan] Sync objects created");
+    // Create fences for frame in flight limiting
+    for (size_t i = 0; i < MAX_FRAMES_IN_FLIGHT; i++)
+    {
+        if (vkCreateFence(m_device, &fenceInfo, nullptr, &m_inFlightFences[i]) != VK_SUCCESS)
+        {
+            throw std::runtime_error("Failed to create fences");
+        }
+    }
+
+    LOG_INFO("[Vulkan] Sync objects created ({} semaphore pairs, {} fences)", imageCount, MAX_FRAMES_IN_FLIGHT);
 }
 
 void Renderer::cleanupSwapChain()
@@ -744,15 +788,15 @@ void Renderer::recreateSwapChain()
     createRenderPass();
     createFramebuffers();
 
+    // Reset image-in-flight tracking for new swapchain
+    m_imagesInFlight.clear();
+    m_imagesInFlight.resize(m_swapChainImages.size(), VK_NULL_HANDLE);
+
     // Recreate pipelines for all loaded shaders
     if (m_shaderManager)
     {
-        std::vector<std::string> shaderNames = m_shaderManager->getAllShaderNames();
-        for (const auto& name : shaderNames)
-        {
-            onShaderLoaded(name);
-        }
-        LOG_INFO("[Vulkan] Recreated {} pipelines after swap chain recreation", shaderNames.size());
+        m_shaderManager->createAllPipelines(m_renderPass, m_pipelineLayout, m_swapChainExtent);
+        LOG_INFO("[Vulkan] Recreated all pipelines after swap chain recreation");
     }
 }
 
@@ -959,23 +1003,30 @@ uint32_t Renderer::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags pro
 
 void Renderer::beginFrame()
 {
-    // Check if we have a valid pipeline before starting frame
-    VkPipeline currentPipeline = VK_NULL_HANDLE;
+    // Get current shader from shader manager
+    ShaderProgram* currentShader = nullptr;
     if (m_shaderManager)
     {
-        currentPipeline = m_shaderManager->getCurrentPipeline();
+        currentShader = m_shaderManager->getCurrentShader();
     }
 
-    if (currentPipeline == VK_NULL_HANDLE)
+    if (!currentShader || currentShader->getPipeline() == VK_NULL_HANDLE)
     {
-        LOG_WARNING("[Vulkan] No pipeline bound - skipping frame");
+        LOG_WARNING("[Vulkan] No valid shader/pipeline bound - skipping frame");
         return;
     }
 
+    VkPipeline currentPipeline = currentShader->getPipeline();
+
+    // Wait for the current frame's fence (limits frames in flight)
     vkWaitForFences(m_device, 1, &m_inFlightFences[m_currentFrame], VK_TRUE, UINT64_MAX);
 
+    // Acquire next image from swapchain
+    // We use currentFrame to index the acquire semaphore for now, but after we know
+    // which image we got, we'll use image-indexed semaphores for rendering
     VkResult result = vkAcquireNextImageKHR(m_device, m_swapChain, UINT64_MAX,
-                                             m_imageAvailableSemaphores[m_currentFrame], VK_NULL_HANDLE, &m_imageIndex);
+                                             m_imageAvailableSemaphores[m_currentFrame % m_imageAvailableSemaphores.size()],
+                                             VK_NULL_HANDLE, &m_imageIndex);
 
     if (result == VK_ERROR_OUT_OF_DATE_KHR)
     {
@@ -987,6 +1038,17 @@ void Renderer::beginFrame()
         throw std::runtime_error("Failed to acquire swap chain image");
     }
 
+    // Check if this image is already in use by a previous frame
+    // If so, wait for that frame's fence to complete
+    if (m_imagesInFlight[m_imageIndex] != VK_NULL_HANDLE)
+    {
+        vkWaitForFences(m_device, 1, &m_imagesInFlight[m_imageIndex], VK_TRUE, UINT64_MAX);
+    }
+
+    // Mark this image as now being used by the current frame
+    m_imagesInFlight[m_imageIndex] = m_inFlightFences[m_currentFrame];
+
+    // Only reset the fence right before using it
     vkResetFences(m_device, 1, &m_inFlightFences[m_currentFrame]);
 
     vkResetCommandBuffer(m_commandBuffers[m_currentFrame], 0);
@@ -1032,9 +1094,9 @@ void Renderer::beginFrame()
     vkCmdSetScissor(m_commandBuffers[m_currentFrame], 0, 1, &scissor);
 
     // Push constants for transformation matrices
-    if (m_shaderManager)
+    if (currentShader && currentShader->hasPendingUpdates())
     {
-        const PushConstantData& pushConstants = m_shaderManager->getPushConstantData();
+        const PushConstantData& pushConstants = currentShader->getPushConstants();
         vkCmdPushConstants(
             m_commandBuffers[m_currentFrame],
             m_pipelineLayout,
@@ -1043,6 +1105,7 @@ void Renderer::beginFrame()
             sizeof(PushConstantData),
             &pushConstants
         );
+        currentShader->clearPendingUpdates();
     }
 
     VkBuffer vertexBuffers[] = {m_vertexBuffer};
@@ -1071,7 +1134,9 @@ void Renderer::endFrame()
     VkSubmitInfo submitInfo{};
     submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
 
-    VkSemaphore waitSemaphores[] = {m_imageAvailableSemaphores[m_currentFrame]};
+    // Wait on the imageAvailable semaphore for the acquired image
+    // Use currentFrame modulo to cycle through available semaphores
+    VkSemaphore waitSemaphores[] = {m_imageAvailableSemaphores[m_currentFrame % m_imageAvailableSemaphores.size()]};
     VkPipelineStageFlags waitStages[] = {VK_PIPELINE_STAGE_COLOR_ATTACHMENT_OUTPUT_BIT};
     submitInfo.waitSemaphoreCount = 1;
     submitInfo.pWaitSemaphores = waitSemaphores;
@@ -1079,7 +1144,9 @@ void Renderer::endFrame()
     submitInfo.commandBufferCount = 1;
     submitInfo.pCommandBuffers = &m_commandBuffers[m_currentFrame];
 
-    VkSemaphore signalSemaphores[] = {m_renderFinishedSemaphores[m_currentFrame]};
+    // Signal the renderFinished semaphore indexed by the swapchain image
+    // This ensures each image has its own semaphore and avoids reuse while in presentation
+    VkSemaphore signalSemaphores[] = {m_renderFinishedSemaphores[m_imageIndex]};
     submitInfo.signalSemaphoreCount = 1;
     submitInfo.pSignalSemaphores = signalSemaphores;
 
@@ -1217,18 +1284,21 @@ void Renderer::onShaderLoaded(const std::string& shaderName)
         return;
     }
 
-    ShaderProgram* program = m_shaderManager->getShaderProgram(shaderName);
-    if (!program || !program->isValid)
+    // Get the shader program (it's now a ShaderProgram wrapper, not a struct)
+    IShaderProgram* iShader = m_shaderManager->getShader(shaderName);
+    if (!iShader || !iShader->isValid())
     {
         LOG_ERROR("[Vulkan] Invalid shader program: {}", shaderName);
         return;
     }
 
+    // Cast to VK::ShaderProgram to access Vulkan-specific methods
+    ShaderProgram* program = static_cast<ShaderProgram*>(iShader);
+
     // Create pipeline for this shader
-    VkPipeline pipeline = createPipelineForShader(program->vertexModule, program->fragmentModule);
-    if (pipeline != VK_NULL_HANDLE)
+    program->createPipeline(m_renderPass, m_pipelineLayout, m_swapChainExtent);
+    if (program->getPipeline() != VK_NULL_HANDLE)
     {
-        program->pipeline = pipeline;
         LOG_INFO("[Vulkan] Pipeline created for shader: {}", shaderName);
     }
     else

@@ -14,6 +14,7 @@ add_library(${PROJECT_NAME} SHARED
     OGLPlugin.cpp
     ../../src/OGL/Renderer.cpp
     ../../src/OGL/ShaderManager.cpp
+    ../../src/OGL/ShaderProgram.cpp
     ../../src/OGL/VertexBuffer.cpp
     ../../src/OGL/VertexArray.cpp
     ../../src/OGL/IndexBuffer.cpp

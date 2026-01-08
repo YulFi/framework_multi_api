@@ -6,6 +6,7 @@
 #include "../RenderAPI/IIndexBuffer.h"
 #include "VertexBuffer.h"
 #include "VertexArray.h"
+#include "ValidationLayers.h"
 #include <glm/glm.hpp>
 #include <vulkan/vulkan.h>
 #include <GLFW/glfw3.h>
@@ -69,8 +70,15 @@ namespace VK
         VertexArray* getActiveVertexArray() const { return m_boundVertexArray; }
         void setShaderManager(class ShaderManager* shaderManager) { m_shaderManager = shaderManager; }
 
+        // Shader binding (called by ShaderProgram::bind())
+        void setCurrentShader(class ShaderProgram* shader) { m_currentShader = shader; }
+
         // Pipeline management
-        VkPipeline createPipelineForShader(VkShaderModule vertModule, VkShaderModule fragModule);
+        VkPipeline createPipelineForShader(VkShaderModule vertModule,
+                                           VkShaderModule fragModule,
+                                           VkRenderPass renderPass,
+                                           VkPipelineLayout pipelineLayout,
+                                           VkExtent2D extent);
 
     private:
         void createInstance();
@@ -104,6 +112,7 @@ namespace VK
         GLFWwindow* m_window;
         glm::vec4 m_clearColor;
 
+        ValidationLayers m_validationLayers;
         VkInstance m_instance;
         VkSurfaceKHR m_surface;
         VkPhysicalDevice m_physicalDevice;
@@ -126,9 +135,16 @@ namespace VK
         VkCommandPool m_commandPool;
         std::vector<VkCommandBuffer> m_commandBuffers;
 
+        // Synchronization objects
+        // Semaphores: One per swapchain image (to avoid reuse while in flight)
         std::vector<VkSemaphore> m_imageAvailableSemaphores;
         std::vector<VkSemaphore> m_renderFinishedSemaphores;
+
+        // Fences: One per frame in flight (to limit CPU-GPU parallelism)
         std::vector<VkFence> m_inFlightFences;
+
+        // Track which fence is waiting on which swapchain image
+        std::vector<VkFence> m_imagesInFlight;
 
         VkBuffer m_vertexBuffer;
         VkDeviceMemory m_vertexBufferMemory;
@@ -136,8 +152,9 @@ namespace VK
         // Currently bound vertex array (for user-created vertex data)
         VertexArray* m_boundVertexArray;
 
-        // Shader manager for accessing push constants
+        // Shader manager and current shader
         class ShaderManager* m_shaderManager;
+        class ShaderProgram* m_currentShader;
 
         uint32_t m_currentFrame;
         uint32_t m_imageIndex;

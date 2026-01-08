@@ -5,7 +5,7 @@ Application::Application(int width, int height, const std::string& title, const 
     : m_window(nullptr)
     , m_camera(std::make_unique<Camera>())
     , m_pluginLoader(std::make_unique<PluginLoader>())
-    , m_plugin(nullptr)
+    , m_plugin(nullptr, PluginDeleter(nullptr))
     , m_deltaTime(0.0f)
     , m_lastFrame(0.0f)
     , m_pluginPath(pluginPath)
@@ -38,7 +38,8 @@ bool Application::loadRenderPlugin(const std::string& pluginPath)
         return false;
     }
 
-    m_plugin = m_pluginLoader->getPlugin();
+    // Transfer ownership from loader to application
+    m_plugin = m_pluginLoader->releasePlugin();
     if (!m_plugin)
     {
         LOG_ERROR("Plugin loaded but could not get instance");
