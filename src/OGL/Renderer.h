@@ -42,6 +42,7 @@ namespace OGL
         std::unique_ptr<IVertexBuffer> createVertexBuffer() override;
         std::unique_ptr<IVertexArray> createVertexArray() override;
         std::unique_ptr<IIndexBuffer> createIndexBuffer() override;
+        std::unique_ptr<ITexture> createTexture() override;
 
         static void checkError(const char* location);
 

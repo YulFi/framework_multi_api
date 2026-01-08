@@ -3,6 +3,7 @@
 #include "Application.h"
 #include "RenderAPI/IVertexArray.h"
 #include "RenderAPI/IVertexBuffer.h"
+#include "RenderAPI/ITexture.h"
 #include "RenderAPI/IShaderProgram.h"
 #include <memory>
 
@@ -25,6 +26,7 @@ protected:
 private:
     std::unique_ptr<IVertexArray> m_VAO;
     std::unique_ptr<IVertexBuffer> m_VBO;
+    std::unique_ptr<ITexture> m_texture;
     IShaderProgram* m_basicShader;  // Non-owning pointer (ShaderManager owns it)
     double m_lastMouseX;
     double m_lastMouseY;

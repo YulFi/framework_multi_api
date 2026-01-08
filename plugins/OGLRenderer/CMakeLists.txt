@@ -18,6 +18,8 @@ add_library(${PROJECT_NAME} SHARED
     ../../src/OGL/VertexBuffer.cpp
     ../../src/OGL/VertexArray.cpp
     ../../src/OGL/IndexBuffer.cpp
+    ../../src/OGL/Texture.cpp
+    ../../src/TextureUtils.cpp
     ../../src/Logger.cpp
 )
 

@@ -46,6 +46,10 @@ void ShaderProgram::setInt(const std::string& name, int value)
     {
         glUniform1i(location, value);
     }
+    else
+    {
+        LOG_WARNING("[OpenGL] Uniform '{}' not found in shader '{}'", name, m_name);
+    }
 }
 
 void ShaderProgram::setFloat(const std::string& name, float value)

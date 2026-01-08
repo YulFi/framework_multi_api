@@ -129,7 +129,7 @@ void ShaderProgram::setInt(const std::string& name, int value)
 {
     // Vulkan doesn't have traditional uniforms like OpenGL
     // For now, we only support matrix uniforms via push constants
-    LOG_WARNING("[Vulkan] setInt not implemented for shader '{}'", m_name);
+    //LOG_WARNING("[Vulkan] setInt not implemented for shader '{}'", m_name);
 }
 
 void ShaderProgram::setFloat(const std::string& name, float value)

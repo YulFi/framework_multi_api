@@ -1,5 +1,6 @@
 #include "Renderer.h"
 #include "IndexBuffer.h"
+#include "Texture.h"
 #include "ShaderManager.h"
 #include "ShaderProgram.h"
 #include "../Logger.h"
@@ -29,17 +30,21 @@ Renderer::Renderer()
     , m_presentQueue(VK_NULL_HANDLE)
     , m_swapChain(VK_NULL_HANDLE)
     , m_renderPass(VK_NULL_HANDLE)
+    , m_descriptorSetLayout(VK_NULL_HANDLE)
     , m_pipelineLayout(VK_NULL_HANDLE)
+    , m_descriptorPool(VK_NULL_HANDLE)
     , m_commandPool(VK_NULL_HANDLE)
     , m_vertexBuffer(VK_NULL_HANDLE)
     , m_vertexBufferMemory(VK_NULL_HANDLE)
     , m_boundVertexArray(nullptr)
     , m_shaderManager(nullptr)
     , m_currentShader(nullptr)
+    , m_currentTexture(nullptr)
     , m_currentFrame(0)
     , m_imageIndex(0)
     , m_framebufferResized(false)
     , m_frameBegun(false)
+    , m_cullingEnabled(false)
 {
     // Clear color should be set by Application class via setClearColor()
 }
@@ -68,6 +73,9 @@ void Renderer::initialize(GLFWwindow* window)
     createSwapChain();
     createImageViews();
     createRenderPass();
+    createDescriptorSetLayout();
+    createPipelineLayout();
+    createDescriptorPool();
     // Pipeline creation removed - will be created dynamically when shaders are loaded
     createFramebuffers();
     createCommandPool();
@@ -445,6 +453,73 @@ void Renderer::createRenderPass()
     LOG_INFO("[Vulkan] Render pass created");
 }
 
+void Renderer::createDescriptorSetLayout()
+{
+    // Texture sampler binding
+    VkDescriptorSetLayoutBinding samplerLayoutBinding{};
+    samplerLayoutBinding.binding = 0;
+    samplerLayoutBinding.descriptorType = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    samplerLayoutBinding.descriptorCount = 1;
+    samplerLayoutBinding.stageFlags = VK_SHADER_STAGE_FRAGMENT_BIT;
+    samplerLayoutBinding.pImmutableSamplers = nullptr;
+
+    VkDescriptorSetLayoutCreateInfo layoutInfo{};
+    layoutInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_SET_LAYOUT_CREATE_INFO;
+    layoutInfo.bindingCount = 1;
+    layoutInfo.pBindings = &samplerLayoutBinding;
+
+    if (vkCreateDescriptorSetLayout(m_device, &layoutInfo, nullptr, &m_descriptorSetLayout) != VK_SUCCESS)
+    {
+        throw std::runtime_error("Failed to create descriptor set layout");
+    }
+
+    LOG_INFO("[Vulkan] Descriptor set layout created");
+}
+
+void Renderer::createPipelineLayout()
+{
+    // Define push constant range for transformation matrices
+    VkPushConstantRange pushConstantRange{};
+    pushConstantRange.stageFlags = VK_SHADER_STAGE_VERTEX_BIT;
+    pushConstantRange.offset = 0;
+    pushConstantRange.size = sizeof(glm::mat4) * 3; // model, view, projection matrices
+
+    VkPipelineLayoutCreateInfo pipelineLayoutInfo{};
+    pipelineLayoutInfo.sType = VK_STRUCTURE_TYPE_PIPELINE_LAYOUT_CREATE_INFO;
+    pipelineLayoutInfo.setLayoutCount = 1;
+    pipelineLayoutInfo.pSetLayouts = &m_descriptorSetLayout;
+    pipelineLayoutInfo.pushConstantRangeCount = 1;
+    pipelineLayoutInfo.pPushConstantRanges = &pushConstantRange;
+
+    if (vkCreatePipelineLayout(m_device, &pipelineLayoutInfo, nullptr, &m_pipelineLayout) != VK_SUCCESS)
+    {
+        throw std::runtime_error("Failed to create pipeline layout");
+    }
+
+    LOG_INFO("[Vulkan] Pipeline layout created");
+}
+
+void Renderer::createDescriptorPool()
+{
+    // Create a descriptor pool large enough for texture samplers
+    VkDescriptorPoolSize poolSize{};
+    poolSize.type = VK_DESCRIPTOR_TYPE_COMBINED_IMAGE_SAMPLER;
+    poolSize.descriptorCount = 100; // Allow up to 100 texture samplers
+
+    VkDescriptorPoolCreateInfo poolInfo{};
+    poolInfo.sType = VK_STRUCTURE_TYPE_DESCRIPTOR_POOL_CREATE_INFO;
+    poolInfo.poolSizeCount = 1;
+    poolInfo.pPoolSizes = &poolSize;
+    poolInfo.maxSets = 100; // Allow up to 100 descriptor sets
+
+    if (vkCreateDescriptorPool(m_device, &poolInfo, nullptr, &m_descriptorPool) != VK_SUCCESS)
+    {
+        throw std::runtime_error("Failed to create descriptor pool");
+    }
+
+    LOG_INFO("[Vulkan] Descriptor pool created");
+}
+
 VkPipeline Renderer::createPipelineForShader(VkShaderModule vertShaderModule,
                                               VkShaderModule fragShaderModule,
                                               VkRenderPass renderPass,
@@ -515,7 +590,7 @@ VkPipeline Renderer::createPipelineForShader(VkShaderModule vertShaderModule,
     rasterizer.rasterizerDiscardEnable = VK_FALSE;
     rasterizer.polygonMode = VK_POLYGON_MODE_FILL;
     rasterizer.lineWidth = 1.0f;
-    rasterizer.cullMode = VK_CULL_MODE_BACK_BIT;
+    rasterizer.cullMode = m_cullingEnabled ? VK_CULL_MODE_BACK_BIT : VK_CULL_MODE_NONE;
     // Use counter-clockwise to match OpenGL convention (after Y-axis flip)
     rasterizer.frontFace = VK_FRONT_FACE_COUNTER_CLOCKWISE;
     rasterizer.depthBiasEnable = VK_FALSE;
@@ -749,10 +824,22 @@ void Renderer::cleanupSwapChain()
 
     // Pipelines are managed by shader manager - no need to destroy here
 
+    if (m_descriptorPool != VK_NULL_HANDLE)
+    {
+        vkDestroyDescriptorPool(m_device, m_descriptorPool, nullptr);
+        m_descriptorPool = VK_NULL_HANDLE;
+    }
+
     if (m_pipelineLayout != VK_NULL_HANDLE)
     {
         vkDestroyPipelineLayout(m_device, m_pipelineLayout, nullptr);
         m_pipelineLayout = VK_NULL_HANDLE;
+    }
+
+    if (m_descriptorSetLayout != VK_NULL_HANDLE)
+    {
+        vkDestroyDescriptorSetLayout(m_device, m_descriptorSetLayout, nullptr);
+        m_descriptorSetLayout = VK_NULL_HANDLE;
     }
 
     if (m_renderPass != VK_NULL_HANDLE)
@@ -786,6 +873,9 @@ void Renderer::recreateSwapChain()
     createSwapChain();
     createImageViews();
     createRenderPass();
+    createDescriptorSetLayout();
+    createPipelineLayout();
+    createDescriptorPool();
     createFramebuffers();
 
     // Reset image-in-flight tracking for new swapchain
@@ -1003,18 +1093,14 @@ uint32_t Renderer::findMemoryType(uint32_t typeFilter, VkMemoryPropertyFlags pro
 
 void Renderer::beginFrame()
 {
-    // Get current shader from shader manager
-    ShaderProgram* currentShader = nullptr;
-    if (m_shaderManager)
-    {
-        currentShader = m_shaderManager->getCurrentShader();
-    }
-
-    if (!currentShader || currentShader->getPipeline() == VK_NULL_HANDLE)
+    // Use the shader set by ShaderProgram::bind()
+    if (!m_currentShader || m_currentShader->getPipeline() == VK_NULL_HANDLE)
     {
         LOG_WARNING("[Vulkan] No valid shader/pipeline bound - skipping frame");
         return;
     }
+
+    ShaderProgram* currentShader = m_currentShader;
 
     VkPipeline currentPipeline = currentShader->getPipeline();
 
@@ -1076,6 +1162,22 @@ void Renderer::beginFrame()
 
     // Bind the pipeline (we already checked it's valid)
     vkCmdBindPipeline(m_commandBuffers[m_currentFrame], VK_PIPELINE_BIND_POINT_GRAPHICS, currentPipeline);
+
+    // Bind texture descriptor set if a texture is bound
+    if (m_currentTexture && m_currentTexture->getDescriptorSet() != VK_NULL_HANDLE)
+    {
+        VkDescriptorSet descriptorSet = m_currentTexture->getDescriptorSet();
+        vkCmdBindDescriptorSets(
+            m_commandBuffers[m_currentFrame],
+            VK_PIPELINE_BIND_POINT_GRAPHICS,
+            m_pipelineLayout,
+            0, // first set
+            1, // descriptor set count
+            &descriptorSet,
+            0, nullptr // dynamic offsets
+        );
+        LOG_DEBUG("[Vulkan] Texture descriptor set bound");
+    }
 
     // Set dynamic viewport with Y-axis flip to match OpenGL convention
     VkViewport viewport{};
@@ -1195,7 +1297,8 @@ void Renderer::setClearColor(const glm::vec4& color)
 
 void Renderer::clear()
 {
-    beginFrame();
+    // Don't begin frame here - let drawArrays/drawElements call it
+    // This allows shaders to be bound before beginFrame() is called
 }
 
 void Renderer::setViewport(int x, int y, int width, int height)
@@ -1219,11 +1322,39 @@ void Renderer::enableBlending(bool enable)
 
 void Renderer::enableCulling(bool enable)
 {
+    if (m_cullingEnabled == enable)
+    {
+        return; // No change
+    }
+
+    m_cullingEnabled = enable;
+    LOG_INFO("[Vulkan] Culling {}", enable ? "enabled" : "disabled");
+
+    // Pipelines are immutable in Vulkan, so we need to recreate them
+    // with the new culling state
+    if (m_device != VK_NULL_HANDLE && m_shaderManager)
+    {
+        vkDeviceWaitIdle(m_device);
+
+        // Destroy existing pipelines
+        m_shaderManager->destroyAllPipelines();
+
+        // Recreate pipelines with new culling state
+        m_shaderManager->createAllPipelines(m_renderPass, m_pipelineLayout, m_swapChainExtent);
+
+        LOG_INFO("[Vulkan] Pipelines recreated with culling state");
+    }
 }
 
 void Renderer::drawArrays(PrimitiveType mode, int first, int count)
 {
-    // Skip if frame wasn't begun (e.g., no pipeline available)
+    // Begin frame if not already begun
+    if (!m_frameBegun)
+    {
+        beginFrame();
+    }
+
+    // Skip if frame wasn't successfully begun (e.g., no pipeline available)
     if (!m_frameBegun)
     {
         return;
@@ -1245,7 +1376,13 @@ void Renderer::drawArrays(PrimitiveType mode, int first, int count)
 
 void Renderer::drawElements(PrimitiveType mode, int count, unsigned int indexType, const void* indices)
 {
-    // Skip if frame wasn't begun (e.g., no pipeline available)
+    // Begin frame if not already begun
+    if (!m_frameBegun)
+    {
+        beginFrame();
+    }
+
+    // Skip if frame wasn't successfully begun (e.g., no pipeline available)
     if (!m_frameBegun)
     {
         return;
@@ -1269,6 +1406,11 @@ std::unique_ptr<IVertexArray> Renderer::createVertexArray()
 std::unique_ptr<IIndexBuffer> Renderer::createIndexBuffer()
 {
     return std::make_unique<VK::IndexBuffer>(m_device, m_physicalDevice, this);
+}
+
+std::unique_ptr<ITexture> Renderer::createTexture()
+{
+    return std::make_unique<VK::Texture>(m_device, m_physicalDevice, this);
 }
 
 void Renderer::setActiveVertexArray(VertexArray* vao)
@@ -1305,6 +1447,41 @@ void Renderer::onShaderLoaded(const std::string& shaderName)
     {
         LOG_ERROR("[Vulkan] Failed to create pipeline for shader: {}", shaderName);
     }
+}
+
+VkCommandBuffer Renderer::beginSingleTimeCommands()
+{
+    VkCommandBufferAllocateInfo allocInfo{};
+    allocInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_ALLOCATE_INFO;
+    allocInfo.level = VK_COMMAND_BUFFER_LEVEL_PRIMARY;
+    allocInfo.commandPool = m_commandPool;
+    allocInfo.commandBufferCount = 1;
+
+    VkCommandBuffer commandBuffer;
+    vkAllocateCommandBuffers(m_device, &allocInfo, &commandBuffer);
+
+    VkCommandBufferBeginInfo beginInfo{};
+    beginInfo.sType = VK_STRUCTURE_TYPE_COMMAND_BUFFER_BEGIN_INFO;
+    beginInfo.flags = VK_COMMAND_BUFFER_USAGE_ONE_TIME_SUBMIT_BIT;
+
+    vkBeginCommandBuffer(commandBuffer, &beginInfo);
+
+    return commandBuffer;
+}
+
+void Renderer::endSingleTimeCommands(VkCommandBuffer commandBuffer)
+{
+    vkEndCommandBuffer(commandBuffer);
+
+    VkSubmitInfo submitInfo{};
+    submitInfo.sType = VK_STRUCTURE_TYPE_SUBMIT_INFO;
+    submitInfo.commandBufferCount = 1;
+    submitInfo.pCommandBuffers = &commandBuffer;
+
+    vkQueueSubmit(m_graphicsQueue, 1, &submitInfo, VK_NULL_HANDLE);
+    vkQueueWaitIdle(m_graphicsQueue);
+
+    vkFreeCommandBuffers(m_device, m_commandPool, 1, &commandBuffer);
 }
 
 } // namespace VK

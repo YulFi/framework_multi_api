@@ -1,4 +1,5 @@
 #include "MyApp.h"
+#include "TextureUtils.h"
 #include "Logger.h"
 
 MyApp::MyApp(const std::string& pluginPath)
@@ -25,11 +26,16 @@ void MyApp::onInit()
     // Notify renderer that shader was loaded (Vulkan needs this to create pipeline)
     onShaderLoaded("basic");
 
+    // Set the texture sampler to use texture unit 0
+    m_basicShader->bind();
+    m_basicShader->setInt("textureSampler", 0);
+    m_basicShader->unbind();
+
     float vertices[] = {
-        // Positions          // Colors
-        -0.5f, -0.5f, 0.0f,   1.0f, 0.0f, 0.0f,  // Bottom left - Red
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,  // Bottom right - Green
-         0.0f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f   // Top - Blue
+        // Positions          // Colors              // Texture Coords
+        -0.5f, -0.5f, 0.0f,   1.0f, 0.0f, 0.0f,     0.0f, 0.0f,  // Bottom left - Red
+         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,     1.0f, 0.0f,  // Bottom right - Green
+         0.0f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,     0.5f, 1.0f   // Top - Blue
     };
 
     m_VAO = m_renderer->createVertexArray();
@@ -39,12 +45,25 @@ void MyApp::onInit()
     m_VBO->setData(vertices, sizeof(vertices), BufferUsage::Static);
 
     // Position attribute
-    m_VAO->addAttribute(VertexAttribute(0, 3, DataType::Float, false, 6 * sizeof(float), (void*)0));
+    m_VAO->addAttribute(VertexAttribute(0, 3, DataType::Float, false, 8 * sizeof(float), (void*)0));
 
     // Color attribute
-    m_VAO->addAttribute(VertexAttribute(1, 3, DataType::Float, false, 6 * sizeof(float), (void*)(3 * sizeof(float))));
+    m_VAO->addAttribute(VertexAttribute(1, 3, DataType::Float, false, 8 * sizeof(float), (void*)(3 * sizeof(float))));
+
+    // Texture coordinate attribute
+    m_VAO->addAttribute(VertexAttribute(2, 2, DataType::Float, false, 8 * sizeof(float), (void*)(6 * sizeof(float))));
 
     m_VAO->unbind();
+
+    // Create checkerboard texture
+    LOG_INFO("Creating checkerboard texture...");
+    m_texture = m_renderer->createTexture();
+    auto checkerData = TextureUtils::createCheckerboard(256);
+    LOG_INFO("Setting texture data...");
+    m_texture->setData(checkerData.data(), 256, 256, TextureFormat::RGBA);
+    m_texture->setFilter(TextureFilter::Nearest, TextureFilter::Nearest);
+    m_texture->setWrap(TextureWrap::Repeat, TextureWrap::Repeat);
+    LOG_INFO("Checkerboard texture created successfully");
 
     // Set clear color via Application (this ensures consistency across all render APIs)
     // The Application class will forward this to the renderer plugin
@@ -100,6 +119,13 @@ void MyApp::onRender()
     m_basicShader->setMat4("view", view);
     m_basicShader->setMat4("model", model);
 
+    // Bind texture and ensure sampler uniform is set
+    if (m_texture)
+    {
+        m_texture->bind(0);
+        m_basicShader->setInt("textureSampler", 0);
+    }
+
     m_VAO->bind();
     m_renderer->drawArrays(PrimitiveType::Triangles, 0, 3);
     m_VAO->unbind();
@@ -154,6 +180,7 @@ void MyApp::onKeyPressed(int key, int scancode, int action, int mods)
 
 void MyApp::onShutdown()
 {
+    m_texture.reset();
     m_VAO.reset();
     m_VBO.reset();
     m_basicShader = nullptr;  // Shader is owned by ShaderManager, just clear the pointer

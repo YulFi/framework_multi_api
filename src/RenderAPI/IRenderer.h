@@ -10,6 +10,7 @@ struct GLFWwindow;
 class IVertexBuffer;
 class IVertexArray;
 class IIndexBuffer;
+class ITexture;
 
 // Forward declare OpenGL types to avoid including glad.h
 typedef unsigned int GLenum;
@@ -47,4 +48,5 @@ public:
     virtual std::unique_ptr<IVertexBuffer> createVertexBuffer() = 0;
     virtual std::unique_ptr<IVertexArray> createVertexArray() = 0;
     virtual std::unique_ptr<IIndexBuffer> createIndexBuffer() = 0;
+    virtual std::unique_ptr<ITexture> createTexture() = 0;
 };

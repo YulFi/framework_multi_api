@@ -57,6 +57,9 @@
     <OutDir>$(SolutionDir)bin\$(Configuration)\</OutDir>
     <IntDir>$(SolutionDir)obj\$(Configuration)\</IntDir>
   </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgApplocalDeps>false</VcpkgApplocalDeps>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <WarningLevel>Level3</WarningLevel>
@@ -97,6 +100,7 @@
     <ClCompile Include="src\main.cpp" />
     <ClCompile Include="src\MyApp.cpp" />
     <ClCompile Include="src\Application.cpp" />
+    <ClCompile Include="src\TextureUtils.cpp" />
     <ClCompile Include="src\WindowManager.cpp" />
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Logger.cpp" />
@@ -115,8 +119,10 @@
     <ClInclude Include="src\RenderAPI\IIndexBuffer.h" />
     <ClInclude Include="src\RenderAPI\IVertexBuffer.h" />
     <ClInclude Include="src\RenderAPI\IVertexArray.h" />
+    <ClInclude Include="src\RenderAPI\ITexture.h" />
     <ClInclude Include="src\RenderAPI\IPrimitiveType.h" />
     <ClInclude Include="src\RenderAPI\PluginLoader.h" />
+    <ClInclude Include="src\TextureUtils.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="shaders\basic.vert" />

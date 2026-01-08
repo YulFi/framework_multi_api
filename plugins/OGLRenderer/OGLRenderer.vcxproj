@@ -95,6 +95,8 @@
     <ClCompile Include="..\..\src\OGL\VertexArray.cpp" />
     <ClCompile Include="..\..\src\OGL\VertexBuffer.cpp" />
     <ClCompile Include="..\..\src\OGL\IndexBuffer.cpp" />
+    <ClCompile Include="..\..\src\OGL\Texture.cpp" />
+    <ClCompile Include="..\..\src\TextureUtils.cpp" />
     <ClCompile Include="..\..\src\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -105,6 +107,7 @@
     <ClInclude Include="..\..\src\RenderAPI\IIndexBuffer.h" />
     <ClInclude Include="..\..\src\RenderAPI\IVertexBuffer.h" />
     <ClInclude Include="..\..\src\RenderAPI\IVertexArray.h" />
+    <ClInclude Include="..\..\src\RenderAPI\ITexture.h" />
     <ClInclude Include="..\..\src\RenderAPI\IPrimitiveType.h" />
     <ClInclude Include="..\..\src\OGL\Renderer.h" />
     <ClInclude Include="..\..\src\OGL\ShaderManager.h" />
@@ -112,7 +115,9 @@
     <ClInclude Include="..\..\src\OGL\VertexArray.h" />
     <ClInclude Include="..\..\src\OGL\VertexBuffer.h" />
     <ClInclude Include="..\..\src\OGL\IndexBuffer.h" />
+    <ClInclude Include="..\..\src\OGL\Texture.h" />
     <ClInclude Include="..\..\src\OGL\GLResource.h" />
+    <ClInclude Include="..\..\src\TextureUtils.h" />
     <ClInclude Include="..\..\src\Logger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

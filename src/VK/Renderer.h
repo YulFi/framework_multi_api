@@ -64,6 +64,7 @@ namespace VK
         std::unique_ptr<IVertexBuffer> createVertexBuffer() override;
         std::unique_ptr<IVertexArray> createVertexArray() override;
         std::unique_ptr<IIndexBuffer> createIndexBuffer() override;
+        std::unique_ptr<ITexture> createTexture() override;
 
         // Vulkan-specific methods
         void setActiveVertexArray(VertexArray* vao);
@@ -73,12 +74,27 @@ namespace VK
         // Shader binding (called by ShaderProgram::bind())
         void setCurrentShader(class ShaderProgram* shader) { m_currentShader = shader; }
 
+        // Texture binding (called by Texture::bind())
+        void setCurrentTexture(class Texture* texture) { m_currentTexture = texture; }
+
         // Pipeline management
         VkPipeline createPipelineForShader(VkShaderModule vertModule,
                                            VkShaderModule fragModule,
                                            VkRenderPass renderPass,
                                            VkPipelineLayout pipelineLayout,
                                            VkExtent2D extent);
+
+        // Command buffer helpers
+        VkCommandBuffer beginSingleTimeCommands();
+        void endSingleTimeCommands(VkCommandBuffer commandBuffer);
+
+        // Descriptor management
+        VkDescriptorPool getDescriptorPool() const { return m_descriptorPool; }
+        VkDescriptorSetLayout getDescriptorSetLayout() const { return m_descriptorSetLayout; }
+        VkDevice getDevice() const { return m_device; }
+        VkPhysicalDevice getPhysicalDevice() const { return m_physicalDevice; }
+        VkQueue getGraphicsQueue() const { return m_graphicsQueue; }
+        VkCommandPool getCommandPool() const { return m_commandPool; }
 
     private:
         void createInstance();
@@ -88,6 +104,9 @@ namespace VK
         void createSwapChain();
         void createImageViews();
         void createRenderPass();
+        void createDescriptorSetLayout();
+        void createPipelineLayout();
+        void createDescriptorPool();
         void createGraphicsPipeline();
         void createFramebuffers();
         void createCommandPool();
@@ -129,7 +148,9 @@ namespace VK
         std::vector<VkFramebuffer> m_swapChainFramebuffers;
 
         VkRenderPass m_renderPass;
+        VkDescriptorSetLayout m_descriptorSetLayout;
         VkPipelineLayout m_pipelineLayout;
+        VkDescriptorPool m_descriptorPool;
         // m_graphicsPipeline removed - pipelines are now managed by shader manager
 
         VkCommandPool m_commandPool;
@@ -155,11 +176,13 @@ namespace VK
         // Shader manager and current shader
         class ShaderManager* m_shaderManager;
         class ShaderProgram* m_currentShader;
+        class Texture* m_currentTexture;
 
         uint32_t m_currentFrame;
         uint32_t m_imageIndex;
         bool m_framebufferResized;
         bool m_frameBegun;
+        bool m_cullingEnabled;
 
         const int MAX_FRAMES_IN_FLIGHT = 2;
         const std::vector<const char*> m_deviceExtensions = {

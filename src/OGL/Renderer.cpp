@@ -2,6 +2,7 @@
 #include "VertexBuffer.h"
 #include "VertexArray.h"
 #include "IndexBuffer.h"
+#include "Texture.h"
 #include "../Logger.h"
 #include <GLFW/glfw3.h>
 
@@ -208,6 +209,11 @@ std::unique_ptr<IVertexArray> Renderer::createVertexArray()
 std::unique_ptr<IIndexBuffer> Renderer::createIndexBuffer()
 {
     return std::make_unique<OGL::IndexBuffer>();
+}
+
+std::unique_ptr<ITexture> Renderer::createTexture()
+{
+    return std::make_unique<OGL::Texture>();
 }
 
 } // namespace OGL

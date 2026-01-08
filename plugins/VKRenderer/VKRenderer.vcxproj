@@ -95,7 +95,9 @@
     <ClCompile Include="..\..\src\VK\VertexBuffer.cpp" />
     <ClCompile Include="..\..\src\VK\VertexArray.cpp" />
     <ClCompile Include="..\..\src\VK\IndexBuffer.cpp" />
+    <ClCompile Include="..\..\src\VK\Texture.cpp" />
     <ClCompile Include="..\..\src\VK\ValidationLayers.cpp" />
+    <ClCompile Include="..\..\src\TextureUtils.cpp" />
     <ClCompile Include="..\..\src\Logger.cpp" />
   </ItemGroup>
   <ItemGroup>
@@ -106,6 +108,7 @@
     <ClInclude Include="..\..\src\RenderAPI\IIndexBuffer.h" />
     <ClInclude Include="..\..\src\RenderAPI\IVertexBuffer.h" />
     <ClInclude Include="..\..\src\RenderAPI\IVertexArray.h" />
+    <ClInclude Include="..\..\src\RenderAPI\ITexture.h" />
     <ClInclude Include="..\..\src\RenderAPI\IPrimitiveType.h" />
     <ClInclude Include="..\..\src\VK\Renderer.h" />
     <ClInclude Include="..\..\src\VK\ShaderManager.h" />
@@ -113,7 +116,9 @@
     <ClInclude Include="..\..\src\VK\VertexBuffer.h" />
     <ClInclude Include="..\..\src\VK\VertexArray.h" />
     <ClInclude Include="..\..\src\VK\IndexBuffer.h" />
+    <ClInclude Include="..\..\src\VK\Texture.h" />
     <ClInclude Include="..\..\src\VK\ValidationLayers.h" />
+    <ClInclude Include="..\..\src\TextureUtils.h" />
     <ClInclude Include="..\..\src\Logger.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />

@@ -18,7 +18,9 @@ add_library(${PROJECT_NAME} SHARED
     ../../src/VK/VertexBuffer.cpp
     ../../src/VK/VertexArray.cpp
     ../../src/VK/IndexBuffer.cpp
+    ../../src/VK/Texture.cpp
     ../../src/VK/ValidationLayers.cpp
+    ../../src/TextureUtils.cpp
     ../../src/Logger.cpp
 )
 

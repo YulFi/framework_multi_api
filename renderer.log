@@ -1,0 +1,1349 @@
+[14:11:54.443] [INFO ] ========================================
+[14:11:54.446] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[14:11:54.447] [INFO ] ========================================
+[14:11:54.468] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[14:11:54.469] [INFO ] Renderer plugin loaded successfully
+[14:11:54.655] [INFO ] MyApp initialized
+[14:11:54.655] [INFO ] Triangle created and shaders loaded from files
+[14:11:54.656] [INFO ] Controls:
+[14:11:54.656] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:11:54.656] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:11:54.656] [INFO ]   - R: Reset camera
+[14:11:54.656] [INFO ]   - W/A/S/D: Pan camera
+[14:11:54.656] [INFO ] Application initialized successfully
+[14:11:54.656] [INFO ] Starting main loop...
+[14:11:59.845] [INFO ] Main loop ended
+[14:11:59.845] [INFO ] MyApp shutting down
+[14:11:59.863] [INFO ] Application shut down
+[14:12:19.930] [INFO ] ========================================
+[14:12:19.931] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:12:19.931] [INFO ] ========================================
+[14:12:19.960] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:12:19.960] [INFO ] Renderer plugin loaded successfully
+[14:12:20.211] [INFO ] MyApp initialized
+[14:12:20.212] [INFO ] Triangle created and shaders loaded from files
+[14:12:20.212] [INFO ] Controls:
+[14:12:20.212] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:12:20.212] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:12:20.213] [INFO ]   - R: Reset camera
+[14:12:20.213] [INFO ]   - W/A/S/D: Pan camera
+[14:12:20.213] [INFO ] Application initialized successfully
+[14:12:20.213] [INFO ] Starting main loop...
+[14:12:23.028] [INFO ] Main loop ended
+[14:12:23.028] [INFO ] MyApp shutting down
+[14:12:23.069] [INFO ] Application shut down
+[14:19:21.364] [INFO ] ========================================
+[14:19:21.364] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:19:21.365] [INFO ] ========================================
+[14:19:21.391] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:19:21.392] [INFO ] Renderer plugin loaded successfully
+[14:19:21.656] [INFO ] MyApp initialized
+[14:19:21.657] [INFO ] Triangle created and shaders loaded from files
+[14:19:21.658] [INFO ] Controls:
+[14:19:21.658] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:19:21.658] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:19:21.658] [INFO ]   - R: Reset camera
+[14:19:21.658] [INFO ]   - W/A/S/D: Pan camera
+[14:19:21.658] [INFO ] Application initialized successfully
+[14:19:21.658] [INFO ] Starting main loop...
+[14:19:23.957] [INFO ] Main loop ended
+[14:19:23.957] [INFO ] MyApp shutting down
+[14:19:23.995] [INFO ] Application shut down
+[14:19:33.326] [INFO ] ========================================
+[14:19:33.327] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[14:19:33.327] [INFO ] ========================================
+[14:19:33.350] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[14:19:33.351] [INFO ] Renderer plugin loaded successfully
+[14:19:33.551] [INFO ] MyApp initialized
+[14:19:33.552] [INFO ] Triangle created and shaders loaded from files
+[14:19:33.552] [INFO ] Controls:
+[14:19:33.552] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:19:33.552] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:19:33.552] [INFO ]   - R: Reset camera
+[14:19:33.553] [INFO ]   - W/A/S/D: Pan camera
+[14:19:33.553] [INFO ] Application initialized successfully
+[14:19:33.553] [INFO ] Starting main loop...
+[14:19:36.302] [INFO ] Main loop ended
+[14:19:36.303] [INFO ] MyApp shutting down
+[14:19:36.320] [INFO ] Application shut down
+[14:21:42.044] [INFO ] ========================================
+[14:21:42.045] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[14:21:42.045] [INFO ] ========================================
+[14:21:42.052] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[14:21:42.052] [INFO ] Renderer plugin loaded successfully
+[14:21:42.254] [INFO ] MyApp initialized
+[14:21:42.255] [INFO ] Triangle created and shaders loaded from files
+[14:21:42.255] [INFO ] Controls:
+[14:21:42.256] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:21:42.256] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:21:42.256] [INFO ]   - R: Reset camera
+[14:21:42.256] [INFO ]   - W/A/S/D: Pan camera
+[14:21:42.256] [INFO ] Application initialized successfully
+[14:21:42.256] [INFO ] Starting main loop...
+[14:21:44.150] [INFO ] Main loop ended
+[14:21:44.150] [INFO ] MyApp shutting down
+[14:21:44.166] [INFO ] Application shut down
+[14:21:56.346] [INFO ] ========================================
+[14:21:56.347] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:21:56.347] [INFO ] ========================================
+[14:21:56.369] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:21:56.369] [INFO ] Renderer plugin loaded successfully
+[14:21:56.613] [INFO ] MyApp initialized
+[14:21:56.615] [INFO ] Triangle created and shaders loaded from files
+[14:21:56.615] [INFO ] Controls:
+[14:21:56.615] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:21:56.615] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:21:56.615] [INFO ]   - R: Reset camera
+[14:21:56.615] [INFO ]   - W/A/S/D: Pan camera
+[14:21:56.615] [INFO ] Application initialized successfully
+[14:21:56.616] [INFO ] Starting main loop...
+[14:22:08.490] [INFO ] Main loop ended
+[14:22:08.490] [INFO ] MyApp shutting down
+[14:22:08.529] [INFO ] Application shut down
+[14:23:29.039] [INFO ] ========================================
+[14:23:29.040] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:23:29.040] [INFO ] ========================================
+[14:23:29.067] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:23:29.067] [INFO ] Renderer plugin loaded successfully
+[14:23:29.305] [INFO ] MyApp initialized
+[14:23:29.307] [INFO ] Triangle created and shaders loaded from files
+[14:23:29.307] [INFO ] Controls:
+[14:23:29.307] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:23:29.308] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:23:29.308] [INFO ]   - R: Reset camera
+[14:23:29.308] [INFO ]   - W/A/S/D: Pan camera
+[14:23:29.308] [INFO ] Application initialized successfully
+[14:23:29.308] [INFO ] Starting main loop...
+[14:23:40.253] [INFO ] Main loop ended
+[14:23:40.254] [INFO ] MyApp shutting down
+[14:23:40.294] [INFO ] Application shut down
+[14:23:56.976] [INFO ] ========================================
+[14:23:56.976] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:23:56.977] [INFO ] ========================================
+[14:23:56.984] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:23:56.984] [INFO ] Renderer plugin loaded successfully
+[14:23:57.213] [INFO ] MyApp initialized
+[14:24:46.878] [INFO ] Triangle created and shaders loaded from files
+[14:24:46.878] [INFO ] Controls:
+[14:24:46.879] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:24:46.879] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:24:46.879] [INFO ]   - R: Reset camera
+[14:24:46.879] [INFO ]   - W/A/S/D: Pan camera
+[14:24:46.880] [INFO ] Application initialized successfully
+[14:24:46.880] [INFO ] Starting main loop...
+[14:25:35.164] [INFO ] ========================================
+[14:25:35.164] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:25:35.164] [INFO ] ========================================
+[14:25:35.172] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:25:35.172] [INFO ] Renderer plugin loaded successfully
+[14:25:35.413] [INFO ] MyApp initialized
+[14:25:39.235] [INFO ] Triangle created and shaders loaded from files
+[14:25:39.235] [INFO ] Controls:
+[14:25:39.235] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:25:39.236] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:25:39.236] [INFO ]   - R: Reset camera
+[14:25:39.236] [INFO ]   - W/A/S/D: Pan camera
+[14:25:39.236] [INFO ] Application initialized successfully
+[14:25:39.236] [INFO ] Starting main loop...
+[14:25:41.211] [INFO ] Main loop ended
+[14:25:41.212] [INFO ] MyApp shutting down
+[14:25:41.253] [INFO ] Application shut down
+[14:25:51.316] [INFO ] ========================================
+[14:25:51.317] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[14:25:51.317] [INFO ] ========================================
+[14:25:51.338] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[14:25:51.339] [INFO ] Renderer plugin loaded successfully
+[14:25:51.533] [INFO ] MyApp initialized
+[14:25:51.534] [INFO ] Triangle created and shaders loaded from files
+[14:25:51.534] [INFO ] Controls:
+[14:25:51.535] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:25:51.535] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:25:51.535] [INFO ]   - R: Reset camera
+[14:25:51.535] [INFO ]   - W/A/S/D: Pan camera
+[14:25:51.535] [INFO ] Application initialized successfully
+[14:25:51.535] [INFO ] Starting main loop...
+[14:25:58.025] [INFO ] Main loop ended
+[14:25:58.025] [INFO ] MyApp shutting down
+[14:25:58.040] [INFO ] Application shut down
+[14:26:04.077] [INFO ] ========================================
+[14:26:04.078] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:26:04.078] [INFO ] ========================================
+[14:26:04.084] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:26:04.084] [INFO ] Renderer plugin loaded successfully
+[14:26:04.413] [INFO ] MyApp initialized
+[14:26:04.414] [INFO ] Triangle created and shaders loaded from files
+[14:26:04.414] [INFO ] Controls:
+[14:26:04.415] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:26:04.415] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:26:04.415] [INFO ]   - R: Reset camera
+[14:26:04.415] [INFO ]   - W/A/S/D: Pan camera
+[14:26:04.415] [INFO ] Application initialized successfully
+[14:26:04.415] [INFO ] Starting main loop...
+[14:26:08.337] [INFO ] Main loop ended
+[14:26:08.338] [INFO ] MyApp shutting down
+[14:26:08.374] [INFO ] Application shut down
+[14:28:08.614] [INFO ] ========================================
+[14:28:08.615] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:28:08.615] [INFO ] ========================================
+[14:28:08.640] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:28:08.640] [INFO ] Renderer plugin loaded successfully
+[14:28:08.892] [INFO ] MyApp initialized
+[14:28:08.893] [INFO ] Triangle created and shaders loaded from files
+[14:28:08.893] [INFO ] Controls:
+[14:28:08.894] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:28:08.894] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:28:08.894] [INFO ]   - R: Reset camera
+[14:28:08.894] [INFO ]   - W/A/S/D: Pan camera
+[14:28:08.894] [INFO ] Application initialized successfully
+[14:28:08.894] [INFO ] Starting main loop...
+[14:28:11.787] [INFO ] Main loop ended
+[14:28:11.787] [INFO ] MyApp shutting down
+[14:28:11.825] [INFO ] Application shut down
+[14:28:18.352] [INFO ] ========================================
+[14:28:18.353] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[14:28:18.353] [INFO ] ========================================
+[14:28:18.355] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[14:28:18.355] [INFO ] Renderer plugin loaded successfully
+[14:28:18.553] [INFO ] MyApp initialized
+[14:28:18.554] [INFO ] Triangle created and shaders loaded from files
+[14:28:18.554] [INFO ] Controls:
+[14:28:18.554] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:28:18.554] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:28:18.554] [INFO ]   - R: Reset camera
+[14:28:18.555] [INFO ]   - W/A/S/D: Pan camera
+[14:28:18.555] [INFO ] Application initialized successfully
+[14:28:18.555] [INFO ] Starting main loop...
+[14:28:19.821] [INFO ] Main loop ended
+[14:28:19.821] [INFO ] MyApp shutting down
+[14:28:19.839] [INFO ] Application shut down
+[14:30:02.244] [INFO ] ========================================
+[14:30:02.244] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:30:02.245] [INFO ] ========================================
+[14:30:02.274] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:30:02.274] [INFO ] Renderer plugin loaded successfully
+[14:30:02.530] [INFO ] MyApp initialized
+[14:30:02.531] [INFO ] Triangle created and shaders loaded from files
+[14:30:02.531] [INFO ] Controls:
+[14:30:02.531] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:30:02.532] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:30:02.532] [INFO ]   - R: Reset camera
+[14:30:02.532] [INFO ]   - W/A/S/D: Pan camera
+[14:30:02.532] [INFO ] Application initialized successfully
+[14:30:02.532] [INFO ] Starting main loop...
+[14:30:06.688] [INFO ] Main loop ended
+[14:30:06.688] [INFO ] MyApp shutting down
+[14:30:06.728] [INFO ] Application shut down
+[14:30:12.108] [INFO ] ========================================
+[14:30:12.108] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[14:30:12.109] [INFO ] ========================================
+[14:30:12.111] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[14:30:12.112] [INFO ] Renderer plugin loaded successfully
+[14:30:12.317] [INFO ] MyApp initialized
+[14:30:12.318] [INFO ] Triangle created and shaders loaded from files
+[14:30:12.318] [INFO ] Controls:
+[14:30:12.318] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:30:12.318] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:30:12.318] [INFO ]   - R: Reset camera
+[14:30:12.319] [INFO ]   - W/A/S/D: Pan camera
+[14:30:12.319] [INFO ] Application initialized successfully
+[14:30:12.319] [INFO ] Starting main loop...
+[14:30:16.394] [INFO ] Main loop ended
+[14:30:16.394] [INFO ] MyApp shutting down
+[14:30:16.409] [INFO ] Application shut down
+[14:33:25.835] [INFO ] ========================================
+[14:33:25.836] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:33:25.836] [INFO ] ========================================
+[14:33:25.865] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:33:25.865] [INFO ] Renderer plugin loaded successfully
+[14:33:26.100] [INFO ] MyApp initialized
+[14:33:26.101] [INFO ] Triangle created and shaders loaded from files
+[14:33:26.101] [INFO ] Controls:
+[14:33:26.101] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:33:26.101] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:33:26.102] [INFO ]   - R: Reset camera
+[14:33:26.102] [INFO ]   - W/A/S/D: Pan camera
+[14:33:26.102] [INFO ] Application initialized successfully
+[14:33:26.102] [INFO ] Starting main loop...
+[14:33:37.556] [INFO ] Main loop ended
+[14:33:37.557] [INFO ] MyApp shutting down
+[14:33:37.594] [INFO ] Application shut down
+[14:34:10.624] [INFO ] ========================================
+[14:34:10.625] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:34:10.625] [INFO ] ========================================
+[14:34:10.632] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:34:10.632] [INFO ] Renderer plugin loaded successfully
+[14:34:10.884] [INFO ] MyApp initialized
+[14:34:10.886] [INFO ] Triangle created and shaders loaded from files
+[14:34:10.886] [INFO ] Controls:
+[14:34:10.886] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:34:10.886] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:34:10.886] [INFO ]   - R: Reset camera
+[14:34:10.886] [INFO ]   - W/A/S/D: Pan camera
+[14:34:10.886] [INFO ] Application initialized successfully
+[14:34:10.886] [INFO ] Starting main loop...
+[14:34:17.415] [INFO ] Main loop ended
+[14:34:17.416] [INFO ] MyApp shutting down
+[14:34:17.451] [INFO ] Application shut down
+[14:36:47.623] [INFO ] ========================================
+[14:36:47.624] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:36:47.624] [INFO ] ========================================
+[14:36:47.651] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:36:47.652] [INFO ] Renderer plugin loaded successfully
+[14:36:47.913] [INFO ] MyApp initialized
+[14:36:47.914] [INFO ] Triangle created and shaders loaded from files
+[14:36:47.914] [INFO ] Controls:
+[14:36:47.914] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:36:47.914] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:36:47.914] [INFO ]   - R: Reset camera
+[14:36:47.914] [INFO ]   - W/A/S/D: Pan camera
+[14:36:47.914] [INFO ] Application initialized successfully
+[14:36:47.914] [INFO ] Starting main loop...
+[14:36:53.583] [INFO ] Main loop ended
+[14:36:53.583] [INFO ] MyApp shutting down
+[14:36:53.621] [INFO ] Application shut down
+[14:38:04.620] [INFO ] ========================================
+[14:38:04.621] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:38:04.621] [INFO ] ========================================
+[14:38:04.632] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:38:04.633] [INFO ] Renderer plugin loaded successfully
+[14:38:04.888] [INFO ] MyApp initialized
+[14:38:04.889] [INFO ] Triangle created and shaders loaded from files
+[14:38:04.889] [INFO ] Controls:
+[14:38:04.889] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[14:38:04.889] [INFO ]   - Mouse Wheel: Zoom in/out
+[14:38:04.889] [INFO ]   - R: Reset camera
+[14:38:04.889] [INFO ]   - W/A/S/D: Pan camera
+[14:38:04.889] [INFO ] Application initialized successfully
+[14:38:04.890] [INFO ] Starting main loop...
+[14:39:03.888] [INFO ] Main loop ended
+[14:39:03.889] [INFO ] MyApp shutting down
+[14:39:03.929] [INFO ] Application shut down
+[18:56:24.064] [INFO ] ========================================
+[18:56:24.065] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[18:56:24.065] [INFO ] ========================================
+[18:56:24.077] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[18:56:24.077] [INFO ] Renderer plugin loaded successfully
+[18:56:24.354] [INFO ] MyApp initialized
+[18:56:24.355] [INFO ] Triangle created and shaders loaded from files
+[18:56:24.355] [INFO ] Controls:
+[18:56:24.356] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[18:56:24.356] [INFO ]   - Mouse Wheel: Zoom in/out
+[18:56:24.356] [INFO ]   - R: Reset camera
+[18:56:24.356] [INFO ]   - W/A/S/D: Pan camera
+[18:56:24.356] [INFO ] Application initialized successfully
+[18:56:24.356] [INFO ] Starting main loop...
+[18:56:39.529] [INFO ] Main loop ended
+[18:56:39.529] [INFO ] MyApp shutting down
+[18:56:39.567] [INFO ] Application shut down
+[18:56:48.740] [INFO ] ========================================
+[18:56:48.741] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[18:56:48.741] [INFO ] ========================================
+[18:56:48.744] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[18:56:48.744] [INFO ] Renderer plugin loaded successfully
+[18:56:48.938] [INFO ] MyApp initialized
+[18:56:48.939] [INFO ] Triangle created and shaders loaded from files
+[18:56:48.939] [INFO ] Controls:
+[18:56:48.939] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[18:56:48.939] [INFO ]   - Mouse Wheel: Zoom in/out
+[18:56:48.939] [INFO ]   - R: Reset camera
+[18:56:48.940] [INFO ]   - W/A/S/D: Pan camera
+[18:56:48.940] [INFO ] Application initialized successfully
+[18:56:48.940] [INFO ] Starting main loop...
+[18:56:56.647] [INFO ] Main loop ended
+[18:56:56.647] [INFO ] MyApp shutting down
+[18:56:56.662] [INFO ] Application shut down
+[19:03:35.301] [INFO ] ========================================
+[19:03:35.302] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[19:03:35.302] [INFO ] ========================================
+[19:03:35.305] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[19:03:35.305] [INFO ] Renderer plugin loaded successfully
+[19:03:35.515] [INFO ] MyApp initialized
+[19:03:35.516] [INFO ] Triangle created and shaders loaded from files
+[19:03:35.516] [INFO ] Controls:
+[19:03:35.516] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[19:03:35.516] [INFO ]   - Mouse Wheel: Zoom in/out
+[19:03:35.517] [INFO ]   - R: Reset camera
+[19:03:35.517] [INFO ]   - W/A/S/D: Pan camera
+[19:03:35.517] [INFO ] Application initialized successfully
+[19:03:35.517] [INFO ] Starting main loop...
+[19:03:57.279] [INFO ] ========================================
+[19:03:57.280] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[19:03:57.280] [INFO ] ========================================
+[19:03:57.283] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[19:03:57.284] [INFO ] Renderer plugin loaded successfully
+[19:03:57.504] [INFO ] MyApp initialized
+[19:08:27.320] [INFO ] ========================================
+[19:08:27.321] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[19:08:27.321] [INFO ] ========================================
+[19:08:27.329] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[19:08:27.329] [INFO ] Renderer plugin loaded successfully
+[19:08:27.581] [INFO ] MyApp initialized
+[19:09:02.986] [INFO ] Triangle created and shaders loaded from files
+[19:09:02.986] [INFO ] Controls:
+[19:09:02.986] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[19:09:02.987] [INFO ]   - Mouse Wheel: Zoom in/out
+[19:09:02.987] [INFO ]   - R: Reset camera
+[19:09:02.987] [INFO ]   - W/A/S/D: Pan camera
+[19:09:02.987] [INFO ] Application initialized successfully
+[19:09:02.987] [INFO ] Starting main loop...
+[19:09:14.401] [INFO ] Main loop ended
+[19:09:14.401] [INFO ] MyApp shutting down
+[19:09:14.447] [INFO ] Application shut down
+[21:04:11.536] [INFO ] ========================================
+[21:04:11.537] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:04:11.537] [INFO ] ========================================
+[21:04:11.562] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:04:11.563] [INFO ] Renderer plugin loaded successfully
+[21:04:11.848] [INFO ] MyApp initialized
+[21:04:17.096] [INFO ] Triangle created and shaders loaded from files
+[21:04:17.096] [INFO ] Controls:
+[21:04:17.096] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:04:17.096] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:04:17.096] [INFO ]   - R: Reset camera
+[21:04:17.096] [INFO ]   - W/A/S/D: Pan camera
+[21:04:17.097] [INFO ] Application initialized successfully
+[21:04:17.097] [INFO ] Starting main loop...
+[21:04:39.456] [INFO ] ========================================
+[21:04:39.457] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[21:04:39.457] [INFO ] ========================================
+[21:04:39.460] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[21:04:39.460] [INFO ] Renderer plugin loaded successfully
+[21:04:39.647] [INFO ] MyApp initialized
+[21:04:39.687] [INFO ] Triangle created and shaders loaded from files
+[21:04:39.687] [INFO ] Controls:
+[21:04:39.687] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:04:39.687] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:04:39.687] [INFO ]   - R: Reset camera
+[21:04:39.688] [INFO ]   - W/A/S/D: Pan camera
+[21:04:39.688] [INFO ] Application initialized successfully
+[21:04:39.688] [INFO ] Starting main loop...
+[21:04:41.453] [INFO ] Main loop ended
+[21:04:41.453] [INFO ] MyApp shutting down
+[21:04:41.480] [INFO ] Application shut down
+[21:04:55.937] [INFO ] ========================================
+[21:04:55.938] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:04:55.938] [INFO ] ========================================
+[21:04:55.946] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:04:55.947] [INFO ] Renderer plugin loaded successfully
+[21:04:56.194] [INFO ] MyApp initialized
+[21:04:56.347] [INFO ] Triangle created and shaders loaded from files
+[21:04:56.348] [INFO ] Controls:
+[21:04:56.348] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:04:56.348] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:04:56.348] [INFO ]   - R: Reset camera
+[21:04:56.348] [INFO ]   - W/A/S/D: Pan camera
+[21:04:56.348] [INFO ] Application initialized successfully
+[21:04:56.348] [INFO ] Starting main loop...
+[21:08:31.492] [INFO ] ========================================
+[21:08:31.493] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:08:31.493] [INFO ] ========================================
+[21:08:31.522] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:08:31.523] [INFO ] Renderer plugin loaded successfully
+[21:08:31.777] [INFO ] MyApp initialized
+[21:08:31.938] [INFO ] Triangle created and shaders loaded from files
+[21:08:31.938] [INFO ] Controls:
+[21:08:31.938] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:08:31.938] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:08:31.938] [INFO ]   - R: Reset camera
+[21:08:31.938] [INFO ]   - W/A/S/D: Pan camera
+[21:08:31.939] [INFO ] Application initialized successfully
+[21:08:31.939] [INFO ] Starting main loop...
+[21:08:37.189] [INFO ] Main loop ended
+[21:08:37.189] [INFO ] MyApp shutting down
+[21:08:37.226] [INFO ] Application shut down
+[21:08:49.065] [INFO ] ========================================
+[21:08:49.066] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[21:08:49.066] [INFO ] ========================================
+[21:08:49.068] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[21:08:49.068] [INFO ] Renderer plugin loaded successfully
+[21:08:49.294] [INFO ] MyApp initialized
+[21:08:49.294] [INFO ] Triangle created and shaders loaded from files
+[21:08:49.295] [INFO ] Controls:
+[21:08:49.295] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:08:49.295] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:08:49.295] [INFO ]   - R: Reset camera
+[21:08:49.295] [INFO ]   - W/A/S/D: Pan camera
+[21:08:49.295] [INFO ] Application initialized successfully
+[21:08:49.295] [INFO ] Starting main loop...
+[21:08:52.122] [INFO ] Main loop ended
+[21:08:52.122] [INFO ] MyApp shutting down
+[21:08:52.137] [INFO ] Application shut down
+[21:17:33.410] [INFO ] ========================================
+[21:17:33.411] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[21:17:33.411] [INFO ] ========================================
+[21:17:33.415] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[21:17:33.415] [INFO ] Renderer plugin loaded successfully
+[21:17:33.627] [INFO ] MyApp initialized
+[21:18:06.964] [INFO ] ========================================
+[21:18:06.965] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[21:18:06.965] [INFO ] ========================================
+[21:18:06.969] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[21:18:06.969] [INFO ] Renderer plugin loaded successfully
+[21:18:07.191] [INFO ] MyApp initialized
+[21:18:08.378] [INFO ] Triangle created and shaders loaded from files
+[21:18:08.378] [INFO ] Controls:
+[21:18:08.378] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:18:08.379] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:18:08.379] [INFO ]   - R: Reset camera
+[21:18:08.379] [INFO ]   - W/A/S/D: Pan camera
+[21:18:08.379] [INFO ] Application initialized successfully
+[21:18:08.379] [INFO ] Starting main loop...
+[21:18:11.163] [INFO ] Main loop ended
+[21:18:11.164] [INFO ] MyApp shutting down
+[21:18:11.180] [INFO ] Application shut down
+[21:18:26.937] [INFO ] ========================================
+[21:18:26.938] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:18:26.938] [INFO ] ========================================
+[21:18:26.945] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:18:26.946] [INFO ] Renderer plugin loaded successfully
+[21:18:27.212] [INFO ] MyApp initialized
+[21:18:27.301] [ERROR] Failed to load shaders!
+[21:18:27.301] [INFO ] Application initialized successfully
+[21:18:27.301] [INFO ] Starting main loop...
+[21:19:15.069] [INFO ] ========================================
+[21:19:15.070] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:19:15.070] [INFO ] ========================================
+[21:19:15.078] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:19:15.078] [INFO ] Renderer plugin loaded successfully
+[21:19:15.326] [INFO ] MyApp initialized
+[21:19:15.416] [ERROR] Failed to load shaders!
+[21:19:15.416] [INFO ] Application initialized successfully
+[21:19:15.416] [INFO ] Starting main loop...
+[21:19:34.260] [INFO ] ========================================
+[21:19:34.261] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:19:34.261] [INFO ] ========================================
+[21:19:34.290] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:19:34.290] [INFO ] Renderer plugin loaded successfully
+[21:19:34.549] [INFO ] MyApp initialized
+[21:19:34.551] [INFO ] Triangle created and shaders loaded from files
+[21:19:34.551] [INFO ] Controls:
+[21:19:34.552] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:19:34.552] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:19:34.552] [INFO ]   - R: Reset camera
+[21:19:34.552] [INFO ]   - W/A/S/D: Pan camera
+[21:19:34.552] [INFO ] Application initialized successfully
+[21:19:34.552] [INFO ] Starting main loop...
+[21:20:01.363] [INFO ] Main loop ended
+[21:20:01.364] [INFO ] MyApp shutting down
+[21:20:01.408] [INFO ] Application shut down
+[21:20:12.418] [INFO ] ========================================
+[21:20:12.419] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:20:12.419] [INFO ] ========================================
+[21:20:12.427] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:20:12.427] [INFO ] Renderer plugin loaded successfully
+[21:20:12.662] [INFO ] MyApp initialized
+[21:23:00.937] [INFO ] ========================================
+[21:23:00.938] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:23:00.938] [INFO ] ========================================
+[21:23:00.947] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:23:00.947] [INFO ] Renderer plugin loaded successfully
+[21:23:01.203] [INFO ] MyApp initialized
+[21:23:47.672] [INFO ] ========================================
+[21:23:47.673] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:23:47.673] [INFO ] ========================================
+[21:23:47.685] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:23:47.685] [INFO ] Renderer plugin loaded successfully
+[21:23:56.455] [INFO ] MyApp initialized
+[21:25:25.696] [INFO ] Triangle created and shaders loaded from files
+[21:25:25.696] [INFO ] Controls:
+[21:25:25.696] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:25:25.697] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:25:25.697] [INFO ]   - R: Reset camera
+[21:25:25.697] [INFO ]   - W/A/S/D: Pan camera
+[21:25:25.697] [INFO ] Application initialized successfully
+[21:25:25.697] [INFO ] Starting main loop...
+[21:25:31.175] [INFO ] Main loop ended
+[21:25:31.177] [INFO ] MyApp shutting down
+[21:25:31.219] [INFO ] Application shut down
+[21:25:56.311] [INFO ] ========================================
+[21:25:56.312] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:25:56.312] [INFO ] ========================================
+[21:25:56.324] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:25:56.324] [INFO ] Renderer plugin loaded successfully
+[21:26:04.162] [INFO ] ========================================
+[21:26:04.163] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:26:04.163] [INFO ] ========================================
+[21:26:04.197] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:26:04.197] [INFO ] Renderer plugin loaded successfully
+[21:26:10.751] [INFO ] MyApp initialized
+[21:26:13.959] [INFO ] Triangle created and shaders loaded from files
+[21:26:13.959] [INFO ] Controls:
+[21:26:13.959] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:26:13.959] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:26:13.959] [INFO ]   - R: Reset camera
+[21:26:13.960] [INFO ]   - W/A/S/D: Pan camera
+[21:26:13.960] [INFO ] Application initialized successfully
+[21:26:13.960] [INFO ] Starting main loop...
+[21:26:28.680] [INFO ] Main loop ended
+[21:26:28.681] [INFO ] MyApp shutting down
+[21:26:28.720] [INFO ] Application shut down
+[21:26:40.736] [INFO ] ========================================
+[21:26:40.737] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[21:26:40.737] [INFO ] ========================================
+[21:26:40.740] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[21:26:40.740] [INFO ] Renderer plugin loaded successfully
+[21:26:40.944] [INFO ] MyApp initialized
+[21:26:40.944] [INFO ] Triangle created and shaders loaded from files
+[21:26:40.944] [INFO ] Controls:
+[21:26:40.945] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:26:40.945] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:26:40.945] [INFO ]   - R: Reset camera
+[21:26:40.945] [INFO ]   - W/A/S/D: Pan camera
+[21:26:40.945] [INFO ] Application initialized successfully
+[21:26:40.945] [INFO ] Starting main loop...
+[21:27:00.229] [INFO ] Main loop ended
+[21:27:00.230] [INFO ] MyApp shutting down
+[21:27:00.250] [INFO ] Application shut down
+[21:37:31.526] [INFO ] ========================================
+[21:37:31.527] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[21:37:31.527] [INFO ] ========================================
+[21:37:31.530] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[21:37:31.530] [INFO ] Renderer plugin loaded successfully
+[21:37:31.742] [INFO ] MyApp initialized
+[21:37:31.743] [INFO ] Triangle created and shaders loaded from files
+[21:37:31.743] [INFO ] Controls:
+[21:37:31.743] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:37:31.743] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:37:31.743] [INFO ]   - R: Reset camera
+[21:37:31.743] [INFO ]   - W/A/S/D: Pan camera
+[21:37:31.744] [INFO ] Application initialized successfully
+[21:37:31.744] [INFO ] Starting main loop...
+[21:37:32.827] [INFO ] Main loop ended
+[21:37:32.828] [INFO ] MyApp shutting down
+[21:37:32.845] [INFO ] Application shut down
+[21:37:41.461] [INFO ] ========================================
+[21:37:41.462] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:37:41.462] [INFO ] ========================================
+[21:37:41.468] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:37:41.468] [INFO ] Renderer plugin loaded successfully
+[21:37:41.720] [INFO ] MyApp initialized
+[21:37:41.722] [INFO ] Triangle created and shaders loaded from files
+[21:37:41.722] [INFO ] Controls:
+[21:37:41.722] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:37:41.722] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:37:41.722] [INFO ]   - R: Reset camera
+[21:37:41.723] [INFO ]   - W/A/S/D: Pan camera
+[21:37:41.723] [INFO ] Application initialized successfully
+[21:37:41.723] [INFO ] Starting main loop...
+[21:37:52.701] [INFO ] Main loop ended
+[21:37:52.701] [INFO ] MyApp shutting down
+[21:37:52.741] [INFO ] Application shut down
+[21:38:08.349] [INFO ] ========================================
+[21:38:08.350] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:38:08.350] [INFO ] ========================================
+[21:38:08.357] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:38:08.358] [INFO ] Renderer plugin loaded successfully
+[21:38:08.602] [INFO ] MyApp initialized
+[21:38:08.604] [INFO ] Triangle created and shaders loaded from files
+[21:38:08.604] [INFO ] Controls:
+[21:38:08.604] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:38:08.604] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:38:08.604] [INFO ]   - R: Reset camera
+[21:38:08.604] [INFO ]   - W/A/S/D: Pan camera
+[21:38:08.604] [INFO ] Application initialized successfully
+[21:38:08.605] [INFO ] Starting main loop...
+[21:38:13.998] [INFO ] Main loop ended
+[21:38:13.999] [INFO ] MyApp shutting down
+[21:38:14.038] [INFO ] Application shut down
+[23:36:18.674] [INFO ] ========================================
+[23:36:18.675] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[23:36:18.675] [INFO ] ========================================
+[23:36:18.682] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[23:36:18.683] [INFO ] Renderer plugin loaded successfully
+[23:36:18.942] [INFO ] MyApp initialized
+[23:36:18.943] [ERROR] Failed to load shaders!
+[23:36:18.943] [INFO ] Application initialized successfully
+[23:36:18.943] [INFO ] Starting main loop...
+[23:37:32.048] [INFO ] ========================================
+[23:37:32.049] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[23:37:32.049] [INFO ] ========================================
+[23:37:32.057] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[23:37:32.058] [INFO ] Renderer plugin loaded successfully
+[23:37:32.312] [INFO ] MyApp initialized
+[23:37:34.163] [ERROR] Failed to load shaders!
+[23:37:34.163] [INFO ] Application initialized successfully
+[23:37:34.163] [INFO ] Starting main loop...
+[23:37:49.004] [INFO ] ========================================
+[23:37:49.004] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[23:37:49.005] [INFO ] ========================================
+[23:37:49.012] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[23:37:49.012] [INFO ] Renderer plugin loaded successfully
+[23:37:49.263] [INFO ] MyApp initialized
+[23:37:49.264] [ERROR] Failed to load shaders!
+[23:37:49.264] [INFO ] Application initialized successfully
+[23:37:49.264] [INFO ] Starting main loop...
+[23:38:20.012] [INFO ] ========================================
+[23:38:20.013] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[23:38:20.013] [INFO ] ========================================
+[23:38:20.016] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[23:38:20.016] [INFO ] Renderer plugin loaded successfully
+[23:38:20.215] [INFO ] MyApp initialized
+[23:38:20.215] [ERROR] Failed to load shaders!
+[23:38:20.215] [INFO ] Application initialized successfully
+[23:38:20.215] [INFO ] Starting main loop...
+[23:38:49.422] [INFO ] ========================================
+[23:38:49.423] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[23:38:49.423] [INFO ] ========================================
+[23:38:49.427] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[23:38:49.428] [INFO ] Renderer plugin loaded successfully
+[23:38:49.624] [INFO ] MyApp initialized
+[23:39:11.663] [INFO ] ========================================
+[23:39:11.663] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[23:39:11.664] [INFO ] ========================================
+[23:39:11.668] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[23:39:11.668] [INFO ] Renderer plugin loaded successfully
+[23:39:11.882] [INFO ] MyApp initialized
+[23:39:17.714] [INFO ] Triangle created and shaders loaded from files
+[23:39:17.715] [INFO ] Controls:
+[23:39:17.715] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[23:39:17.715] [INFO ]   - Mouse Wheel: Zoom in/out
+[23:39:17.715] [INFO ]   - R: Reset camera
+[23:39:17.715] [INFO ]   - W/A/S/D: Pan camera
+[23:39:17.715] [INFO ] Application initialized successfully
+[23:39:17.715] [INFO ] Starting main loop...
+[23:39:20.113] [INFO ] Main loop ended
+[23:39:20.113] [INFO ] MyApp shutting down
+[23:39:20.133] [INFO ] Application shut down
+[23:39:33.358] [INFO ] ========================================
+[23:39:33.359] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[23:39:33.359] [INFO ] ========================================
+[23:39:33.367] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[23:39:33.367] [INFO ] Renderer plugin loaded successfully
+[23:39:33.626] [INFO ] MyApp initialized
+[23:40:22.646] [INFO ] ========================================
+[23:40:22.647] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[23:40:22.647] [INFO ] ========================================
+[23:40:22.655] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[23:40:22.656] [INFO ] Renderer plugin loaded successfully
+[23:40:22.890] [INFO ] MyApp initialized
+[23:40:30.357] [INFO ] Triangle created and shaders loaded from files
+[23:40:30.357] [INFO ] Controls:
+[23:40:30.357] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[23:40:30.357] [INFO ]   - Mouse Wheel: Zoom in/out
+[23:40:30.357] [INFO ]   - R: Reset camera
+[23:40:30.357] [INFO ]   - W/A/S/D: Pan camera
+[23:40:30.357] [INFO ] Application initialized successfully
+[23:40:30.357] [INFO ] Starting main loop...
+[23:40:39.887] [INFO ] Main loop ended
+[23:40:39.888] [INFO ] MyApp shutting down
+[23:40:39.925] [INFO ] Application shut down
+[09:30:48.474] [INFO ] ========================================
+[09:30:48.478] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[09:30:48.478] [INFO ] ========================================
+[09:30:48.512] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[09:30:48.513] [INFO ] Renderer plugin loaded successfully
+[09:30:49.053] [INFO ] MyApp initialized
+[09:30:54.713] [INFO ] Triangle created and shaders loaded from files
+[09:30:54.713] [INFO ] Controls:
+[09:30:54.713] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[09:30:54.713] [INFO ]   - Mouse Wheel: Zoom in/out
+[09:30:54.713] [INFO ]   - R: Reset camera
+[09:30:54.713] [INFO ]   - W/A/S/D: Pan camera
+[09:30:54.713] [INFO ] Application initialized successfully
+[09:30:54.713] [INFO ] Starting main loop...
+[09:31:07.969] [INFO ] Main loop ended
+[09:31:07.970] [INFO ] MyApp shutting down
+[09:31:08.019] [INFO ] Application shut down
+[09:31:43.784] [INFO ] ========================================
+[09:31:43.785] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[09:31:43.785] [INFO ] ========================================
+[09:31:43.792] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[09:31:43.793] [INFO ] Renderer plugin loaded successfully
+[09:31:44.207] [INFO ] MyApp initialized
+[09:31:44.210] [INFO ] Triangle created and shaders loaded from files
+[09:31:44.210] [INFO ] Controls:
+[09:31:44.210] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[09:31:44.211] [INFO ]   - Mouse Wheel: Zoom in/out
+[09:31:44.211] [INFO ]   - R: Reset camera
+[09:31:44.211] [INFO ]   - W/A/S/D: Pan camera
+[09:31:44.211] [INFO ] Application initialized successfully
+[09:31:44.211] [INFO ] Starting main loop...
+[09:31:44.813] [INFO ] Main loop ended
+[09:31:44.814] [INFO ] MyApp shutting down
+[09:31:44.859] [INFO ] Application shut down
+[09:36:23.665] [INFO ] ========================================
+[09:36:23.666] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[09:36:23.666] [INFO ] ========================================
+[09:36:23.698] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[09:36:23.698] [INFO ] Renderer plugin loaded successfully
+[09:36:24.000] [INFO ] MyApp initialized
+[09:36:24.003] [INFO ] Triangle created and shaders loaded from files
+[09:36:24.003] [INFO ] Controls:
+[09:36:24.003] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[09:36:24.003] [INFO ]   - Mouse Wheel: Zoom in/out
+[09:36:24.003] [INFO ]   - R: Reset camera
+[09:36:24.003] [INFO ]   - W/A/S/D: Pan camera
+[09:36:24.003] [INFO ] Application initialized successfully
+[09:36:24.004] [INFO ] Starting main loop...
+[09:36:28.916] [INFO ] Main loop ended
+[09:36:28.918] [INFO ] MyApp shutting down
+[09:36:28.957] [INFO ] Application shut down
+[09:41:32.288] [INFO ] ========================================
+[09:41:32.289] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[09:41:32.290] [INFO ] ========================================
+[09:41:32.325] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[09:41:32.325] [INFO ] Renderer plugin loaded successfully
+[09:41:32.630] [INFO ] MyApp initialized
+[09:41:32.633] [INFO ] Triangle created and shaders loaded from files
+[09:41:32.633] [INFO ] Controls:
+[09:41:32.633] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[09:41:32.633] [INFO ]   - Mouse Wheel: Zoom in/out
+[09:41:32.633] [INFO ]   - R: Reset camera
+[09:41:32.633] [INFO ]   - W/A/S/D: Pan camera
+[09:41:32.633] [INFO ] Application initialized successfully
+[09:41:32.634] [INFO ] Starting main loop...
+[09:41:34.924] [INFO ] Main loop ended
+[09:41:34.924] [INFO ] MyApp shutting down
+[09:41:34.963] [INFO ] Application shut down
+[09:41:59.633] [INFO ] ========================================
+[09:41:59.634] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[09:41:59.634] [INFO ] ========================================
+[09:41:59.641] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[09:41:59.642] [INFO ] Renderer plugin loaded successfully
+[09:41:59.960] [INFO ] MyApp initialized
+[09:41:59.963] [INFO ] Triangle created and shaders loaded from files
+[09:41:59.963] [INFO ] Controls:
+[09:41:59.963] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[09:41:59.963] [INFO ]   - Mouse Wheel: Zoom in/out
+[09:41:59.963] [INFO ]   - R: Reset camera
+[09:41:59.964] [INFO ]   - W/A/S/D: Pan camera
+[09:41:59.964] [INFO ] Application initialized successfully
+[09:41:59.964] [INFO ] Starting main loop...
+[09:42:03.932] [INFO ] Main loop ended
+[09:42:03.933] [INFO ] MyApp shutting down
+[09:42:03.975] [INFO ] Application shut down
+[09:42:09.877] [INFO ] ========================================
+[09:42:09.878] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[09:42:09.878] [INFO ] ========================================
+[09:42:09.905] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[09:42:09.906] [INFO ] Renderer plugin loaded successfully
+[09:42:10.242] [INFO ] MyApp initialized
+[09:42:10.245] [INFO ] Triangle created and shaders loaded from files
+[09:42:10.245] [INFO ] Controls:
+[09:42:10.245] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[09:42:10.245] [INFO ]   - Mouse Wheel: Zoom in/out
+[09:42:10.246] [INFO ]   - R: Reset camera
+[09:42:10.246] [INFO ]   - W/A/S/D: Pan camera
+[09:42:10.246] [INFO ] Application initialized successfully
+[09:42:10.246] [INFO ] Starting main loop...
+[09:42:15.664] [INFO ] Main loop ended
+[09:42:15.664] [INFO ] MyApp shutting down
+[09:42:15.706] [INFO ] Application shut down
+[09:43:03.432] [INFO ] ========================================
+[09:43:03.433] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[09:43:03.433] [INFO ] ========================================
+[09:43:03.442] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[09:43:03.443] [INFO ] Renderer plugin loaded successfully
+[09:43:03.731] [INFO ] MyApp initialized
+[09:43:03.734] [INFO ] Triangle created and shaders loaded from files
+[09:43:03.735] [INFO ] Controls:
+[09:43:03.735] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[09:43:03.735] [INFO ]   - Mouse Wheel: Zoom in/out
+[09:43:03.735] [INFO ]   - R: Reset camera
+[09:43:03.735] [INFO ]   - W/A/S/D: Pan camera
+[09:43:03.736] [INFO ] Application initialized successfully
+[09:43:03.736] [INFO ] Starting main loop...
+[09:43:06.072] [INFO ] Main loop ended
+[09:43:06.072] [INFO ] MyApp shutting down
+[09:43:06.116] [INFO ] Application shut down
+[09:43:12.551] [INFO ] ========================================
+[09:43:12.551] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[09:43:12.551] [INFO ] ========================================
+[09:43:12.585] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[09:43:12.585] [INFO ] Renderer plugin loaded successfully
+[09:43:12.892] [INFO ] MyApp initialized
+[09:43:12.895] [INFO ] Triangle created and shaders loaded from files
+[09:43:12.895] [INFO ] Controls:
+[09:43:12.895] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[09:43:12.895] [INFO ]   - Mouse Wheel: Zoom in/out
+[09:43:12.895] [INFO ]   - R: Reset camera
+[09:43:12.895] [INFO ]   - W/A/S/D: Pan camera
+[09:43:12.895] [INFO ] Application initialized successfully
+[09:43:12.895] [INFO ] Starting main loop...
+[09:47:00.176] [INFO ] Main loop ended
+[09:47:00.176] [INFO ] MyApp shutting down
+[09:47:00.216] [INFO ] Application shut down
+[14:38:12.921] [INFO ] ========================================
+[14:38:12.921] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[14:38:12.922] [INFO ] ========================================
+[14:38:12.947] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[14:38:12.948] [INFO ] Renderer plugin loaded successfully
+[14:38:13.427] [INFO ] MyApp initialized
+[18:54:35.023] [INFO ] ========================================
+[18:54:35.026] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[18:54:35.027] [INFO ] ========================================
+[18:54:35.060] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[18:54:35.062] [INFO ] Renderer plugin loaded successfully
+[18:54:35.692] [INFO ] MyApp initialized
+[19:01:33.490] [INFO ] ========================================
+[19:01:33.491] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[19:01:33.491] [INFO ] ========================================
+[19:01:33.521] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[19:01:33.522] [INFO ] Renderer plugin loaded successfully
+[19:01:33.816] [INFO ] MyApp initialized
+[19:01:33.821] [INFO ] Triangle created and shaders loaded from files
+[19:01:33.821] [INFO ] Controls:
+[19:01:33.821] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[19:01:33.821] [INFO ]   - Mouse Wheel: Zoom in/out
+[19:01:33.821] [INFO ]   - R: Reset camera
+[19:01:33.821] [INFO ]   - W/A/S/D: Pan camera
+[19:01:33.821] [INFO ] Application initialized successfully
+[19:01:33.821] [INFO ] Starting main loop...
+[19:01:37.139] [INFO ] Main loop ended
+[19:01:37.139] [INFO ] MyApp shutting down
+[19:01:37.187] [INFO ] Application shut down
+[19:01:45.917] [INFO ] ========================================
+[19:01:45.918] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[19:01:45.918] [INFO ] ========================================
+[19:01:45.925] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[19:01:45.926] [INFO ] Renderer plugin loaded successfully
+[19:01:46.232] [INFO ] MyApp initialized
+[19:01:46.234] [INFO ] Triangle created and shaders loaded from files
+[19:01:46.234] [INFO ] Controls:
+[19:01:46.234] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[19:01:46.234] [INFO ]   - Mouse Wheel: Zoom in/out
+[19:01:46.235] [INFO ]   - R: Reset camera
+[19:01:46.235] [INFO ]   - W/A/S/D: Pan camera
+[19:01:46.235] [INFO ] Application initialized successfully
+[19:01:46.235] [INFO ] Starting main loop...
+[19:01:46.999] [INFO ] Main loop ended
+[19:01:47.000] [INFO ] MyApp shutting down
+[19:01:47.040] [INFO ] Application shut down
+[19:04:09.911] [INFO ] ========================================
+[19:04:09.912] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[19:04:09.912] [INFO ] ========================================
+[19:04:09.941] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[19:04:09.942] [INFO ] Renderer plugin loaded successfully
+[19:04:10.277] [INFO ] MyApp initialized
+[19:04:10.279] [INFO ] Triangle created and shaders loaded from files
+[19:04:10.279] [INFO ] Controls:
+[19:04:10.280] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[19:04:10.280] [INFO ]   - Mouse Wheel: Zoom in/out
+[19:04:10.280] [INFO ]   - R: Reset camera
+[19:04:10.280] [INFO ]   - W/A/S/D: Pan camera
+[19:04:10.280] [INFO ] Application initialized successfully
+[19:04:10.280] [INFO ] Starting main loop...
+[19:04:19.903] [INFO ] Main loop ended
+[19:04:19.903] [INFO ] MyApp shutting down
+[19:04:19.943] [INFO ] Application shut down
+[19:04:42.967] [INFO ] ========================================
+[19:04:42.968] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[19:04:42.968] [INFO ] ========================================
+[19:04:43.002] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[19:04:43.003] [INFO ] Renderer plugin loaded successfully
+[19:04:43.205] [INFO ] MyApp initialized
+[19:04:43.211] [INFO ] Triangle created and shaders loaded from files
+[19:04:43.211] [INFO ] Controls:
+[19:04:43.211] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[19:04:43.211] [INFO ]   - Mouse Wheel: Zoom in/out
+[19:04:43.211] [INFO ]   - R: Reset camera
+[19:04:43.212] [INFO ]   - W/A/S/D: Pan camera
+[19:04:43.212] [INFO ] Application initialized successfully
+[19:04:43.212] [INFO ] Starting main loop...
+[19:04:50.234] [INFO ] Main loop ended
+[19:04:50.240] [INFO ] MyApp shutting down
+[19:04:50.256] [INFO ] Application shut down
+[19:04:58.687] [INFO ] ========================================
+[19:04:58.688] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[19:04:58.689] [INFO ] ========================================
+[19:04:58.695] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[19:04:58.696] [INFO ] Renderer plugin loaded successfully
+[19:04:58.984] [INFO ] MyApp initialized
+[19:04:58.986] [INFO ] Triangle created and shaders loaded from files
+[19:04:58.986] [INFO ] Controls:
+[19:04:58.986] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[19:04:58.986] [INFO ]   - Mouse Wheel: Zoom in/out
+[19:04:58.986] [INFO ]   - R: Reset camera
+[19:04:58.987] [INFO ]   - W/A/S/D: Pan camera
+[19:04:58.987] [INFO ] Application initialized successfully
+[19:04:58.987] [INFO ] Starting main loop...
+[19:05:01.875] [INFO ] Main loop ended
+[19:05:01.875] [INFO ] MyApp shutting down
+[19:05:01.917] [INFO ] Application shut down
+[19:07:38.284] [INFO ] ========================================
+[19:07:38.284] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[19:07:38.285] [INFO ] ========================================
+[19:07:38.291] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[19:07:38.292] [INFO ] Renderer plugin loaded successfully
+[19:07:38.587] [INFO ] MyApp initialized
+[19:07:38.589] [INFO ] Triangle created and shaders loaded from files
+[19:07:38.589] [INFO ] Controls:
+[19:07:38.589] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[19:07:38.589] [INFO ]   - Mouse Wheel: Zoom in/out
+[19:07:38.590] [INFO ]   - R: Reset camera
+[19:07:38.590] [INFO ]   - W/A/S/D: Pan camera
+[19:07:38.590] [INFO ] Application initialized successfully
+[19:07:38.590] [INFO ] Starting main loop...
+[19:07:43.287] [INFO ] Main loop ended
+[19:07:43.287] [INFO ] MyApp shutting down
+[19:07:43.331] [INFO ] Application shut down
+[19:07:50.426] [INFO ] ========================================
+[19:07:50.427] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[19:07:50.427] [INFO ] ========================================
+[19:07:50.430] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[19:07:50.430] [INFO ] Renderer plugin loaded successfully
+[19:07:50.643] [INFO ] MyApp initialized
+[19:07:50.644] [INFO ] Triangle created and shaders loaded from files
+[19:07:50.644] [INFO ] Controls:
+[19:07:50.644] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[19:07:50.644] [INFO ]   - Mouse Wheel: Zoom in/out
+[19:07:50.644] [INFO ]   - R: Reset camera
+[19:07:50.645] [INFO ]   - W/A/S/D: Pan camera
+[19:07:50.645] [INFO ] Application initialized successfully
+[19:07:50.645] [INFO ] Starting main loop...
+[19:08:00.193] [INFO ] Main loop ended
+[19:08:00.193] [INFO ] MyApp shutting down
+[19:08:00.211] [INFO ] Application shut down
+[20:01:16.184] [INFO ] ========================================
+[20:01:16.185] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:01:16.185] [INFO ] ========================================
+[20:01:16.209] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:01:16.209] [INFO ] Renderer plugin loaded successfully
+[20:01:16.407] [INFO ] MyApp initialized
+[20:01:16.408] [INFO ] Triangle created and shaders loaded from files
+[20:01:16.408] [INFO ] Controls:
+[20:01:16.408] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:01:16.408] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:01:16.408] [INFO ]   - R: Reset camera
+[20:01:16.408] [INFO ]   - W/A/S/D: Pan camera
+[20:01:16.408] [INFO ] Application initialized successfully
+[20:01:16.408] [INFO ] Starting main loop...
+[20:02:01.385] [INFO ] Main loop ended
+[20:02:01.385] [INFO ] MyApp shutting down
+[20:02:01.402] [INFO ] Application shut down
+[20:03:55.031] [INFO ] ========================================
+[20:03:55.031] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:03:55.031] [INFO ] ========================================
+[20:03:55.035] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:03:55.035] [INFO ] Renderer plugin loaded successfully
+[20:03:55.235] [INFO ] MyApp initialized
+[20:03:55.237] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:03:55.238] [INFO ] Triangle created and shaders loaded from files
+[20:03:55.239] [INFO ] Controls:
+[20:03:55.239] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:03:55.239] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:03:55.239] [INFO ]   - R: Reset camera
+[20:03:55.239] [INFO ]   - W/A/S/D: Pan camera
+[20:03:55.239] [INFO ] Application initialized successfully
+[20:03:55.239] [INFO ] Starting main loop...
+[20:04:00.745] [INFO ] Main loop ended
+[20:04:00.745] [INFO ] MyApp shutting down
+[20:04:00.761] [INFO ] Application shut down
+[20:04:32.599] [INFO ] ========================================
+[20:04:32.600] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:04:32.600] [INFO ] ========================================
+[20:04:32.603] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:04:32.603] [INFO ] Renderer plugin loaded successfully
+[20:04:32.806] [INFO ] MyApp initialized
+[20:04:32.808] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:04:32.809] [INFO ] Triangle created and shaders loaded from files
+[20:04:32.809] [INFO ] Controls:
+[20:04:32.809] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:04:32.809] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:04:32.809] [INFO ]   - R: Reset camera
+[20:04:32.809] [INFO ]   - W/A/S/D: Pan camera
+[20:04:32.809] [INFO ] Application initialized successfully
+[20:04:32.809] [INFO ] Starting main loop...
+[20:04:34.719] [INFO ] Main loop ended
+[20:04:34.719] [INFO ] MyApp shutting down
+[20:04:34.734] [INFO ] Application shut down
+[20:05:04.187] [INFO ] ========================================
+[20:05:04.188] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:05:04.188] [INFO ] ========================================
+[20:05:04.193] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:05:04.193] [INFO ] Renderer plugin loaded successfully
+[20:05:04.395] [INFO ] MyApp initialized
+[20:05:04.398] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:05:04.398] [INFO ] Triangle created and shaders loaded from files
+[20:05:04.398] [INFO ] Controls:
+[20:05:04.398] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:05:04.398] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:05:04.398] [INFO ]   - R: Reset camera
+[20:05:04.399] [INFO ]   - W/A/S/D: Pan camera
+[20:05:04.399] [INFO ] Application initialized successfully
+[20:05:04.399] [INFO ] Starting main loop...
+[20:05:34.828] [INFO ] ========================================
+[20:05:34.829] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:05:34.829] [INFO ] ========================================
+[20:05:34.834] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:05:34.834] [INFO ] Renderer plugin loaded successfully
+[20:05:35.024] [INFO ] MyApp initialized
+[20:05:43.246] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:06:47.271] [INFO ] Triangle created and shaders loaded from files
+[20:06:47.495] [INFO ] Controls:
+[20:06:47.722] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:06:47.933] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:06:48.148] [INFO ]   - R: Reset camera
+[20:06:48.436] [INFO ]   - W/A/S/D: Pan camera
+[20:06:50.636] [INFO ] Application initialized successfully
+[20:06:54.766] [INFO ] Starting main loop...
+[20:11:13.073] [INFO ] ========================================
+[20:11:13.073] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:11:13.073] [INFO ] ========================================
+[20:11:13.077] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:11:13.077] [INFO ] Renderer plugin loaded successfully
+[20:11:13.277] [INFO ] MyApp initialized
+[20:11:15.676] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:11:15.677] [INFO ] Triangle created and shaders loaded from files
+[20:11:15.677] [INFO ] Controls:
+[20:11:15.677] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:11:15.677] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:11:15.677] [INFO ]   - R: Reset camera
+[20:11:15.677] [INFO ]   - W/A/S/D: Pan camera
+[20:11:15.677] [INFO ] Application initialized successfully
+[20:11:15.677] [INFO ] Starting main loop...
+[20:11:30.113] [INFO ] Main loop ended
+[20:11:30.113] [INFO ] MyApp shutting down
+[20:11:30.127] [INFO ] Application shut down
+[20:11:42.280] [INFO ] ========================================
+[20:11:42.281] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:11:42.281] [INFO ] ========================================
+[20:11:42.283] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:11:42.284] [INFO ] Renderer plugin loaded successfully
+[20:11:42.468] [INFO ] MyApp initialized
+[20:11:42.470] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:11:42.471] [INFO ] Triangle created and shaders loaded from files
+[20:11:42.471] [INFO ] Controls:
+[20:11:42.471] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:11:42.471] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:11:42.471] [INFO ]   - R: Reset camera
+[20:11:42.472] [INFO ]   - W/A/S/D: Pan camera
+[20:11:42.472] [INFO ] Application initialized successfully
+[20:11:42.472] [INFO ] Starting main loop...
+[20:11:43.443] [INFO ] Main loop ended
+[20:11:43.444] [INFO ] MyApp shutting down
+[20:11:43.463] [INFO ] Application shut down
+[20:12:24.381] [INFO ] ========================================
+[20:12:24.382] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:12:24.382] [INFO ] ========================================
+[20:12:24.385] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:12:24.385] [INFO ] Renderer plugin loaded successfully
+[20:12:24.589] [INFO ] MyApp initialized
+[20:12:24.591] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:12:24.592] [INFO ] Triangle created and shaders loaded from files
+[20:12:24.592] [INFO ] Controls:
+[20:12:24.592] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:12:24.592] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:12:24.592] [INFO ]   - R: Reset camera
+[20:12:24.592] [INFO ]   - W/A/S/D: Pan camera
+[20:12:24.592] [INFO ] Application initialized successfully
+[20:12:24.592] [INFO ] Starting main loop...
+[20:12:27.660] [INFO ] Main loop ended
+[20:12:27.661] [INFO ] MyApp shutting down
+[20:12:27.681] [INFO ] Application shut down
+[20:14:41.898] [INFO ] ========================================
+[20:14:41.899] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:14:41.899] [INFO ] ========================================
+[20:14:41.903] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:14:41.903] [INFO ] Renderer plugin loaded successfully
+[20:14:42.110] [INFO ] MyApp initialized
+[20:14:43.500] [INFO ] Creating checkerboard texture...
+[20:14:43.502] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:14:43.502] [INFO ] Setting texture data...
+[20:14:43.502] [INFO ] Checkerboard texture created successfully
+[20:14:43.502] [INFO ] Triangle created and shaders loaded from files
+[20:14:43.503] [INFO ] Controls:
+[20:14:43.503] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:14:43.503] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:14:43.503] [INFO ]   - R: Reset camera
+[20:14:43.503] [INFO ]   - W/A/S/D: Pan camera
+[20:14:43.503] [INFO ] Application initialized successfully
+[20:14:43.503] [INFO ] Starting main loop...
+[20:14:46.479] [INFO ] Main loop ended
+[20:14:46.480] [INFO ] MyApp shutting down
+[20:14:46.494] [INFO ] Application shut down
+[20:15:13.408] [INFO ] ========================================
+[20:15:13.409] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:15:13.409] [INFO ] ========================================
+[20:15:13.412] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:15:13.412] [INFO ] Renderer plugin loaded successfully
+[20:15:13.604] [INFO ] MyApp initialized
+[20:15:13.605] [INFO ] Creating checkerboard texture...
+[20:15:13.606] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:15:13.606] [INFO ] Setting texture data...
+[20:15:13.607] [INFO ] Checkerboard texture created successfully
+[20:15:13.607] [INFO ] Triangle created and shaders loaded from files
+[20:15:13.607] [INFO ] Controls:
+[20:15:13.607] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:15:13.607] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:15:13.607] [INFO ]   - R: Reset camera
+[20:15:13.607] [INFO ]   - W/A/S/D: Pan camera
+[20:15:13.608] [INFO ] Application initialized successfully
+[20:15:13.608] [INFO ] Starting main loop...
+[20:15:16.618] [INFO ] Main loop ended
+[20:15:16.619] [INFO ] MyApp shutting down
+[20:15:16.635] [INFO ] Application shut down
+[20:15:34.041] [INFO ] ========================================
+[20:15:34.042] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:15:34.042] [INFO ] ========================================
+[20:15:34.042] [ERROR] Failed to load plugin: plugins/OGLRenderer.dll
+[20:15:34.043] [ERROR] Error code: 126
+[20:15:34.043] [ERROR] Failed to load render plugin: plugins/OGLRenderer.dll
+[20:16:33.524] [INFO ] ========================================
+[20:16:33.525] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:16:33.525] [INFO ] ========================================
+[20:16:33.526] [ERROR] Failed to load plugin: plugins/OGLRenderer.dll
+[20:16:33.526] [ERROR] Error code: 126
+[20:16:33.526] [ERROR] Failed to load render plugin: plugins/OGLRenderer.dll
+[20:16:47.360] [INFO ] ========================================
+[20:16:47.361] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:16:47.361] [INFO ] ========================================
+[20:16:47.362] [ERROR] Failed to load plugin: plugins/OGLRenderer.dll
+[20:16:47.362] [ERROR] Error code: 126
+[20:16:47.362] [ERROR] Failed to load render plugin: plugins/OGLRenderer.dll
+[20:17:17.668] [INFO ] ========================================
+[20:17:17.669] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:17:17.669] [INFO ] ========================================
+[20:17:17.699] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:17:17.699] [INFO ] Renderer plugin loaded successfully
+[20:17:17.931] [INFO ] MyApp initialized
+[20:17:17.932] [INFO ] Creating checkerboard texture...
+[20:17:17.933] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:17:17.934] [INFO ] Setting texture data...
+[20:17:17.935] [INFO ] Checkerboard texture created successfully
+[20:17:17.935] [INFO ] Triangle created and shaders loaded from files
+[20:17:17.935] [INFO ] Controls:
+[20:17:17.935] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:17:17.935] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:17:17.935] [INFO ]   - R: Reset camera
+[20:17:17.935] [INFO ]   - W/A/S/D: Pan camera
+[20:17:17.935] [INFO ] Application initialized successfully
+[20:17:17.935] [INFO ] Starting main loop...
+[20:17:25.301] [INFO ] Main loop ended
+[20:17:25.302] [INFO ] MyApp shutting down
+[20:17:25.317] [INFO ] Application shut down
+[20:17:45.124] [INFO ] ========================================
+[20:17:45.125] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:17:45.125] [INFO ] ========================================
+[20:17:45.128] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:17:45.128] [INFO ] Renderer plugin loaded successfully
+[20:17:45.328] [INFO ] MyApp initialized
+[20:17:45.329] [INFO ] Creating checkerboard texture...
+[20:17:45.331] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:17:45.331] [INFO ] Setting texture data...
+[20:17:45.332] [INFO ] Checkerboard texture created successfully
+[20:17:45.332] [INFO ] Triangle created and shaders loaded from files
+[20:17:45.332] [INFO ] Controls:
+[20:17:45.332] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:17:45.332] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:17:45.332] [INFO ]   - R: Reset camera
+[20:17:45.332] [INFO ]   - W/A/S/D: Pan camera
+[20:17:45.332] [INFO ] Application initialized successfully
+[20:17:45.332] [INFO ] Starting main loop...
+[20:17:53.659] [INFO ] Main loop ended
+[20:17:53.659] [INFO ] MyApp shutting down
+[20:17:53.677] [INFO ] Application shut down
+[20:18:17.974] [INFO ] ========================================
+[20:18:17.975] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:18:17.975] [INFO ] ========================================
+[20:18:17.979] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:18:17.979] [INFO ] Renderer plugin loaded successfully
+[20:18:18.164] [INFO ] MyApp initialized
+[20:19:12.159] [INFO ] ========================================
+[20:19:12.160] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:19:12.160] [INFO ] ========================================
+[20:19:12.164] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:19:12.165] [INFO ] Renderer plugin loaded successfully
+[20:19:12.356] [INFO ] MyApp initialized
+[20:19:30.871] [INFO ] ========================================
+[20:19:30.872] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:19:30.872] [INFO ] ========================================
+[20:19:30.876] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:19:30.876] [INFO ] Renderer plugin loaded successfully
+[20:19:31.064] [INFO ] MyApp initialized
+[20:19:37.799] [INFO ] Creating checkerboard texture...
+[20:19:37.801] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:19:37.801] [INFO ] Setting texture data...
+[20:19:37.802] [INFO ] Checkerboard texture created successfully
+[20:19:37.802] [INFO ] Triangle created and shaders loaded from files
+[20:19:37.802] [INFO ] Controls:
+[20:19:37.802] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:19:37.802] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:19:37.802] [INFO ]   - R: Reset camera
+[20:19:37.802] [INFO ]   - W/A/S/D: Pan camera
+[20:19:37.802] [INFO ] Application initialized successfully
+[20:19:37.802] [INFO ] Starting main loop...
+[20:19:41.033] [INFO ] Main loop ended
+[20:19:41.033] [INFO ] MyApp shutting down
+[20:19:41.052] [INFO ] Application shut down
+[20:20:12.169] [INFO ] ========================================
+[20:20:12.169] [INFO ] Loading renderer plugin: plugins/OGLRenderer.dll
+[20:20:12.170] [INFO ] ========================================
+[20:20:12.173] [INFO ] Loaded plugin: OpenGL Renderer v1.0.0
+[20:20:12.173] [INFO ] Renderer plugin loaded successfully
+[20:20:12.363] [INFO ] MyApp initialized
+[20:20:15.238] [INFO ] Creating checkerboard texture...
+[20:20:15.240] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:20:15.240] [INFO ] Setting texture data...
+[20:20:15.241] [INFO ] Checkerboard texture created successfully
+[20:20:15.241] [INFO ] Triangle created and shaders loaded from files
+[20:20:15.241] [INFO ] Controls:
+[20:20:15.241] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:20:15.241] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:20:15.241] [INFO ]   - R: Reset camera
+[20:20:15.241] [INFO ]   - W/A/S/D: Pan camera
+[20:20:15.242] [INFO ] Application initialized successfully
+[20:20:15.242] [INFO ] Starting main loop...
+[20:20:20.706] [INFO ] Main loop ended
+[20:20:20.706] [INFO ] MyApp shutting down
+[20:20:20.723] [INFO ] Application shut down
+[20:37:42.902] [INFO ] ========================================
+[20:37:42.902] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[20:37:42.903] [INFO ] ========================================
+[20:37:42.932] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[20:37:42.933] [INFO ] Renderer plugin loaded successfully
+[20:37:43.287] [INFO ] MyApp initialized
+[20:37:43.341] [INFO ] Creating checkerboard texture...
+[20:37:43.342] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[20:37:43.342] [INFO ] Setting texture data...
+[20:37:43.352] [INFO ] Checkerboard texture created successfully
+[20:37:43.352] [INFO ] Triangle created and shaders loaded from files
+[20:37:43.352] [INFO ] Controls:
+[20:37:43.352] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[20:37:43.353] [INFO ]   - Mouse Wheel: Zoom in/out
+[20:37:43.353] [INFO ]   - R: Reset camera
+[20:37:43.353] [INFO ]   - W/A/S/D: Pan camera
+[20:37:43.353] [INFO ] Application initialized successfully
+[20:37:43.353] [INFO ] Starting main loop...
+[20:37:47.816] [INFO ] Main loop ended
+[20:37:47.825] [INFO ] MyApp shutting down
+[20:37:47.879] [INFO ] Application shut down
+[21:06:54.405] [INFO ] ========================================
+[21:06:54.405] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:06:54.405] [INFO ] ========================================
+[21:06:54.434] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:06:54.434] [INFO ] Renderer plugin loaded successfully
+[21:06:54.910] [INFO ] MyApp initialized
+[21:06:54.921] [INFO ] Creating checkerboard texture...
+[21:06:54.923] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[21:06:54.923] [INFO ] Setting texture data...
+[21:06:54.926] [INFO ] Checkerboard texture created successfully
+[21:06:54.926] [INFO ] Triangle created and shaders loaded from files
+[21:06:54.926] [INFO ] Controls:
+[21:06:54.926] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:06:54.927] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:06:54.927] [INFO ]   - R: Reset camera
+[21:06:54.927] [INFO ]   - W/A/S/D: Pan camera
+[21:06:54.927] [INFO ] Application initialized successfully
+[21:06:54.927] [INFO ] Starting main loop...
+[21:07:03.549] [INFO ] ========================================
+[21:07:03.550] [INFO ] Loading renderer plugin: plugins/VKRenderer.dll
+[21:07:03.550] [INFO ] ========================================
+[21:07:03.559] [INFO ] Loaded plugin: Vulkan Renderer v1.0.0
+[21:07:03.559] [INFO ] Renderer plugin loaded successfully
+[21:07:03.876] [INFO ] MyApp initialized
+[21:07:03.879] [INFO ] Creating checkerboard texture...
+[21:07:03.880] [INFO ] [TextureUtils] Created 256x256 checkerboard texture (check size: 32)
+[21:07:03.880] [INFO ] Setting texture data...
+[21:07:03.883] [INFO ] Checkerboard texture created successfully
+[21:07:03.883] [INFO ] Triangle created and shaders loaded from files
+[21:07:03.884] [INFO ] Controls:
+[21:07:03.884] [INFO ]   - Left Mouse + Drag: Rotate camera (trackball)
+[21:07:03.884] [INFO ]   - Mouse Wheel: Zoom in/out
+[21:07:03.884] [INFO ]   - R: Reset camera
+[21:07:03.884] [INFO ]   - W/A/S/D: Pan camera
+[21:07:03.884] [INFO ] Application initialized successfully
+[21:07:03.884] [INFO ] Starting main loop...
+[21:07:04.367] [INFO ] Main loop ended
+[21:07:04.369] [INFO ] MyApp shutting down
+[21:07:04.423] [INFO ] Application shut down
