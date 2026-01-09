@@ -1,5 +1,6 @@
 #include "VertexArray.h"
 #include "VertexBuffer.h"
+#include "IndexBuffer.h"
 #include "Renderer.h"
 #include "../Logger.h"
 
@@ -9,6 +10,7 @@ namespace VK
 VertexArray::VertexArray(Renderer* renderer)
     : m_renderer(renderer)
     , m_vertexBuffer(nullptr)
+    , m_indexBuffer(nullptr)
     , m_stride(0)
     , m_bindingInitialized(false)
 {
@@ -26,11 +28,13 @@ VertexArray::VertexArray(VertexArray&& other) noexcept
     , m_attributes(std::move(other.m_attributes))
     , m_binding(other.m_binding)
     , m_vertexBuffer(other.m_vertexBuffer)
+    , m_indexBuffer(other.m_indexBuffer)
     , m_stride(other.m_stride)
     , m_bindingInitialized(other.m_bindingInitialized)
 {
     other.m_renderer = nullptr;
     other.m_vertexBuffer = nullptr;
+    other.m_indexBuffer = nullptr;
     other.m_stride = 0;
     other.m_bindingInitialized = false;
 }
@@ -43,11 +47,13 @@ VertexArray& VertexArray::operator=(VertexArray&& other) noexcept
         m_attributes = std::move(other.m_attributes);
         m_binding = other.m_binding;
         m_vertexBuffer = other.m_vertexBuffer;
+        m_indexBuffer = other.m_indexBuffer;
         m_stride = other.m_stride;
         m_bindingInitialized = other.m_bindingInitialized;
 
         other.m_renderer = nullptr;
         other.m_vertexBuffer = nullptr;
+        other.m_indexBuffer = nullptr;
         other.m_stride = 0;
         other.m_bindingInitialized = false;
     }
@@ -105,6 +111,11 @@ const VkVertexInputBindingDescription& VertexArray::getBindingDescription() cons
 void VertexArray::setVertexBuffer(VertexBuffer* buffer)
 {
     m_vertexBuffer = buffer;
+}
+
+void VertexArray::setIndexBuffer(IndexBuffer* buffer)
+{
+    m_indexBuffer = buffer;
 }
 
 VkFormat VertexArray::getVulkanFormat(DataType type, int size) const

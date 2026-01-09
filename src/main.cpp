@@ -21,8 +21,8 @@ int main(int argc, char* argv[])
     Logger::getInstance().enableFileLogging("renderer.log");
     Logger::getInstance().setLogLevel(LogLevel::Debug);
 
-    //std::string pluginPath = "plugins/OGLRenderer.dll";
-    std::string pluginPath = "plugins/VKRenderer.dll";
+    std::string pluginPath = "plugins/OGLRenderer.dll";
+    //std::string pluginPath = "plugins/VKRenderer.dll";
 
     // Parse command line arguments
     for (int i = 1; i < argc; ++i)

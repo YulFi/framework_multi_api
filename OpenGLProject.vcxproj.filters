@@ -42,6 +42,15 @@
     <ClCompile Include="src\TextureUtils.cpp">
       <Filter>Source Files</Filter>
     </ClCompile>
+    <ClCompile Include="Mesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RenderMesh.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
+    <ClCompile Include="Material.cpp">
+      <Filter>Source Files</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MyApp.h">
@@ -92,19 +101,17 @@
     <ClInclude Include="src\RenderAPI\ITexture.h">
       <Filter>Header Files</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\basic.vert">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shaders\basic.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shaders\triangle.frag">
-      <Filter>Shaders</Filter>
-    </None>
-    <None Include="shaders\triangle.vert">
-      <Filter>Shaders</Filter>
-    </None>
+    <ClInclude Include="Mesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Renderable.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="src\RenderMesh.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Material.h">
+      <Filter>Header Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

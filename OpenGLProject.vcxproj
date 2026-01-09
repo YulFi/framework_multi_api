@@ -105,6 +105,9 @@
     <ClCompile Include="src\Camera.cpp" />
     <ClCompile Include="src\Logger.cpp" />
     <ClCompile Include="src\RenderAPI\PluginLoader.cpp" />
+    <ClCompile Include="Mesh.cpp" />
+    <ClCompile Include="src\RenderMesh.cpp" />
+    <ClCompile Include="Material.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="src\MyApp.h" />
@@ -123,12 +126,10 @@
     <ClInclude Include="src\RenderAPI\IPrimitiveType.h" />
     <ClInclude Include="src\RenderAPI\PluginLoader.h" />
     <ClInclude Include="src\TextureUtils.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="shaders\basic.vert" />
-    <None Include="shaders\basic.frag" />
-    <None Include="shaders\triangle.vert" />
-    <None Include="shaders\triangle.frag" />
+    <ClInclude Include="Mesh.h" />
+    <ClInclude Include="Renderable.h" />
+    <ClInclude Include="src\RenderMesh.h" />
+    <ClInclude Include="Material.h" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">

@@ -1,0 +1,363 @@
+================================================================================
+                      MATERIAL SYSTEM ARCHITECTURE
+================================================================================
+
+1. CLASS HIERARCHY
+================================================================================
+
+                         ┌──────────────┐
+                         │   Material   │  (Base class)
+                         │──────────────│
+                         │ + bind()     │
+                         │ + unbind()   │
+                         │ + setTexture │
+                         │ + setProperty│
+                         └──────┬───────┘
+                                │
+                  ┌─────────────┼─────────────┐
+                  │             │             │
+         ┌────────▼────────┐ ┌─▼──────────┐ ┌▼──────────────┐
+         │ PhongMaterial   │ │PBRMaterial │ │CustomMaterial │
+         │─────────────────│ │────────────│ │───────────────│
+         │+ setDiffuseMap  │ │+ setAlbedo │ │+ customAPI()  │
+         │+ setShininess   │ │+ setMetallic│ │+ onPreBind()  │
+         └─────────────────┘ └────────────┘ └───────────────┘
+
+2. DATA STRUCTURE (Material Internal State)
+================================================================================
+
+┌─────────────────────────────────────────────────────────────────────┐
+│                           Material Object                            │
+├─────────────────────────────────────────────────────────────────────┤
+│                                                                       │
+│  IShaderProgram* m_shader  ────────────────┐                        │
+│  (Non-owning pointer)                       │                        │
+│                                             │                        │
+│  ┌───────────────────────────────────────┐ │                        │
+│  │ m_textureBindings (vector)            │ │                        │
+│  ├───────────────────────────────────────┤ │                        │
+│  │ [0] TextureBinding                    │ │                        │
+│  │     ├─ texture: shared_ptr<ITexture>  │ │                        │
+│  │     ├─ samplerName: "u_DiffuseMap"    │ │                        │
+│  │     └─ textureUnit: 0                 │ │                        │
+│  │                                       │ │                        │
+│  │ [1] TextureBinding                    │ │                        │
+│  │     ├─ texture: shared_ptr<ITexture>  │ │                        │
+│  │     ├─ samplerName: "u_NormalMap"     │ │                        │
+│  │     └─ textureUnit: 1                 │ │                        │
+│  └───────────────────────────────────────┘ │                        │
+│                                             │                        │
+│  ┌───────────────────────────────────────┐ │                        │
+│  │ m_properties (unordered_map)          │ │                        │
+│  ├───────────────────────────────────────┤ │                        │
+│  │ "u_Color"     → variant<vec3>         │ │                        │
+│  │ "u_Shininess" → variant<float>        │ │                        │
+│  │ "u_Metallic"  → variant<float>        │ │                        │
+│  └───────────────────────────────────────┘ │                        │
+│                                             │                        │
+│  ┌───────────────────────────────────────┐ │                        │
+│  │ m_samplerNameToIndex (cache)          │ │                        │
+│  ├───────────────────────────────────────┤ │                        │
+│  │ "u_DiffuseMap" → 0                    │ │                        │
+│  │ "u_NormalMap"  → 1                    │ │                        │
+│  └───────────────────────────────────────┘ │                        │
+│                                             │                        │
+└─────────────────────────────────────────────┼─────────────────────────┘
+                                              │
+                                              │ points to
+                                              ▼
+                                    ┌──────────────────┐
+                                    │ IShaderProgram   │
+                                    │ (in ShaderMgr)   │
+                                    └──────────────────┘
+
+3. BIND() CALL FLOW
+================================================================================
+
+material->bind()
+    │
+    ├─► 1. onPreBind()  ─────────────► Hook for custom materials
+    │
+    ├─► 2. shader->bind()  ──────────► Activate shader program
+    │
+    ├─► 3. Bind Textures  ──────────► For each texture binding:
+    │       │                            ├─ texture->bind(unit)
+    │       │                            └─ shader->setInt(samplerName, unit)
+    │       │
+    │       ├─ texture[0]->bind(0)
+    │       ├─ shader->setInt("u_DiffuseMap", 0)
+    │       ├─ texture[1]->bind(1)
+    │       └─ shader->setInt("u_NormalMap", 1)
+    │
+    ├─► 4. Upload Properties  ──────► For each property:
+    │       │                            └─ uploadUniform(name, value)
+    │       │
+    │       ├─ shader->setVec3("u_Color", vec3)
+    │       ├─ shader->setFloat("u_Shininess", float)
+    │       └─ shader->setFloat("u_Metallic", float)
+    │
+    └─► 5. onPostBind()  ────────────► Hook for custom materials
+
+    [Material is now active, ready to render]
+
+4. UNIFORM VALUE VARIANT
+================================================================================
+
+UniformValue = variant<int, float, bool, vec2, vec3, vec4, mat3, mat4>
+               │
+               └─► std::visit() for type-safe dispatch
+                   │
+                   ├─ if int    → shader->setInt()
+                   ├─ if float  → shader->setFloat()
+                   ├─ if vec3   → shader->setVec3()
+                   ├─ if mat4   → shader->setMat4()
+                   └─ etc.
+
+Benefits:
+  ✓ Type-safe at compile time
+  ✓ No heap allocation (stack-based)
+  ✓ Pattern matching with std::visit
+  ✓ Fixed memory size (size of largest type)
+
+5. TEXTURE OWNERSHIP MODEL
+================================================================================
+
+┌──────────────────┐
+│ TextureManager   │
+│──────────────────│      Creates and shares
+│ map<name, ptr>   │ ────────────────┐
+└──────────────────┘                  │
+                                      │
+                                      ▼
+                            ┌─────────────────────┐
+                            │ shared_ptr<Texture> │ refcount = 3
+                            └─────────────────────┘
+                                      │
+                    ┌─────────────────┼─────────────────┐
+                    │                 │                 │
+                    ▼                 ▼                 ▼
+              ┌──────────┐      ┌──────────┐      ┌──────────┐
+              │Material 1│      │Material 2│      │Material 3│
+              │ (shared) │      │ (shared) │      │ (shared) │
+              └──────────┘      └──────────┘      └──────────┘
+
+When Material 1 deleted: refcount = 2
+When Material 2 deleted: refcount = 1
+When Material 3 deleted: refcount = 0 → Texture destroyed
+
+6. RENDERING PIPELINE INTEGRATION
+================================================================================
+
+Game Loop
+    │
+    ├─► Update Phase
+    │   └─► material->setProperty("u_Time", time)
+    │
+    └─► Render Phase
+        │
+        ├─► Sort objects by material  ────► Minimize state changes
+        │
+        └─► For each object:
+            │
+            ├─► material->bind()      ────► Activate shader + textures
+            │
+            ├─► Set per-object uniforms
+            │   └─► shader->setMat4("u_Model", transform)
+            │
+            ├─► mesh->draw()          ────► Actual rendering
+            │
+            └─► material->unbind()    ────► Cleanup
+
+7. MEMORY LAYOUT (Approximate)
+================================================================================
+
+Material object size (64-bit system):
+├─ m_shader                     8 bytes (pointer)
+├─ m_textureBindings           24 bytes (vector header)
+│  └─ per TextureBinding:      ~40 bytes each
+├─ m_properties                56 bytes (map header)
+│  └─ per property:            ~80 bytes each (string + variant + node)
+└─ m_samplerNameToIndex        56 bytes (map header)
+   └─ per entry:               ~60 bytes each (string + index + node)
+
+Typical material (3 textures, 5 properties):
+= 8 + 24 + (3*40) + 56 + (5*80) + 56 + (3*60)
+= 8 + 24 + 120 + 56 + 400 + 56 + 180
+≈ 844 bytes (stack + heap)
+
+8. PERFORMANCE CHARACTERISTICS
+================================================================================
+
+Operation                 Time Complexity    Notes
+──────────────────────────────────────────────────────────────────
+setTexture(name, tex, u)  O(1) average       Hash map insert
+getTexture(name)          O(1) average       Hash map lookup
+setProperty(name, value)  O(1) average       Hash map insert
+getProperty(name)         O(1) average       Hash map lookup
+bind()                    O(n + m)           n textures + m properties
+unbind()                  O(n)               n textures
+clear()                   O(n + m)           Clear all containers
+
+9. PHONG MATERIAL TEXTURE LAYOUT
+================================================================================
+
+Texture Unit    Sampler Name        Purpose
+────────────────────────────────────────────────────────
+0               u_DiffuseMap        Base color texture
+1               u_SpecularMap       Specular intensity
+2               u_NormalMap         Normal mapping
+
+Properties:
+- u_Diffuse: vec3       (fallback color if no texture)
+- u_Specular: vec3      (fallback specular color)
+- u_Shininess: float    (specular power)
+- u_HasDiffuseMap: bool (flag for shader)
+- u_HasSpecularMap: bool
+- u_HasNormalMap: bool
+
+10. PBR MATERIAL TEXTURE LAYOUT
+================================================================================
+
+Texture Unit    Sampler Name              Purpose
+──────────────────────────────────────────────────────────────
+0               u_AlbedoMap               Base color (sRGB)
+1               u_NormalMap               Normal mapping
+2               u_MetallicMap             Metallic channel
+3               u_RoughnessMap            Roughness channel
+4               u_AOMap                   Ambient occlusion
+2*              u_MetallicRoughnessMap    Combined (GLTF std)
+
+*Uses same unit as metallic if combined map
+
+Properties:
+- u_Albedo: vec3          (fallback albedo)
+- u_Metallic: float       (fallback metallic)
+- u_Roughness: float      (fallback roughness)
+- u_AO: float             (fallback ambient occlusion)
+- u_HasAlbedoMap: bool
+- u_HasMetallicRoughnessMap: bool
+- etc.
+
+11. EXTENSION ARCHITECTURE
+================================================================================
+
+                     ┌────────────────┐
+                     │   Material     │
+                     │   (Base API)   │
+                     └────────┬───────┘
+                              │
+                    ┌─────────┴─────────┐
+                    │                   │
+          ┌─────────▼─────────┐ ┌───────▼──────────┐
+          │ Virtual Hooks     │ │ Public API       │
+          │───────────────────│ │──────────────────│
+          │ onPreBind()       │ │ setTexture()     │
+          │ onPostBind()      │ │ setProperty()    │
+          │ uploadUniform()   │ │ bind()           │
+          └─────────┬─────────┘ └───────┬──────────┘
+                    │                   │
+                    └─────────┬─────────┘
+                              │
+                    ┌─────────▼─────────┐
+                    │  Custom Material  │
+                    │───────────────────│
+                    │ Override hooks    │
+                    │ Add custom API    │
+                    │ Extend behavior   │
+                    └───────────────────┘
+
+12. ERROR HANDLING FLOW
+================================================================================
+
+material->bind()
+    │
+    ├─► Check: m_shader != nullptr
+    │   └─► if null → throw std::runtime_error
+    │
+    ├─► Try: shader->bind()
+    │   └─► if fails → exception propagates
+    │
+    └─► Try: texture->bind(unit)
+        └─► if fails → exception propagates
+
+material->setTexture(name, tex, unit)
+    │
+    ├─► Check: unit already in use?
+    │   └─► if yes → throw std::invalid_argument
+    │
+    └─► Insert into bindings
+
+material->getProperty<T>(name)
+    │
+    ├─► Check: property exists?
+    │   └─► if no → return nullptr
+    │
+    └─► Check: type matches T?
+        ├─► if yes → return pointer to value
+        └─► if no  → return nullptr (type-safe)
+
+13. COMPARISON: BEFORE vs AFTER
+================================================================================
+
+BEFORE (Manual Management):
+───────────────────────────────────────────────────────────────────
+shader->bind();
+glActiveTexture(GL_TEXTURE0);
+diffuseTexture->bind();
+shader->setInt("u_DiffuseMap", 0);
+glActiveTexture(GL_TEXTURE1);
+normalTexture->bind();
+shader->setInt("u_NormalMap", 1);
+shader->setVec3("u_Color", glm::vec3(1.0f, 0.0f, 0.0f));
+shader->setFloat("u_Shininess", 32.0f);
+// ... render ...
+normalTexture->unbind();
+glActiveTexture(GL_TEXTURE0);
+diffuseTexture->unbind();
+shader->unbind();
+
+AFTER (Material System):
+───────────────────────────────────────────────────────────────────
+material->bind();
+// ... render ...
+material->unbind();
+
+Benefits:
+  ✓ 90% less code at render site
+  ✓ Encapsulation (no GL calls in render loop)
+  ✓ Reusability (setup once, use many times)
+  ✓ Type safety (compile-time checking)
+  ✓ Maintainability (centralized logic)
+
+14. TYPICAL USAGE TIMELINE
+================================================================================
+
+Initialization Phase:
+│
+├─► ShaderManager creates shaders
+├─► TextureManager loads textures
+│
+└─► Create materials:
+    ├─► material = new PhongMaterial(shader)
+    ├─► material->setDiffuseMap(texture)
+    └─► material->setDiffuseColor(color)
+
+Render Loop (60 FPS):
+│
+├─► Update phase:
+│   └─► material->setProperty("u_Time", time)
+│
+└─► Render phase:
+    ├─► material->bind()      ─── Binds shader + textures + uploads uniforms
+    ├─► mesh->draw()          ─── Actual rendering
+    └─► material->unbind()    ─── Cleanup
+
+Shutdown Phase:
+│
+├─► Delete materials (unique_ptr auto-deletes)
+├─► TextureManager destroys textures (when refcount = 0)
+└─► ShaderManager destroys shaders
+
+================================================================================
+                              END OF ARCHITECTURE
+================================================================================

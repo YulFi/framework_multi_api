@@ -95,6 +95,16 @@ void IndexBuffer::setData(const void* data, size_t count, IndexType type, Buffer
     std::memcpy(mappedData, data, m_size);
     vkUnmapMemory(m_device, m_memory);
 
+    // Register this index buffer with the currently bound VAO
+    if (m_renderer)
+    {
+        auto* boundVAO = m_renderer->getActiveVertexArray();
+        if (boundVAO)
+        {
+            boundVAO->setIndexBuffer(this);
+        }
+    }
+
     LOG_DEBUG("[Vulkan] IndexBuffer created with {} indices ({} bytes)", count, m_size);
 }
 

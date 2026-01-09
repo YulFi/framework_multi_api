@@ -8,6 +8,7 @@
 namespace VK
 {
     class VertexBuffer;
+    class IndexBuffer;
     class Renderer;
 
     class VertexArray : public IVertexArray
@@ -31,6 +32,8 @@ namespace VK
         const VkVertexInputBindingDescription& getBindingDescription() const;
         void setVertexBuffer(VertexBuffer* buffer);
         VertexBuffer* getVertexBuffer() const { return m_vertexBuffer; }
+        void setIndexBuffer(IndexBuffer* buffer);
+        IndexBuffer* getIndexBuffer() const { return m_indexBuffer; }
 
     private:
         VkFormat getVulkanFormat(DataType type, int size) const;
@@ -39,6 +42,7 @@ namespace VK
         std::vector<VkVertexInputAttributeDescription> m_attributes;
         VkVertexInputBindingDescription m_binding;
         VertexBuffer* m_vertexBuffer;
+        IndexBuffer* m_indexBuffer;
         uint32_t m_stride;
         bool m_bindingInitialized;
     };

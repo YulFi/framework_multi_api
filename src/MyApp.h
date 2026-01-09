@@ -1,11 +1,13 @@
 #pragma once
 
 #include "Application.h"
-#include "RenderAPI/IVertexArray.h"
-#include "RenderAPI/IVertexBuffer.h"
 #include "RenderAPI/ITexture.h"
 #include "RenderAPI/IShaderProgram.h"
+#include "../Mesh.h"
+#include "RenderMesh.h"
+#include "../Material.h"
 #include <memory>
+
 
 class MyApp : public Application
 {
@@ -24,10 +26,11 @@ protected:
     void onShutdown() override;
 
 private:
-    std::unique_ptr<IVertexArray> m_VAO;
-    std::unique_ptr<IVertexBuffer> m_VBO;
-    std::unique_ptr<ITexture> m_texture;
+    std::shared_ptr<ITexture> m_texture;
     IShaderProgram* m_basicShader;  // Non-owning pointer (ShaderManager owns it)
+    std::shared_ptr<Graphics::Mesh> m_triangleMesh;
+    std::unique_ptr<Graphics::RenderMesh> m_gpuMesh;
+    std::unique_ptr<Graphics::Material> m_material;
     double m_lastMouseX;
     double m_lastMouseY;
     bool m_mousePressed;

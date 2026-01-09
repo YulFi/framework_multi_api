@@ -31,33 +31,43 @@ void MyApp::onInit()
     m_basicShader->setInt("textureSampler", 0);
     m_basicShader->unbind();
 
-    float vertices[] = {
-        // Positions          // Colors              // Texture Coords
-        -0.5f, -0.5f, 0.0f,   1.0f, 0.0f, 0.0f,     0.0f, 0.0f,  // Bottom left - Red
-         0.5f, -0.5f, 0.0f,   0.0f, 1.0f, 0.0f,     1.0f, 0.0f,  // Bottom right - Green
-         0.0f,  0.5f, 0.0f,   0.0f, 0.0f, 1.0f,     0.5f, 1.0f   // Top - Blue
-    };
+    // Create triangle mesh using the new Mesh class
+    m_triangleMesh = std::make_shared<Graphics::Mesh>();
 
-    m_VAO = m_renderer->createVertexArray();
-    m_VBO = m_renderer->createVertexBuffer();
+    //m_triangleMesh = Graphics::MeshFactory::createCube(1.f);
 
-    m_VAO->bind();
-    m_VBO->setData(vertices, sizeof(vertices), BufferUsage::Static);
+    // Add vertices with positions, colors, and texture coordinates
+    m_triangleMesh->addVertex(
+        glm::vec3(-0.5f, -0.5f, 0.0f),  // Position
+        glm::vec3(1.0f, 0.0f, 0.0f),     // Color: Red
+        glm::vec2(0.0f, 0.0f)             // TexCoord
+    );
+    m_triangleMesh->addVertex(
+        glm::vec3(0.5f, -0.5f, 0.0f),    // Position
+        glm::vec3(0.0f, 1.0f, 0.0f),     // Color: Green
+        glm::vec2(1.0f, 0.0f)             // TexCoord
+    );
+    m_triangleMesh->addVertex(
+        glm::vec3(0.0f, 0.5f, 0.0f),     // Position
+        glm::vec3(0.0f, 0.0f, 1.0f),     // Color: Blue
+        glm::vec2(0.5f, 1.0f)             // TexCoord
+    );
 
-    // Position attribute
-    m_VAO->addAttribute(VertexAttribute(0, 3, DataType::Float, false, 8 * sizeof(float), (void*)0));
+    // Add the triangle (indices)
+    m_triangleMesh->addTriangle(0, 1, 2);
 
-    // Color attribute
-    m_VAO->addAttribute(VertexAttribute(1, 3, DataType::Float, false, 8 * sizeof(float), (void*)(3 * sizeof(float))));
+    // Compute normals
+    m_triangleMesh->computeFlatNormals();
 
-    // Texture coordinate attribute
-    m_VAO->addAttribute(VertexAttribute(2, 2, DataType::Float, false, 8 * sizeof(float), (void*)(6 * sizeof(float))));
-
-    m_VAO->unbind();
+    // Upload mesh to GPU using RenderMesh
+    LOG_INFO("Creating RenderMesh with {} vertices, {} indices",
+             m_triangleMesh->getVertexCount(), m_triangleMesh->getIndexCount());
+    m_gpuMesh = std::make_unique<Graphics::RenderMesh>(*m_triangleMesh, *m_renderer, BufferUsage::Static);
+    LOG_INFO("Triangle mesh uploaded to GPU");
 
     // Create checkerboard texture
     LOG_INFO("Creating checkerboard texture...");
-    m_texture = m_renderer->createTexture();
+    m_texture = std::shared_ptr<ITexture>(m_renderer->createTexture().release());
     auto checkerData = TextureUtils::createCheckerboard(256);
     LOG_INFO("Setting texture data...");
     m_texture->setData(checkerData.data(), 256, 256, TextureFormat::RGBA);
@@ -65,11 +75,17 @@ void MyApp::onInit()
     m_texture->setWrap(TextureWrap::Repeat, TextureWrap::Repeat);
     LOG_INFO("Checkerboard texture created successfully");
 
+    // Create material with shader and texture
+    m_material = std::make_unique<Graphics::Material>(m_basicShader);
+    m_material->setTexture("textureSampler", m_texture, 0);  // Bind texture to sampler uniform at unit 0
+    LOG_INFO("Material created with shader and texture");
+
     // Set clear color via Application (this ensures consistency across all render APIs)
     // The Application class will forward this to the renderer plugin
     setClearColor(0.1f, 0.1f, 0.15f, 1.0f);
 
     m_renderer->enableDepthTest(true);
+    m_renderer->enableCulling(false);  // Disable culling to see both sides
 
     m_camera->setPosition(glm::vec3(0.0f, 0.0f, 3.0f));
     m_camera->setTarget(glm::vec3(0.0f, 0.0f, 0.0f));
@@ -96,39 +112,46 @@ void MyApp::onUpdate(float deltaTime)
 
 void MyApp::onRender()
 {
-    if (!m_basicShader)
-    {
-        LOG_ERROR("Shader not loaded!");
-        return;
+    static bool firstFrame = true;
+    if (firstFrame) {
+        LOG_INFO("onRender called - first frame");
+        LOG_INFO("m_material: {}, m_gpuMesh: {}", (void*)m_material.get(), (void*)m_gpuMesh.get());
+        firstFrame = false;
     }
 
-    // Bind shader using new API
-    m_basicShader->bind();
+    if (!m_material || !m_gpuMesh)
+    {
+        LOG_ERROR("Material or mesh not loaded!");
+        return;
+    }
 
     // Get actual render dimensions from the renderer (may differ from window size)
     int renderWidth, renderHeight;
     m_renderer->getRenderDimensions(renderWidth, renderHeight);
     float aspectRatio = static_cast<float>(renderWidth) / static_cast<float>(renderHeight);
 
-    glm::mat4 projection = m_camera->getProjectionMatrix(aspectRatio);
-    glm::mat4 view = m_camera->getViewMatrix();
+    // TEST: Use identity matrices to see if it's a camera issue
+    glm::mat4 projection = glm::mat4(1.0f); // m_camera->getProjectionMatrix(aspectRatio);
+    glm::mat4 view = glm::mat4(1.0f); // m_camera->getViewMatrix();
     glm::mat4 model = glm::mat4(1.0f);
 
-    // Set uniforms directly on shader
-    m_basicShader->setMat4("projection", projection);
-    m_basicShader->setMat4("view", view);
-    m_basicShader->setMat4("model", model);
-
-    // Bind texture and ensure sampler uniform is set
-    if (m_texture)
-    {
-        m_texture->bind(0);
-        m_basicShader->setInt("textureSampler", 0);
+    if (firstFrame) {
+        LOG_INFO("TEST: Using identity matrices (no camera transform)");
     }
 
-    m_VAO->bind();
-    m_renderer->drawArrays(PrimitiveType::Triangles, 0, 3);
-    m_VAO->unbind();
+    // Set material properties (uniforms)
+    m_material->setProperty("projection", projection);
+    m_material->setProperty("view", view);
+    m_material->setProperty("model", model);
+
+    // Bind material (activates shader and binds all textures)
+    m_material->bind();
+
+    // Draw mesh
+    m_gpuMesh->draw();
+
+    // Unbind material
+    m_material->unbind();
 }
 
 void MyApp::onMouseButton(int button, int action, int mods)
@@ -180,9 +203,10 @@ void MyApp::onKeyPressed(int key, int scancode, int action, int mods)
 
 void MyApp::onShutdown()
 {
+    m_material.reset();
+    m_gpuMesh.reset();
+    m_triangleMesh.reset();
     m_texture.reset();
-    m_VAO.reset();
-    m_VBO.reset();
     m_basicShader = nullptr;  // Shader is owned by ShaderManager, just clear the pointer
     LOG_INFO("MyApp shutting down");
 }

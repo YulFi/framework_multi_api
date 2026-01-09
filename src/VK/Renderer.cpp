@@ -88,7 +88,7 @@ void Renderer::initialize(GLFWwindow* window)
     createFramebuffers();
     createCommandPool();
     createTransferCommandPool();
-    initializeVertexBuffer();
+    //initializeVertexBuffer();
     createCommandBuffers();
     createSyncObjects();
 
@@ -945,48 +945,48 @@ void Renderer::releaseTransferCommandBuffer(TransferCommandBuffer* cmdBuf)
     }
 }
 
-void Renderer::initializeVertexBuffer()
-{
-    Vertex vertices[] = {
-        {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},  // Bottom left
-        {{ 0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},  // Bottom right
-        {{ 0.0f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.5f, 1.0f}}   // Top
-    };
-
-    VkBufferCreateInfo bufferInfo{};
-    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
-    bufferInfo.size = sizeof(vertices);
-    bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
-    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
-
-    if (vkCreateBuffer(m_device, &bufferInfo, nullptr, &m_vertexBuffer) != VK_SUCCESS)
-    {
-        throw std::runtime_error("Failed to create vertex buffer");
-    }
-
-    VkMemoryRequirements memRequirements;
-    vkGetBufferMemoryRequirements(m_device, m_vertexBuffer, &memRequirements);
-
-    VkMemoryAllocateInfo allocInfo{};
-    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
-    allocInfo.allocationSize = memRequirements.size;
-    allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits,
-                                                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
-
-    if (vkAllocateMemory(m_device, &allocInfo, nullptr, &m_vertexBufferMemory) != VK_SUCCESS)
-    {
-        throw std::runtime_error("Failed to allocate vertex buffer memory");
-    }
-
-    vkBindBufferMemory(m_device, m_vertexBuffer, m_vertexBufferMemory, 0);
-
-    void* data;
-    vkMapMemory(m_device, m_vertexBufferMemory, 0, bufferInfo.size, 0, &data);
-    memcpy(data, vertices, (size_t)bufferInfo.size);
-    vkUnmapMemory(m_device, m_vertexBufferMemory);
-
-    LOG_INFO("[Vulkan] Vertex buffer created");
-}
+//void Renderer::initializeVertexBuffer()
+//{
+//    Vertex vertices[] = {
+//        {{-0.5f, -0.5f, 0.0f}, {1.0f, 0.0f, 0.0f}, {0.0f, 0.0f}},  // Bottom left
+//        {{ 0.5f, -0.5f, 0.0f}, {0.0f, 1.0f, 0.0f}, {1.0f, 0.0f}},  // Bottom right
+//        {{ 0.0f,  0.5f, 0.0f}, {0.0f, 0.0f, 1.0f}, {0.5f, 1.0f}}   // Top
+//    };
+//
+//    VkBufferCreateInfo bufferInfo{};
+//    bufferInfo.sType = VK_STRUCTURE_TYPE_BUFFER_CREATE_INFO;
+//    bufferInfo.size = sizeof(vertices);
+//    bufferInfo.usage = VK_BUFFER_USAGE_VERTEX_BUFFER_BIT;
+//    bufferInfo.sharingMode = VK_SHARING_MODE_EXCLUSIVE;
+//
+//    if (vkCreateBuffer(m_device, &bufferInfo, nullptr, &m_vertexBuffer) != VK_SUCCESS)
+//    {
+//        throw std::runtime_error("Failed to create vertex buffer");
+//    }
+//
+//    VkMemoryRequirements memRequirements;
+//    vkGetBufferMemoryRequirements(m_device, m_vertexBuffer, &memRequirements);
+//
+//    VkMemoryAllocateInfo allocInfo{};
+//    allocInfo.sType = VK_STRUCTURE_TYPE_MEMORY_ALLOCATE_INFO;
+//    allocInfo.allocationSize = memRequirements.size;
+//    allocInfo.memoryTypeIndex = findMemoryType(memRequirements.memoryTypeBits,
+//                                                VK_MEMORY_PROPERTY_HOST_VISIBLE_BIT | VK_MEMORY_PROPERTY_HOST_COHERENT_BIT);
+//
+//    if (vkAllocateMemory(m_device, &allocInfo, nullptr, &m_vertexBufferMemory) != VK_SUCCESS)
+//    {
+//        throw std::runtime_error("Failed to allocate vertex buffer memory");
+//    }
+//
+//    vkBindBufferMemory(m_device, m_vertexBuffer, m_vertexBufferMemory, 0);
+//
+//    void* data;
+//    vkMapMemory(m_device, m_vertexBufferMemory, 0, bufferInfo.size, 0, &data);
+//    memcpy(data, vertices, (size_t)bufferInfo.size);
+//    vkUnmapMemory(m_device, m_vertexBufferMemory);
+//
+//    LOG_INFO("[Vulkan] Vertex buffer created");
+//}
 
 void Renderer::createCommandBuffers()
 {
@@ -1506,9 +1506,8 @@ void Renderer::beginFrame()
         currentShader->clearPendingUpdates();
     }
 
-    VkBuffer vertexBuffers[] = {m_vertexBuffer};
-    VkDeviceSize offsets[] = {0};
-    vkCmdBindVertexBuffers(m_commandBuffers[m_currentFrame], 0, 1, vertexBuffers, offsets);
+    // Note: Vertex buffer binding is now handled in drawArrays/drawElements via the VAO system
+    // The old m_vertexBuffer from initializeVertexBuffer() is no longer used
 
     // Mark that the frame was successfully begun
     m_frameBegun = true;
@@ -1709,8 +1708,34 @@ void Renderer::drawElements(PrimitiveType mode, int count, unsigned int indexTyp
         return;
     }
 
-    // Vulkan doesn't need the primitive type in draw call - it's specified in pipeline
-    vkCmdDraw(m_commandBuffers[m_currentFrame], count, 1, 0, 0);
+    // Bind vertex buffer and index buffer from the bound vertex array
+    if (m_boundVertexArray)
+    {
+        // Bind vertex buffer
+        if (m_boundVertexArray->getVertexBuffer())
+        {
+            VkBuffer vertexBuffer = m_boundVertexArray->getVertexBuffer()->getBuffer();
+            if (vertexBuffer != VK_NULL_HANDLE)
+            {
+                VkDeviceSize offsets[] = {0};
+                vkCmdBindVertexBuffers(m_commandBuffers[m_currentFrame], 0, 1, &vertexBuffer, offsets);
+            }
+        }
+
+        // Bind index buffer
+        if (m_boundVertexArray->getIndexBuffer())
+        {
+            VkBuffer indexBuffer = m_boundVertexArray->getIndexBuffer()->getBuffer();
+            VkIndexType vkIndexType = m_boundVertexArray->getIndexBuffer()->getVkIndexType();
+            if (indexBuffer != VK_NULL_HANDLE)
+            {
+                vkCmdBindIndexBuffer(m_commandBuffers[m_currentFrame], indexBuffer, 0, vkIndexType);
+            }
+        }
+    }
+
+    // Use indexed draw call
+    vkCmdDrawIndexed(m_commandBuffers[m_currentFrame], count, 1, 0, 0, 0);
     endFrame();
 }
 

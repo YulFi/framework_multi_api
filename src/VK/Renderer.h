@@ -141,7 +141,7 @@ namespace VK
         void createCommandPool();
         void createCommandBuffers();
         void createSyncObjects();
-        void initializeVertexBuffer();
+        //void initializeVertexBuffer();
 
         void recreateSwapChain();
         void cleanupSwapChain();
